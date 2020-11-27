@@ -1,0 +1,302 @@
+<%- include('../../layouts/adminHeader') %>
+
+<div class="container">
+
+    <a href="" class="btn btn-primary btn-sm mt-3 mb-2" data-toggle="modal" data-target="#createAccount" >Create Bank Account</a>
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Holder's Name</th>
+                <th>Bank</th>
+                <th>Account#</th>
+                <th>Current Balance</th>
+                <th>Branch</th>
+                <th>Contact</th>
+                <th class="text-center">Action</th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+              <%
+                for (account of accounts){ %>
+
+                    <tr>
+                        <td><%= account.holderName %></td>
+                        <td><%= account.bankName %></td>
+                        <td><%= account.accountNumber %></td>
+                        <td><b>₵</b> <%= account.balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                        <td><%= account.branch %></td>
+                        <td><%= account.contact %></td>
+                        <td><a href="" data-toggle="modal" data-target="#edit<%= account._id %>"  class="btn btn-success btn-sm" title="Edit"><i class="fas fa-pencil-alt"></i></a></td>
+                        <td>
+                            <button type="button" title="Delete" data-toggle="modal" data-target="#del<%= account._id %>" class="btn btn-danger btn-sm">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
+
+
+
+
+                    <!--  Modal for deleting bank account-->
+                    <div class="modal fade" id="del<%= account._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <br><br>
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete Bank Account</span></h5>
+                                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                    </button>
+                                </div>
+                                <form action="/admin/banking/<%= account._id %>?_method=DELETE" method="post" class="myform">
+                                    <div class="modal-body">
+
+                                        Are you sure you want to delete <%= account.bankName %>?
+
+                                            <div class="col-md-12 text-right">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                            <input type="submit" class="btn btn-danger mybtn" value="Delete">
+
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+
+                            </div>
+                        </div> <!-- ./delete modal -->
+
+
+              <!-- Modal for editing account -->
+    <div class="modal fade" id="edit<%= account._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+     <br><br>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center text-primary" id="exampleModalLabel"><i class="fas fa-home"></i><span class="text-primary"> Edit Bank Account</span></h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <form action="/admin/banking/update/<%= account._id %>?_method=PATCH" method="post" class="myform">
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="form-group  col-md-6">
+                        <label for="edit_holder_name">Bank Holder Name</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-address-card"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" autocomplete="off"  required="required" name="edit_holder_name" type="text" value="<%= account.holderName %>" id="edit_holder_name">
+                        </div>
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label for="edit_bank_name">Bank Name</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" autocomplete="off" name="edit_bank_name" type="text" value="<%= account.bankName %>" id="edit_bank_name">
+                        </div>
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label for="edit_account_number">Account Number</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-notes-medical"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" name="edit_account_number" autocomplete="off" type="text" value="<%= account.accountNumber %>" id="edit_account_number">
+                        </div>
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label for="edit_balance">Opening Balance</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text font-weight-bold">
+                                    ₵
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" min="0" step="0.01" name="edit_balance" autocomplete="off" type="number" value="<%= account.balance %>" id="edit_balance">
+                        </div>
+                    </div>
+
+                    <div class="form-group  col-md-6">
+                        <label for="edit_branch">Branch</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" name="edit_branch" type="text" value="<%= account.branch %>" id="edit_branch" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-group  col-md-6">
+                        <label for="edit_contact_number">Contact Number</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" name="edit_contact_number" type="text" value="<%= account.contact %>" id="edit_contact_number" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <input class="btn btn-primary mybtn" type="submit" value="Update">
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </form>
+
+
+        </div>
+    </div>
+</div>
+
+
+               <% } %>
+
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+<!--  Modal for creating bank account-->
+<div class="modal fade" id="createAccount" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+    <br><br>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center text-primary" id="exampleModalLabel"><i class="fas fa-home"></i><span class="text-primary"> Add Bank Account</span></h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <form action="/admin/banking/store" method="post" class="myform">
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="form-group  col-md-6">
+                        <label for="holder_name">Bank Holder Name</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-address-card"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" autocomplete="off" required="required" name="holder_name" type="text" value="" id="holder_name">
+                        </div>
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label for="bank_name">Bank Name</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-university"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" autocomplete="off" name="bank_name" type="text" value="" id="bank_name">
+                        </div>
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label for="account_number">Account Number</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-notes-medical"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" name="account_number" autocomplete="off" type="text" value="" id="account_number">
+                        </div>
+                    </div>
+                    <div class="form-group  col-md-6">
+                        <label for="balance">Openinig Balance</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text font-weight-bold">
+                                    ₵
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" min="0" step="0.01" name="balance" autocomplete="off" type="number" value="0.00" id="opening_balance">
+                        </div>
+                    </div>
+
+                    <div class="form-group  col-md-6">
+                        <label for="branch">Branch</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-home"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" name="branch" type="text" id="branch" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="form-group  col-md-6">
+                        <label for="contact_number">Contact Number</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" name="contact_number" type="text" value="" id="contact_number" autocomplete="off">
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <input class="btn btn-primary mybtn" type="submit" value="Create">
+                    </div>
+                </div>
+
+
+
+            </div>
+
+        </form>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<%- include('../../layouts/adminFooter') %>

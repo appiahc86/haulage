@@ -1,0 +1,72 @@
+
+
+</div>
+<!-- /.content-wrapper -->
+
+
+
+<!-- Main Footer -->
+<footer class="main-footer" style="text-align: center;">
+    <strong>Copyright &copy;  <%= new Date().getFullYear() %> <a href="">Clemonic</a>.</strong>
+
+    All rights reserved.
+
+</footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+<!-- jQuery -->
+<script src="/plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap -->
+<script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- overlayScrollbars -->
+<script src="/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- AdminLTE App -->
+<script src="/js/adminlte.js"></script>
+
+
+
+<!-- PAGE PLUGINS -->
+<!-- jQuery Mapael -->
+<script src="/plugins/jquery-mousewheel/jquery.mousewheel.js"></script>
+<script src="/plugins/raphael/raphael.min.js"></script>
+<script src="/plugins/jquery-mapael/jquery.mapael.min.js"></script>
+<script src="/plugins/jquery-mapael/maps/usa_states.min.js"></script>
+<!-- ChartJS -->
+<script src="/plugins/chart.js/Chart.min.js"></script>
+
+<!-- PAGE SCRIPTS -->
+<script src="/js/pages/dashboard2.js"></script>
+<script src="/js/toastr.js"></script>
+</body>
+</html>
+
+
+<script>
+    window.onload = function(){
+
+        const mybtns  = document.querySelectorAll(".mybtn");
+        const myforms  = document.querySelectorAll(".myform");
+
+        for (const myform of myforms) {
+            myform.onsubmit = function (){
+                for (const mybtn of mybtns) {
+                    mybtn.disabled = true;
+                    mybtn.value = "Please wait..."
+                }
+            }
+        }
+
+        //toastr messages
+        <%
+            if (success_msg != ""){ %>
+
+           toastr.success('<%= success_msg %>');
+
+        <% } %>
+
+
+
+    }
+</script>
