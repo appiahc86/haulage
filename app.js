@@ -62,6 +62,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 import homeRouter from "./routes/home/index.js";
 import adminRouter from "./routes/admin/index.js";
 import bankRouter from "./routes/admin/banking/account.js";
+import assetRouter from "./routes/admin/assets/asset.js";
 
 
 
@@ -69,6 +70,7 @@ import bankRouter from "./routes/admin/banking/account.js";
 app.use('/', homeRouter);
 app.use('/admin', adminRouter);
 app.use('/admin/banking', bankRouter);
+app.use('/admin/assets', assetRouter);
 
 
 app.listen(port, () => {
