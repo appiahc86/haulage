@@ -2,7 +2,7 @@
 # Dependency directories
 node_modules/
 
-
+public/img/
 # dotenv environment variables file
 .env
 
