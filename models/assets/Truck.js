@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 const truckSchema = new Schema({
    licenseNumber: {
        type: String,
-       required: true
+       required: true,
+       unique: true,
+       trim: true
    } ,
 
     datePurchased: {
@@ -23,7 +25,8 @@ const truckSchema = new Schema({
     },
 
     description: {
-       type: String
+       type: String,
+        trim: true
     }
 
 }, {timestamps: true});

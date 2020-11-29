@@ -63,6 +63,7 @@ import homeRouter from "./routes/home/index.js";
 import adminRouter from "./routes/admin/index.js";
 import bankRouter from "./routes/admin/banking/account.js";
 import assetRouter from "./routes/admin/assets/asset.js";
+import assetAccountRouter from "./routes/admin/assets/assetAccount.js";
 
 
 
@@ -71,6 +72,7 @@ app.use('/', homeRouter);
 app.use('/admin', adminRouter);
 app.use('/admin/banking', bankRouter);
 app.use('/admin/assets', assetRouter);
+app.use('/admin/assetAccounts', assetAccountRouter);
 
 
 app.listen(port, () => {

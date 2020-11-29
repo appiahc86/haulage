@@ -15,12 +15,18 @@ const assetController = {
 
         try {
             const newTruck = new Truck({
-                licenseNumber: licenseNumber.trim(),
+                licenseNumber: licenseNumber.trim().toUpperCase(),
                 datePurchased,
                 amount,
                 depreciation,
                 description
             });
+
+            const checkDuplicate = await Truck.findOne({licenseNumber: licenseNumber.trim().toUpperCase()});
+            if (checkDuplicate){
+                req.flash('error_msg', 'Record Already Exists');
+                return res.redirect('/admin/assets');
+            }
 
             await newTruck.save();
             req.flash('success_msg', 'Asset saved successfully');
@@ -44,7 +50,7 @@ const assetController = {
         try {
 
             const asset = await Truck.findById(req.params.id);
-            asset.licenseNumber = edit_licenseNumber;
+            asset.licenseNumber = edit_licenseNumber.trim().toUpperCase();
             asset.amount = edit_amount;
             asset.depreciation = edit_depreciation;
             asset.description = edit_description;
@@ -53,13 +59,14 @@ const assetController = {
                 asset.datePurchased = edit_datePurchased;
             }
 
+        //Save to Database
             await asset.save();
             req.flash('success_msg', 'Record Updated Successfully');
             res.redirect('/admin/assets');
 
         }catch (e) {
             console.log(e)
-            req.flash('error_msg', 'Sorry!!!, Error Occurred');
+            req.flash('error_msg', 'Sorry!!!, Error Occurred, Check if license Number exists');
             res.redirect('/admin/assets');
         }
 

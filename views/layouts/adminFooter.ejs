@@ -38,6 +38,8 @@
 
 <!-- PAGE SCRIPTS -->
 <script src="/js/pages/dashboard2.js"></script>
+<script src="/js/datatables.min.js"></script>
+
 <script src="/js/toastr.js"></script>
 </body>
 </html>
@@ -45,6 +47,13 @@
 
 <script>
     window.onload = function(){
+
+        //datatables
+        $('#myTable').DataTable({
+            buttons: [
+                'copy', 'excel', 'pdf'
+            ]
+        } );
 
         const mybtns  = document.querySelectorAll(".mybtn");
         const myforms  = document.querySelectorAll(".myform");
@@ -62,10 +71,16 @@
         <%
             if (success_msg != ""){ %>
 
-           toastr.success('<%= success_msg %>');
+           toastr.success('<%= success_msg %>'); //Success messages
 
         <% } %>
 
+        <%
+        if (error_msg != ""){ %>
+
+        toastr.error('<%= error_msg %>'); //Error messages
+
+        <% } %>
 
 
     }

@@ -3,15 +3,18 @@ const Schema = mongoose.Schema;
 
 const accountSchema = new Schema({
     holderName: {
-        type: String
+        type: String,
+        trim: true
     },
 
     bankName: {
-        type: String
+        type: String,
+        trim: true
     },
 
     accountNumber: {
-        type: String
+        type: String,
+        trim: true
     },
 
     balance:{
@@ -19,7 +22,8 @@ const accountSchema = new Schema({
     },
 
     branch:{
-        type: String
+        type: String,
+        trim: true
     },
 
     contact: {
