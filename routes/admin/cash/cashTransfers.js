@@ -7,8 +7,10 @@ import cashTransfersController from "../../../controllers/cashController/cashTra
 router.get('/', cashTransfersController.index);
 
 //Transfer from cash account to bank account
-router.get('/transfer', cashTransfersController.transfer);
+router.post('/store', cashTransfersController.transfer);
 
+//Delete Transfer
+router.delete('/:id', cashTransfersController.destroy);
 
 
 

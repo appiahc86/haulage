@@ -12,7 +12,7 @@
 
 
             <!-- ./Form -->
-            <form action="" method="post" class="myform">
+            <form action="/admin/cashTransfers/store" method="post" class="myform">
 
                 <div class="row">
 
@@ -76,13 +76,89 @@
             </form> <!-- ./Form -->
 
 
-
-
         </div>
     </div>
 </div>
 
 
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="table-responsive">
+
+                <h3 class="text-center mt-3 font-weight-bold">Transfer History</h3>
+
+                <table class="table table-sm table-borderless table-hover" id="myTable">
+                    <thead class="thead-dark">
+
+                    <tr>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Transferred To</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <% for(const transfer of transfers){ %>
+
+                        <td><%= new Date(transfer.date).toDateString()%></td>
+                        <td><%= transfer.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                        <td><%= transfer.bank.bankName + " (" + transfer.bank.accountNumber + ")" %></td>
+                        <td>
+                            <a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= transfer._id %>">
+                              <span class="fas fa-trash"></span>
+                            </a>
+                        </td>
+
+
+
+                        <!--  Modal for deleting transfer history-->
+                        <div class="modal fade" id="del<%= transfer._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <br><br>
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete This Transaction</span></h5>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <form action="/admin/cashTransfers/<%= transfer._id %>?_method=DELETE" method="post" class="myform">
+                                        <div class="modal-body">
+                                            <input type="hidden" name="bankId" value="<%= transfer.bank._id %>">
+                                            <input type="hidden" name="amount" value="<%= transfer.amount %>">
+
+                                            Are you sure you want to delete this transaction?
+
+                                            <div class="col-md-12 text-right">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                <input type="submit" class="btn btn-danger mybtn" value="Delete">
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div> <!-- ./delete modal -->
+
+
+
+
+                    <% } %>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 
