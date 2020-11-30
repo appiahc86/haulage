@@ -64,6 +64,8 @@ import adminRouter from "./routes/admin/index.js";
 import bankRouter from "./routes/admin/banking/account.js";
 import assetRouter from "./routes/admin/assets/asset.js";
 import assetAccountRouter from "./routes/admin/assets/assetAccount.js";
+import cashAccountRouter from "./routes/admin/cash/cashAccount.js";
+import cashTransfersRouter from "./routes/admin/cash/cashTransfers.js";
 
 
 
@@ -73,6 +75,8 @@ app.use('/admin', adminRouter);
 app.use('/admin/banking', bankRouter);
 app.use('/admin/assets', assetRouter);
 app.use('/admin/assetAccounts', assetAccountRouter);
+app.use('/admin/cashAccounts', cashAccountRouter);
+app.use('/admin/cashTransfers', cashTransfersRouter);
 
 
 app.listen(port, () => {

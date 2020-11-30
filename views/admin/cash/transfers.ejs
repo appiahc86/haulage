@@ -1,0 +1,92 @@
+<%- include('../../layouts/adminHeader') %>
+
+<br>
+
+<h2 class="text-center text-cyan font-weight-bold">
+    <span class="fas fa-money-bill"></span> Transfer To Bank Account <span class="fas fa-money-bill"></span>
+</h2>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+
+            <!-- ./Form -->
+            <form action="" method="post" class="myform">
+
+                <div class="row">
+
+                    <div class="form-group  col-md-3">
+                        <label for="date">Date</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" autocomplete="off" name="date" type="date" id="date">
+                        </div>
+                    </div>
+
+                    <div class="form-group  col-md-3">
+                        <label for="bank">Bank Account</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-sort-numeric-down-alt"></i>
+                                </div>
+                            </div>
+                            <select name="bank" id="bank" class="form-control" required>
+                                <option value=""></option>
+
+                                <% for(const bank of banks){ %>
+
+                                    <option value="<%= bank._id %>"><%= bank.bankName + " (" + bank.accountNumber + ")" %></option>
+
+                                <% } %>
+
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group  col-md-3">
+                        <label for="amount">Amount</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text font-weight-bold">
+                                    ₵
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" min="0" step="0.01" name="amount" autocomplete="off" type="number" value="" id="amount">
+                        </div>
+                    </div>
+
+
+
+                    <div class="form-group col-md-3">
+                        <h5 class="text-white">.</h5>
+                        <div class="input-group">
+
+                        <input class="btn btn-violet mybtn" type="submit" value="Transfer">
+                        </div>
+                    </div>
+
+                </div>
+            </form> <!-- ./Form -->
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+<%- include('../../layouts/adminFooter') %>

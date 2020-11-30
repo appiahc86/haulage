@@ -1,6 +1,7 @@
 import Truck from "../../models/assets/Truck.js";
 import Bank from "../../models/banking/Bank.js";
 import AssetAccount from "../../models/assetAccount/assetAccount.js";
+import Cash from "../../models/cash/Cash.js";
 
 const assetAccountController = {
     //Get list of all asset accounts
@@ -41,9 +42,24 @@ const assetAccountController = {
                 bankAccount.balance += parseFloat(amount);
                 await bankAccount.save();
 
-            }else {
+            }else { //If mode of payment is CASH
                 newAssetAccount.bank = "";
                 newAssetAccount.bankAccountNumber = "";
+
+                //First check if the account does not exist, then create it
+                const accountExists = await Cash.findOne({name: "cashAccount"});
+                    if (!accountExists){
+                        await Cash.create({
+                            name: "cashAccount",
+                            balance: 0
+                        })
+                    }
+
+                //Add amount to cash account
+                 const addToCashAccount = await Cash.findOne({name: "cashAccount"});
+                 addToCashAccount.balance += parseFloat(amount);
+                 await addToCashAccount.save();
+
             }
 
             //Save record to database
@@ -65,11 +81,17 @@ const assetAccountController = {
 
             const record = await AssetAccount.findById(req.params.id);
 
-            //If money was paid to bank account
+            //If money was paid to bank account, deduct amount from it
             if (record.bankAccountNumber !== ""){
                 const bank = await Bank.findById(record.bankAccountNumber); //Find the bank account
                 bank.balance -= parseFloat(record.amount); //Subtract the money from the bank account
                 await bank.save();
+
+            //If money was paid to Cash account deduct amount from it
+            }else {
+                const deductFromCashAccount = await Cash.findOne({name: "cashAccount"});
+                deductFromCashAccount.balance -= parseFloat(record.amount);
+                await deductFromCashAccount.save();
             }
 
             //Delete sales record
