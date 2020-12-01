@@ -6,6 +6,12 @@ import bankTransferController from "../../../controllers/bankController/bankTran
 //Get bank Transfer history
 router.get('/', bankTransferController.index);
 
+//Transfer to account
+router.post('/store', bankTransferController.store);
+
+//Rollback transaction
+router.delete('/:id', bankTransferController.destroy);
+
 
 
 

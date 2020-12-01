@@ -23,5 +23,5 @@ const bankTransferSchema = new Schema({
 
 }, {timestamps: true});
 
-const BankTransfers = mongoose.model("banks", bankTransferSchema);
+const BankTransfers = mongoose.model("bank_transfers", bankTransferSchema);
 export default BankTransfers;

@@ -3,10 +3,10 @@
 <br>
 
 <h2 class="text-center text-success font-weight-bold">
-    <span class="fas fa-money-bill"></span> Transfer To Cash Or Bank Account <span class="fas fa-money-bill"></span>
+    <span class="fas fa-money-bill"></span> Bank Transfers <span class="fas fa-money-bill"></span>
 </h2>
 
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col">
 
@@ -16,7 +16,7 @@
 
                 <div class="row">
 
-                    <div class="form-group  col-md-3">
+                    <div class="form-group  col-md-2">
                         <label for="date">Date</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -29,14 +29,14 @@
                     </div>
 
                     <div class="form-group  col-md-3">
-                        <label for="bank">Bank Account</label>
+                        <label for="fromAccount">From Account</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
                                     <i class="fas fa-sort-numeric-down-alt"></i>
                                 </div>
                             </div>
-                            <select name="bank" id="bank" class="form-control" required>
+                            <select name="fromAccount" id="fromAccount" class="form-control" required>
                                 <option value=""></option>
 
                                 <% for(const bank of banks){ %>
@@ -50,7 +50,30 @@
                     </div>
 
 
+
                     <div class="form-group  col-md-3">
+                        <label for="toAccount">To Account</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-sort-numeric-down-alt"></i>
+                                </div>
+                            </div>
+                            <select name="toAccount" id="toAccount" class="form-control" required>
+                                <option value=""></option>
+
+                                <% for(const bank of banks){ %>
+
+                                    <option value="<%= bank._id %>"><%= bank.bankName + " (" + bank.accountNumber + ")" %></option>
+
+                                <% } %>
+
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group  col-md-2">
                         <label for="amount">Amount</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -64,7 +87,7 @@
 
 
 
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-2">
                         <h5 class="text-white">.</h5>
                         <div class="input-group">
 
@@ -95,8 +118,9 @@
 
                     <tr>
                         <th>Date</th>
-                        <th>Amount</th>
+                        <th>Transferred From</th>
                         <th>Transferred To</th>
+                        <th>Amount</th>
                         <th>Action</th>
                     </tr>
                     </thead>
@@ -105,15 +129,18 @@
 
                     <% for(const transfer of transfers){ %>
 
+                   <tr>
                         <td><%= new Date(transfer.date).toDateString()%></td>
+                        <td><%= transfer.fromAccount.bankName + " (" + transfer.fromAccount.accountNumber + ")" %></td>
+                        <td><%= transfer.toAccount.bankName + " (" + transfer.toAccount.accountNumber + ")" %></td>
                         <td><%= transfer.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
-                        <td><%= transfer.bank.bankName + " (" + transfer.bank.accountNumber + ")" %></td>
+
                         <td>
                             <a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= transfer._id %>">
                                 <span class="fas fa-trash"></span>
                             </a>
                         </td>
-
+                   </tr>
 
 
                         <!--  Modal for deleting transfer history-->
@@ -127,7 +154,7 @@
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
-                                    <form action="/admin/cashTransfers/<%= transfer._id %>?_method=DELETE" method="post" class="myform">
+                                    <form action="/admin/bankTransfers/<%= transfer._id %>?_method=DELETE" method="post" class="myform">
                                         <div class="modal-body">
 
                                             <input type="hidden" name="amount" value="<%= transfer.amount %>">
