@@ -11,16 +11,15 @@
 </style>
 
 <br>
-<h2 class="text-sm-center"><span class="fas fa-truck"></span> Sales Records</h2>
+<h2 class="text-sm-center"><span class="fas fa-money-check"></span> Record Expenditure</h2>
 
 <div class="container">
     <div class="row">
         <div class="col">
 
 
-
             <!-- ./Form -->
-            <form action="/admin/assetAccounts/store" method="post" class="myform">
+            <form action="/admin/expenditures/store" method="post" class="myform">
 
                 <div class="row">
                     <div class="form-group  col-md-3">
@@ -32,20 +31,44 @@
                                 </div>
                             </div>
                             <select name="truck" id="truck" class="form-control selectpicker"
-                                     data-live-search="true"
+                                    data-live-search="true"
                                     title="Select a truck"
                                     required
                             >
 
-<!--                                <option value=""></option>-->
+                                <!--                                <option value=""></option>-->
 
-                                 <% for(let truck of trucks){ %>
+                                <% for(let truck of trucks){ %>
                                     <option value="<%= truck._id %>"><%= truck.licenseNumber %></option>
                                 <% } %>
 
                             </select>
                         </div>
                     </div>
+                            <!--  Expense Type  -->
+                    <div class="form-group  col-md-3">
+                        <label for="type">Expense Type</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-sort-numeric-down-alt"></i>
+                                </div>
+                            </div>
+                            <select name="type" id="type" class="form-control" required>
+
+                                <option value="">--Select Option--</option>
+                                <option value="fuel & lubes">FUEL & LUBES</option>
+                                <option value="insurance & renewals">INSURANCE & RENEWALS</option>
+                                <option value="repairs & maintenance">REPAIRS & MAINTENANCE</option>
+                                <option value="road expenses">ROAD EXPENSES</option>
+                                <option value="wages & Salaries">WAGES & SALARIES</option>
+                                <option value="other expenses">OTHER EXPENSES</option>
+
+                            </select>
+                        </div>
+                    </div>
+
+
                     <div class="form-group  col-md-3">
                         <label for="date">Date</label>
                         <div class="input-group">
@@ -57,6 +80,7 @@
                             <input class="form-control" required="required" autocomplete="off" name="date" type="date" id="date">
                         </div>
                     </div>
+
                     <div class="form-group  col-md-3">
                         <label for="amount">Amount</label>
                         <div class="input-group">
@@ -68,7 +92,8 @@
                             <input class="form-control" required="required" min="0" step="0.01" name="amount" autocomplete="off" type="number" value="" id="amount">
                         </div>
                     </div>
-                    <div class="form-group  col-md-3">
+
+                    <div class="form-group  col-md-4">
                         <label>Mode Of Payment</label>
                         <div class="input-group">
 
@@ -84,7 +109,7 @@
                     </div>
 
 
-                    <div class="form-group  col-md-6 makeHidden" id="toggleVisibility">
+                    <div class="form-group  col-md-4 makeHidden" id="toggleVisibility">
                         <label for="bank">Bank Account</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -102,7 +127,7 @@
                     </div>
 
 
-                    <div class="form-group  col-md-6">
+                    <div class="form-group  col-md-4">
                         <label for="description">Description</label>
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -117,7 +142,7 @@
 
 
                     <div class="form-group col-md-12 text-right">
-                        <input class="btn btn-violet btn-block mybtn" type="submit" value="Save">
+                        <input class="btn btn-primary btn-block mybtn" type="submit" value="Save">
                     </div>
 
                 </div>
@@ -130,7 +155,7 @@
     </div>
 </div>
 
-    <br>
+<br>
 
 
 
@@ -138,7 +163,7 @@
 
 
 
-      <!-- Container for table -->
+<!-- Container for table -->
 <div class="container">
     <div class="row">
         <div class="col">
@@ -157,57 +182,7 @@
                     </tr>
                     </thead>
 
-                    <tbody>
-                         <% for(let account of accounts){ %>
 
-                             <tr>
-                                 <td><%= account.truck.licenseNumber %></td>
-                                 <td><%= new Date(account.date).toDateString()%></td>
-                                 <td><%= account.mode %></td>
-                                 <td><%= account.bank !== "" ? account.bank : "..." %></td>
-                                 <td><b>₵</b> <%= account.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
-                                 <td><%= account.description.slice(0,15).concat("...") %></td>
-                                 <td>
-                                     <button data-toggle="modal" data-target="#del<%= account._id %>" class="btn btn-danger btn-sm">
-                                         <span class="fas fa-trash-alt"></span>
-                                     </button>
-                                 </td>
-
-                             </tr>
-
-
-
-                             <!--  Modal for deleting record-->
-                             <div class="modal fade" id="del<%= account._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
-                                 <br><br>
-                                 <div class="modal-dialog" role="document">
-                                     <div class="modal-content">
-                                         <div class="modal-header">
-                                             <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete Sales Record</span></h5>
-                                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                                 <span aria-hidden="true">×</span>
-                                             </button>
-                                         </div>
-                                         <form action="/admin/assetAccounts/<%= account._id %>?_method=DELETE" method="post" class="myform">
-                                             <div class="modal-body">
-
-                                                 Are you sure you want to delete this record?
-
-                                                 <div class="col-md-12 text-right">
-                                                     <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                                                     <input type="submit" class="btn btn-danger btn-sm mybtn" value="Delete">
-
-                                                 </div>
-                                             </div>
-                                         </form>
-                                     </div>
-
-                                 </div>
-                             </div> <!-- ./delete modal -->
-
-
-                         <% } %>
-                    </tbody>
 
                 </table>
             </div>

@@ -52,7 +52,7 @@ const assetAccountController = {
                         await Cash.create({
                             name: "cashAccount",
                             balance: 0
-                        })
+                        });
                     }
 
                 //Add amount to cash account

@@ -28,6 +28,11 @@ const assetAccountSchema = new Schema({
         type: String
     },
 
+    transactionType: {
+        type: String,
+        default: 'sales'
+    },
+
     description: {
         type: String
     }
