@@ -34,11 +34,56 @@
                                  <td><%= asset.licenseNumber %></td>
                                  <td><%= new Date(asset.datePurchased).toDateString() %></td>
                                  <td><b>₵</b> <%= asset.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
-                                 <td><b>%</b> <%= asset.depreciation.toFixed(2) %></td>
+                                 <td class="text-center">
+                                     <div class="badge  badge-success" style="cursor: pointer;" data-toggle="modal" data-target="#depreciation<%= asset._id %>" title="Click to view">
+                                         <b>%</b> <%= asset.depreciation.toFixed(2) %>
+                                     </div>
+                                 </td>
                                  <td><%= asset.description.slice(0,15).concat("...") %></td>
                                  <td><a data-toggle="modal" data-target="#edit<%= asset._id %>"  class="text-white btn btn-sm btn-violet" title="Edit"><span class="fas fa-edit"></span></a></td>
                                  <td><a data-toggle="modal" data-target="#del<%= asset._id %>" title="Delete" class="text-white btn btn-sm btn-danger"><span class="fas fa-trash"></span></a></td>
                              </tr>
+
+
+                                    <!--  Depreciation Modal -->
+                             <div class="modal fade" id="depreciation<%= asset._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                                 <br><br>
+                                 <div class="modal-dialog" role="document">
+                                     <div class="modal-content">
+
+                                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                 <span aria-hidden="true">×</span>
+                                             </button>
+
+
+                                             <div class="modal-body text-center text-primary">
+
+                                                 <%
+                                                     function monthDiff(dateFrom, dateTo) {
+                                                         return dateTo.getMonth() - dateFrom.getMonth() +
+                                                                 (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
+                                                     }
+
+                                                     const monthsElapsed = monthDiff(asset.datePurchased, new Date());
+
+                                                     //Multiply Number of months elapsed by depreciation amount
+                                                     const aa = monthsElapsed * parseFloat(asset.depreciation);
+
+                                                     const depreciatedBy = (aa / 100) * parseFloat(asset.amount);
+
+                                                     //New Value after depreciation
+                                                    const newAssetValue = parseFloat(asset.amount) - depreciatedBy;
+
+                                                  %>
+
+                                                 <h3>New Value <b>₵</b> <%= newAssetValue.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></h3>
+                                             </div>
+
+                                     </div>
+
+                                 </div>
+                             </div> <!-- ./Depreciation modal -->
+
 
 
                              <!--  Modal for deleting Asset-->
