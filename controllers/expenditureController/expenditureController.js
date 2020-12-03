@@ -15,10 +15,8 @@ const expenditureController = {
         //Filter query to get only expenditures (By removing those with transactionType, "sales")
         const expenditures = newQuery.filter((record) => {
             return record.transactionType !== "sales";
-        })
+        });
 
-
-        console.log(expenditures)
 
         res.render('admin/expenditure/expenditure', {banks, trucks, expenditures});
 
@@ -45,7 +43,9 @@ const expenditureController = {
             //if mode of payment is bank
             if (bank !== ""){
                 const bankAccount = await Bank.findById(bank);
+
                 newRecord.bank = bankAccount.bankName + " (" + bankAccount.accountNumber + ")";
+                newRecord.bankAccountNumber = bank;
 
                 //Deduct Amount from bank account
                 bankAccount.balance -= parseFloat(amount);
@@ -91,7 +91,36 @@ const expenditureController = {
     //Delete Expenditure
     destroy: async (req, res) => {
 
-        console.log(req.params.id)
+       try {
+
+           const record = await AssetAccount.findById(req.params.id);
+
+           //If money was paid to bank account, deduct amount from it
+           if (record.bankAccountNumber !== ""){
+               const bank = await Bank.findById(record.bankAccountNumber); //Find the bank account
+               bank.balance += parseFloat(record.amount); //Subtract the money from the bank account
+               await bank.save();
+
+
+               //If money was deducted from cash account, add it back
+           }else {
+               const addToCashAccount = await Cash.findOne({name: "cashAccount"});
+               addToCashAccount.balance += parseFloat(record.amount);
+               await addToCashAccount.save();
+
+           }
+
+           //Delete expenditure record
+           await record.remove();
+           req.flash('success_msg', 'Record deleted successfully');
+           res.redirect('/admin/expenditures');
+
+
+       }catch (e) {
+           console.log(e);
+           req.flash('error_msg', 'Sorry!!, Error Occurred');
+           res.redirect('/admin/expenditures');
+       }
 
 
     }

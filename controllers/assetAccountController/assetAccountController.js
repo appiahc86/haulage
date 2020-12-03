@@ -8,7 +8,11 @@ const assetAccountController = {
     index: async (req, res) => {
         const trucks = await Truck.find({});
         const banks = await Bank.find({});
-        const accounts = await AssetAccount.find({}).populate("truck").populate("bankAccount");
+        const query = await AssetAccount.find({}).populate("truck").populate("bankAccount");
+
+        const accounts = query.filter((record) => {
+           return record.transactionType === "sales";
+        });
 
        res.render('admin/assetAccount/index', {trucks, banks, accounts});
     },
