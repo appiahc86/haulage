@@ -26,7 +26,7 @@ const assetAccountController = {
             const newAssetAccount = new AssetAccount({
                truck,
                date,
-               amount,
+               amount : parseFloat(amount),
                mode,
                description
             });
@@ -46,7 +46,7 @@ const assetAccountController = {
                 newAssetAccount.bank = "";
                 newAssetAccount.bankAccountNumber = "";
 
-                //First check if the account does not exist, then create it
+                //First check if the cash account does not exist, then create it
                 const accountExists = await Cash.findOne({name: "cashAccount"});
                     if (!accountExists){
                         await Cash.create({

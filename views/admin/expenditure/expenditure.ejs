@@ -177,12 +177,63 @@
                         <th>Mode Of Payment</th>
                         <th>Bank</th>
                         <th>Amount</th>
+                        <th>Expense Type</th>
                         <th>Description</th>
                         <th></th>
                     </tr>
                     </thead>
 
+                    <tbody>
 
+                    <% for(const expenditure of expenditures){ %>
+
+                        <td><%= expenditure.truck.licenseNumber %></td>
+                        <td><%= new Date(expenditure.date).toDateString() %></td>
+                        <td><%= expenditure.mode %></td>
+                        <td><b>₵ </b><%= expenditure.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                        <td><%= expenditure.bank !== "" ? expenditure.bank : "..." %></td>
+                        <td><%= expenditure.transactionType %></td>
+                        <td><%= expenditure.description.slice(0,15).concat("...") %></td>
+                        <td>
+                            <button data-toggle="modal" data-target="#del<%= expenditure._id %>" class="btn btn-danger btn-sm">
+                                <span class="fas fa-trash-alt"></span>
+                            </button>
+                        </td>
+
+
+                        <!--  Modal for deleting record-->
+                        <div class="modal fade" id="del<%= expenditure._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <br><br>
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete This Record</span></h5>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <form action="/admin/expenditures/<%= expenditure._id %>?_method=DELETE" method="post" class="myform">
+                                        <div class="modal-body">
+
+                                            Are you sure you want to delete this record?
+
+                                            <div class="col-md-12 text-right">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <input type="submit" class="btn btn-danger btn-sm mybtn" value="Delete">
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div> <!-- ./delete modal -->
+
+
+                    <% } %>
+
+
+                    </tbody>
 
                 </table>
             </div>
