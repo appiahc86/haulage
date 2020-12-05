@@ -10,6 +10,7 @@ const assetAccountController = {
         const banks = await Bank.find({});
         const query = await AssetAccount.find({}).populate("truck").populate("bankAccount");
 
+
         const accounts = query.filter((record) => {
            return record.transactionType === "sales";
         });

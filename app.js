@@ -68,6 +68,8 @@ import cashAccountRouter from "./routes/admin/cash/cashAccount.js";
 import cashTransfersRouter from "./routes/admin/cash/cashTransfers.js";
 import bankTransfersRouter from "./routes/admin/banking/transfer.js";
 import expenditureRouter from "./routes/admin/expenditure/expenditure.js";
+import insuranceRouter from "./routes/admin/renewals/insurance.js";
+import roadWorthyRouter from "./routes/admin/renewals/roadWorthy.js";
 
 
 
@@ -81,6 +83,8 @@ app.use('/admin/cashAccounts', cashAccountRouter);
 app.use('/admin/cashTransfers', cashTransfersRouter);
 app.use('/admin/bankTransfers', bankTransfersRouter);
 app.use('/admin/expenditures', expenditureRouter);
+app.use('/admin/renewals/insurance', insuranceRouter);
+app.use('/admin/renewals/roadWorthy', roadWorthyRouter);
 
 
 //404 Page
