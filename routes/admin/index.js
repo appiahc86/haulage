@@ -41,7 +41,7 @@ router.get('/', async (req, res) => {
     const thisMonth = new Date().getMonth() + 1;
 
     //let's get monthly expenses
-    let monthlyExpensesArray = [0];
+    const monthlyExpensesArray = [0];
     for (let expense of expenses) {
                 let mm = new Date(expense.date).getMonth() + 1;
                 let yy = new Date(expense.date).getFullYear();
@@ -57,7 +57,33 @@ router.get('/', async (req, res) => {
     })
 
 
-    res.render('admin/index', {trucks, salesTotal, totalExpenses, monthlyExpensesTotal});
+    //Now let's get monthly income
+    const monthlySalesArray = [0];
+    for (const sale of sales) {
+        let mm = new Date(sale.date).getMonth() + 1;
+        let yy = new Date(sale.date).getFullYear();
+
+        if (mm === thisMonth && yy === thisYear){
+            monthlySalesArray.push(parseFloat(sale.amount));
+        }
+    }
+    //let's sum up monthly Sales
+    const monthlySalesTotal = monthlySalesArray.reduce((previousValue, currentValue) => {
+        return previousValue + currentValue;
+    })
+
+
+    res.render(
+        'admin/index',
+        {
+            trucks,
+            salesTotal,
+            totalExpenses,
+            monthlySalesTotal,
+            monthlyExpensesTotal
+        }
+
+    );
 });
 
 
