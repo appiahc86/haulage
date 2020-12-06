@@ -30,7 +30,7 @@
               <div class="info-box-content">
                 <span class="info-box-text">Assets</span>
                 <span class="info-box-number">
-                  10
+                  <%= trucks.length %>
                 </span>
               </div>
               <!-- /.info-box-content -->
@@ -44,7 +44,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Expenditure</span>
-                <span class="info-box-number"><b>₵</b> 41,410</span>
+                <span class="info-box-number"><b>₵</b> <%= totalExpenses.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -61,7 +61,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Income</span>
-                <span class="info-box-number"><b>₵</b> 760</span>
+                <span class="info-box-number"><b>₵</b> <%= salesTotal.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -144,7 +144,7 @@
                   <div class="col-sm-3 col-6">
                     <div class="description-block border-right">
                       <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
-                      <h5 class="description-header"><b>₵</b> 35,210.43</h5>
+                      <h5 class="description-header"><b>₵</b> <%= monthlyExpensesTotal.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></h5>
                       <span class="description-text"> EXPENDITURE THIS MONTH</span>
                     </div>
                     <!-- /.description-block -->
