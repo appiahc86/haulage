@@ -23,7 +23,6 @@ app.use(session({
     saveUninitialized: true
 }));
 
-//Flash
 app.use(flash());
 
 //Local variables
@@ -70,6 +69,7 @@ import bankTransfersRouter from "./routes/admin/banking/transfer.js";
 import expenditureRouter from "./routes/admin/expenditure/expenditure.js";
 import insuranceRouter from "./routes/admin/renewals/insurance.js";
 import roadWorthyRouter from "./routes/admin/renewals/roadWorthy.js";
+import driversLicenseRouter from "./routes/admin/renewals/drivers.js";
 
 
 
@@ -85,13 +85,21 @@ app.use('/admin/bankTransfers', bankTransfersRouter);
 app.use('/admin/expenditures', expenditureRouter);
 app.use('/admin/renewals/insurance', insuranceRouter);
 app.use('/admin/renewals/roadWorthy', roadWorthyRouter);
+app.use('/admin/renewals/driversLicense', driversLicenseRouter);
+
+
+//Turn off errors in production
+//    app.use((err, req, res, next) => {
+//        console.log(err);
+//        res.status(500);
+//        res.send("server error 500");
+//    });
 
 
 //404 Page
 app.use((req, res, next) => {
     res.render('404');
 });
-
 
 app.listen(port, () => {
     console.log(`Running on port ${port}`);

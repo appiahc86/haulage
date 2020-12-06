@@ -39,7 +39,7 @@
                                          <b>%</b> <%= asset.depreciation.toFixed(2) %>
                                      </div>
                                  </td>
-                                 <td><%= asset.description.slice(0,15).concat("...") %></td>
+                                 <td title="<%= asset.description %>"><%= asset.description.slice(0,15).concat("...") %></td>
                                  <td><a data-toggle="modal" data-target="#edit<%= asset._id %>"  class="text-white btn btn-sm btn-violet" title="Edit"><span class="fas fa-edit"></span></a></td>
                                  <td><a data-toggle="modal" data-target="#del<%= asset._id %>" title="Delete" class="text-white btn btn-sm btn-danger"><span class="fas fa-trash"></span></a></td>
                              </tr>

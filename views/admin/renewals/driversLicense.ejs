@@ -1,0 +1,248 @@
+<%- include('../../layouts/adminHeader') %>
+<br>
+
+<h2 class="text-center text-purple mb-4"><span class="fas fa-id-card"></span> Driver's License Renewals</h2>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button data-toggle="modal" data-target="#addDriver" class="btn btn-sm btn-warning mb-2"><span class="fas fa-plus-circle"></span> Add New Driver</button>
+
+            <div class="card shadow p-3">
+                <div class="table-responsive">
+
+
+                    <table class="table table-sm table-borderless table-hover" id="myTable">
+
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Truck Number</th>
+                            <th>Renewal Date</th>
+                            <th>Expiration Date</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <% for(const license of licenses){ %>
+
+                            <tr>
+
+                                <td><%= license.name %></td>
+                                <td><%= license.truck %></td>
+                                <td><%= new Date(license.renewalDate).toDateString() %></td>
+                                <td><%= new Date(license.expirationDate).toDateString() %></td>
+                                <td><a style="font-size: 15px;" href="" data-toggle="modal" data-target="#renew<%= license._id%>" class="badge badge-lg badge-primary">Renew</a></td>
+                                <td>
+                                    <a href="" data-toggle="modal" data-target="#del<%= license._id%>" class="btn btn-sm btn-danger">
+                                            <span class="fas fa-trash"></span>
+                                    </a>
+                                </td>
+                            </tr>
+
+
+                            <!--  Modal for deleting drivers license -->
+                            <div class="modal fade" id="del<%= license._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <br><br>
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete This Record</span></h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <form action="/admin/renewals/driversLicense/<%= license._id %>?_method=DELETE" method="post" class="myform">
+                                            <div class="modal-body">
+
+                                                Are you sure you want to delete this record?
+
+                                                <div class="col-md-12 text-right">
+                                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                    <input type="submit" class="btn btn-danger btn-sm mybtn" value="Delete">
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div> <!-- ./delete modal -->
+
+
+
+
+
+                            <!--  Modal for Renewing drivers license -->
+                            <div class="modal fade" id="renew<%= license._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <br><br>
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-center text-purple" id="exampleModalLabel"><i class="fas fa-plus"></i><span class=""> Driver's License Renewal</span></h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <form action="/admin/renewals/driversLicense/<%= license._id %>?_method=PATCH"  method="post" class="myform">
+                                            <div class="modal-body">
+
+                                                <h3 class="text-center mb-4"><b>Driver:</b> <%= license.name %></h3>
+
+                                                <div class="row">
+
+                                                    <div class="form-group  col-md-6">
+                                                        <label for="renewalDate">Renewal Date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">
+                                                                    <i class="fas fa-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                            <input class="form-control" required="required" autocomplete="off" name="renewalDate" type="date" id="renewalDate">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group  col-md-6">
+                                                        <label for="expirationDate">Expiration Date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">
+                                                                    <i class="fas fa-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                            <input class="form-control" required="required" autocomplete="off" name="expirationDate" type="date" id="expirationDate">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="col-md-12 text-right">
+                                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                    <input type="submit" class="btn btn-primary btn-sm mybtn" value="Renew">
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div> <!-- ./-->
+
+
+
+
+                        <% } %>
+
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+       <!-- Modal for adding new Driver-->
+<div class="modal fade" id="addDriver" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+    <br><br>
+    <div class="modal-dialog  modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-center text-primary" id="exampleModalLabel"><i class="fas fa-user-circle"></i><span class=""> Add New Driver</span></h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form action="/admin/renewals/driversLicense/addDriver" method="post" class="myform">
+                <div class="modal-body">
+
+                    <div class="row">
+
+                        <div class="form-group  col-md-6">
+                            <label for="truck">Truck Number</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                </div>
+                                <select name="truck" class="form-control selectpicker" data-live-search="true" id="truck" required>
+
+                                    <option value=""></option>
+
+                                    <% for (const truck of trucks){ %>
+                                        <option value="<%= truck.licenseNumber %>"><%= truck.licenseNumber %></option>
+                                    <% } %>
+
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group  col-md-6">
+                            <label for="name">Driver's Name</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                </div>
+                                <input type="text" name="name" class="form-control" minlength="3" placeholder="eg. James Benson" id="name" autocomplete="off" required>
+                            </div>
+                        </div>
+
+                        <div class="form-group  col-md-6">
+                            <label for="addRenewalDate">Renewal Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                </div>
+                                <input class="form-control" required="required" autocomplete="off" name="renewalDate" type="date" id="addRenewalDate">
+                            </div>
+                        </div>
+
+                        <div class="form-group  col-md-6">
+                            <label for="addExpirationDate">Expiration Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                </div>
+                                <input class="form-control" required="required" autocomplete="off" name="expirationDate" type="date" id="addExpirationDate">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                        <input type="submit" class="btn btn-primary btn-sm mybtn" value="Save">
+
+                    </div>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div> <!-- ./Add driver modal-->
+
+
+
+
+<%- include('../../layouts/adminFooter') %>

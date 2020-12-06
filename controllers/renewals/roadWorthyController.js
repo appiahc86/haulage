@@ -1,6 +1,5 @@
 import RoadWorthyRenewal from "../../models/renewals/RoadWorthy.js";
 
-
 const roadWorthyController = {
 
     index: async (req, res) => {
