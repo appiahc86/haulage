@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Clemonic</title>
+    <link rel="stylesheet" href="/css/adminlte.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+</head>
+
+<style>
+
+    .my-title {
+        color: #fff;
+        font-size: 4em;
+        font-weight: bold;
+        font-family: "Times New Roman", "Marlett", Arial, Helvetica, sans-serif;
+        text-shadow:
+                0 1px 0 #ccc,
+                0 2px 0 #c9c9c9,
+                0 3px 0 #bbb,
+                0 4px 0 #b9b9b9,
+                0 5px 0 #aaa,
+                0 6px 1px rgba(0,0,0,.1),
+                0 0 5px rgba(0,0,0,.1),
+                0 1px 3px rgba(0,0,0,.3),
+                0 3px 5px rgba(0,0,0,.2),
+                0 5px 10px rgba(0,0,0,.25),
+                0 10px 10px rgba(0,0,0,.2),
+                0 20px 20px rgba(0,0,0,.15);
+    }
+
+
+    .container{
+        margin-top: 10% !important;
+    }
+
+    .form-control{
+        border-radius: 20px;
+    }
+
+    body{
+        background: #7abaff;
+    }
+
+    .card{
+        border-radius: 10px !important;
+    }
+
+</style>
+
+<body>
+
+
+<div class="container">
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+            <h3 class="text-center my-title">CLEMONIC</h3>
+
+        <%
+            let userError = "";
+            let passwordError = "";
+            let userErrorStyle = "";
+            let passwordErrorStyle = "";
+            if (error.length > 0){
+                if (error[0].charAt(0) === "S"){
+                    userErrorStyle = "is-invalid";
+                    userError = error[0];
+                }else if (error[0].charAt(0) === "I"){
+                    passwordErrorStyle = "is-invalid";
+                    passwordError = error[0];
+                }
+            }
+
+        %>
+
+          <div class="card shadow-lg p-5">
+              <form action="/users/login" method="post" class="myform">
+                  <div class="form-group">
+                      <input type="text" placeholder="Username" name="username" class="form-control <%= userErrorStyle %>" required>
+
+                      <% if (userError !== ""){ %>
+                      <span class="invalid-feedback error-message" role="alert">
+                           <strong><%= userError %></strong>
+                        </span>
+                      <% } %>
+
+                  </div>
+
+                  <div class="form-group">
+                      <input type="password" placeholder="Password" name="password" class="form-control <%= passwordErrorStyle %>" required>
+
+                      <% if (passwordError !== ""){ %>
+                      <span class="invalid-feedback error-message" role="alert">
+                           <strong><%= passwordError %></strong>
+                        </span>
+                      <% } %>
+
+                  </div>
+
+                  <button type="submit" class="btn btn-dark mybtn"><span class="fas fa-lock"></span> Login</button>
+              </form>
+          </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    window.onload = function (){
+
+
+
+        const mybtns  = document.querySelectorAll(".mybtn");
+        const myforms  = document.querySelectorAll(".myform");
+
+        for (const myform of myforms) {
+            myform.onsubmit = function (){
+                for (const mybtn of mybtns) {
+                    mybtn.disabled = true;
+                    mybtn.value = "Please wait..."
+                }
+            }
+        }
+
+
+
+    }
+</script>
+
+</body>
+</html>
