@@ -1,4 +1,5 @@
 import Truck from "../../models/assets/Truck.js";
+import AssetAccount from "../../models/assetAccount/assetAccount.js";
 
 const assetController = {
 
@@ -76,6 +77,13 @@ const assetController = {
 
     //Delete Asset
     destroy: async (req, res) => {
+
+        const haveRecords = await AssetAccount.find({truck: req.params.id});
+        if (haveRecords){
+            req.flash('error_msg', 'Sorry!!!, this asset has some records and cannot be deleted.');
+            return  res.redirect('/admin/assets');
+        }
+
         try {
 
             const asset = await Truck.findById(req.params.id)
