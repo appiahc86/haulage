@@ -24,7 +24,7 @@
     "mongoose": "^5.10.15",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "validatorjs": "^3.21.0"
+    "validatorjs": "^3.22.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.8",

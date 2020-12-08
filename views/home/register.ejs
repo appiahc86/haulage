@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="/css/adminlte.min.css">
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="/plugins/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" href="/css/toastr.css">
 </head>
 
 <style>
@@ -36,13 +37,21 @@
                             <label for="firstName" class="col-md-4 col-form-label text-md-right"><b>First Name</b></label>
 
                             <div class="col-md-6">
-                                <input id="firstName" type="text" class="shadow form-control" name="firstName" autocomplete="off" required  autofocus>
+                                <input id="firstName"
+                                       type="text"
+                                       class="shadow form-control"
+                                       name="firstName"
+                                       autocomplete="off"
+                                       required
+                                       autofocus
+                                       value="<%= typeof firstName != 'undefined'? firstName : ''%>"
+                                >
 
-
-                                <span class="invalid-feedback error-message" role="alert">
-                                        <strong>kkkkkkkl</strong>
+                                <% if (typeof errFirstName != "undefined"){ %>
+                                <span class="text-danger">
+                                        <strong><small class="font-weight-bold"><%= errFirstName %></small></strong>
                                     </span>
-
+                                <% } %>
                             </div>
                         </div>
 
@@ -50,12 +59,20 @@
                             <label for="lastName" class="col-md-4 col-form-label text-md-right"><b>Last Name</b></label>
 
                             <div class="col-md-6">
-                                <input id="lastName" type="text" class="shadow form-control" autocomplete="off" name="lastName" required>
+                                <input id="lastName"
+                                       type="text"
+                                       class="shadow form-control"
+                                       name="lastName"
+                                       required
+                                       autocomplete="off"
+                                       value="<%= typeof lastName != 'undefined'? lastName : ''%>"
+                                >
 
-
-                                <span class="invalid-feedback error-message" role="alert">
-                                        <strong>kkkkkkkl</strong>
+                                <% if (typeof errLastName != "undefined"){ %>
+                                    <span class="text-danger">
+                                        <strong><small class="font-weight-bold"><%= errLastName %></small></strong>
                                     </span>
+                                <% } %>
 
                             </div>
                         </div>
@@ -64,12 +81,20 @@
                             <label for="username" class="col-md-4 col-form-label text-md-right"><b>Username</b></label>
 
                             <div class="col-md-6">
-                                <input id="username" type="text" class="shadow form-control is-invalid" autocomplete="off" name="username" required>
+                                <input id="username"
+                                       type="text"
+                                       class="shadow form-control"
+                                       name="username"
+                                       required
+                                       autocomplete="off"
+                                       value="<%= typeof username != 'undefined'? username : ''%>"
+                                >
 
-
-                                <span class="invalid-feedback error-message" role="alert">
-                                        <strong>dfssd</strong>
+                                <% if (typeof errUsername != 'undefined'){ %>
+                                    <span class="text-danger">
+                                        <strong><small class="font-weight-bold"><%= errUsername %></small></strong>
                                     </span>
+                                <% } %>
 
                             </div>
                         </div>
@@ -84,11 +109,6 @@
                                     <option value="admin">Admin</option>
                                 </select>
 
-
-                                <span class="invalid-feedback error-message" role="alert">
-                                        <strong>dfssd</strong>
-                                    </span>
-
                             </div>
                         </div>
 
@@ -96,23 +116,28 @@
                             <label for="password" class="col-md-4 col-form-label text-md-right"><b>Password</b></label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="shadow form-control" name="password" required autocomplete="off">
+                                <input id="password"
+                                       type="password"
+                                       class="shadow form-control"
+                                       name="password"
+                                       required
+                                       autocomplete="off"
+                                >
 
-
-                                <span class="invalid-feedback error-message" role="alert">
-                                        <strong>dfgfd</strong>
+                                <% if (typeof errPassword != "undefined"){ %>
+                                    <span class="text-danger">
+                                        <strong><small class="font-weight-bold"><%= errPassword %></small></strong>
                                     </span>
+                                <% } %>
 
                             </div>
                         </div>
 
 
-
                         <div class="form-group row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <input type="submit" value="Register" class="btn btn-success mybtn font-weight-bold">
-                                <span><a href="" class="btn btn-secondary">Cancel</a></span>
-
+                                <span><a href="/" class="btn btn-secondary">Back</a></span>
                             </div>
                         </div>
 
@@ -123,9 +148,12 @@
     </div>
 </div>
 
+<!-- jQuery -->
+<script src="/plugins/jquery/jquery.min.js"></script>
+
+<script src="/js/toastr.js"></script>
 <script>
     window.onload = function (){
-
 
 
         const mybtns  = document.querySelectorAll(".mybtn");
@@ -140,6 +168,22 @@
             }
         }
 
+
+
+        //toastr messages
+        <%
+        if (success_msg != ""){ %>
+
+        toastr.success('<%= success_msg %>'); //Success messages
+
+        <% } %>
+
+        <%
+        if (error_msg != ""){ %>
+
+        toastr.error('<%= error_msg %>'); //Error messages
+
+        <% } %>
 
 
     }

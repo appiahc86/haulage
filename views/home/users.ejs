@@ -1,0 +1,63 @@
+<%- include('../layouts/adminHeader'); %>
+
+<br>
+
+    <h3 class="text-center mb-3"><span class="fas fa-user-friends"></span> Users</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+            <div class="card shadow p-5">
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover table-borderless">
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Username</th>
+                            <th>Role</th>
+                            <th colspan="2"></th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <% for (const user of users){
+                            if (user.username === 'developer') continue;
+                        %>
+
+                            <tr>
+                                <td><%= user.firstName %></td>
+                                <td><%= user.lastName %></td>
+                                <td><%= user.username %></td>
+                                <td><%= user.role %></td>
+                                <td>
+                                    <a href="" class="btn btn-success btn-sm"><span class="fas fa-pencil-alt"></span></a>
+                                </td>
+                                <td>
+                                    <a href="" class="btn btn-danger btn-sm"><span class="fas fa-trash-alt"></span></a>
+                                </td>
+                            </tr>
+
+                        <% } %>
+
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<%- include('../layouts/adminFooter'); %>

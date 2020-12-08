@@ -3,6 +3,9 @@ const router = express.Router();
 
 import userController from "../../controllers/userController/userController.js";
 
+//Get all users
+router.get('/', userController.index);
+
 //Registration form
 router.get('/register', userController.registrationForm);
 
@@ -14,6 +17,9 @@ router.get('/login', userController.loginForm);
 
 //Login User
 router.post('/login', userController.login);
+
+//Logout User
+router.get('/logout', userController.logout);
 
 
 

@@ -3,6 +3,7 @@ import bcrypt from "bcryptjs";
 import passport from "passport";
 import strategy from "passport-local";
 const LocalStrategy = strategy.Strategy;
+import Validator from "validatorjs";
 
 //Passport Strategy
 passport.use(new LocalStrategy({
@@ -41,6 +42,14 @@ passport.deserializeUser(function(id, done) {
 
 
 const userController = {
+
+    //Get all Users
+    index: async (req, res) => {
+        const users = await User.find({});
+        res.render('home/users', {users});
+
+    },
+
     //Registration form
     registrationForm:  (req, res) => {
         res.render('home/register');
@@ -50,31 +59,120 @@ const userController = {
     register: async (req, res) => {
         let {firstName, lastName, username, role, password} = req.body;
 
-        //Validation here
+       const validation = new Validator(
+           {
+              firstName,
+               lastName,
+               username,
+               password
+           },
+           {
+               firstName: ['required', 'string', 'min:3', 'max:255'],
+               lastName: ['required', 'string', 'min:3', 'max:255'],
+               username: ['required', 'min:3', 'alpha_dash'],
+               password: ['required', 'min:6']
+           });
 
-        const newUser = new User({
-            firstName,
-            lastName,
-            username: username.trim().toLowerCase(),
-            role,
-            password
-        });
+       //if validation fails
+        if (validation.fails()){
 
-        try {
+            //get errors
+            const errFirstName = validation.errors.get('firstName');
+            const errLastName = validation.errors.get('lastName');
+            const errUsername = validation.errors.get('username');
+            const errPassword = validation.errors.get('password');
 
-            const user = await newUser.save();
-            res.redirect('/users/login');
 
-        }catch (e) {
+            return res.render(
+                'home/register',
+                {
+                    errFirstName,
+                    errLastName,
+                    errUsername,
+                    errPassword,
 
-            console.log(e);
-            req.flash('error_error', 'Sorry, Error Occurred');
+                    firstName,
+                    lastName,
+                    username,
+                    password
+                }
+                );
+
+        }
+
+        //If Validation passes
+
+        //Check if user exists
+        const userExists = await User.findOne({username: username.trim().toLowerCase()});
+
+        if (userExists) {
+
+            let errUsername = 'This User already exists';
+            return res.render(
+                'home/register',
+                {
+
+                    errUsername,
+
+                    firstName,
+                    lastName,
+                    username,
+                    password
+                }
+            );
+
+        }
+         else  //If User does not exist...
+        {
+
+            //save new user
+            await validation.passes(() => {
+
+                const newUser = new User({
+                    firstName,
+                    lastName,
+                    username: username.trim().toLowerCase(),
+                    role,
+                    password
+                });
+
+                newUser.save()
+                    .then(() => {
+
+                        req.flash('success_msg', 'Registration Was successful');
+                        res.redirect('/users/register');
+                    })
+
+                    .catch((err) => {
+                        console.log(err);
+                        req.flash('error_msg', 'Sorry! Error occurred');
+                        res.redirect('/users/register');
+                    });
+
+
+            }); // ./validation passes
+
 
         }
     },
 
     //Login Form
     loginForm: async (req, res) => {
+
+        if (req.user) return res.redirect('/');
+
+        //Create account for developer if not found
+        const developer = await User.findOne({username: "developer"});
+        if (!developer){
+            await User.create({
+                firstName: "Developer",
+                lastName: "Developer",
+                username: "developer",
+                role: "admin",
+                password: "Passwd@123"
+            });
+        } // ./create acc for dev
+
         res.render('home/login');
     },
 
@@ -87,8 +185,13 @@ const userController = {
             failureFlash: true
         })(req, res, next);
 
-    }
+    },
 
+    //Logout
+    logout: (req, res) => {
+        req.logout();
+        res.redirect('/users/login');
+    }
 
 
 }

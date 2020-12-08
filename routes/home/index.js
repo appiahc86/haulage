@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
    const today = moment()
    const check = expire.diff(today, 'days');
 
-   console.log(check)
+   // console.log(check)
 
    res.render('home/index');
 

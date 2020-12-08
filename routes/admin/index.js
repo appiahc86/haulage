@@ -3,12 +3,14 @@ const router = express.Router();
 
 import Truck from "../../models/assets/Truck.js";
 import AssetAccount from "../../models/assetAccount/assetAccount.js";
+import User from "../../models/users/User.js";
 
 // To admin dashboard
 router.get('/', async (req, res) => {
 
     const assetAccounts = await AssetAccount.find({}); //Get all records (expenses and truck sales)
     const trucks = await Truck.find({}); //Get all trucks
+    const users = await User.find({});
 
     //Filter Asset account to get sales records only
     const sales = assetAccounts.filter((account) => {
@@ -76,6 +78,7 @@ router.get('/', async (req, res) => {
     res.render(
         'admin/index',
         {
+            users,
             trucks,
             salesTotal,
             totalExpenses,
