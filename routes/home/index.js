@@ -25,21 +25,24 @@ router.get('/', auth, async (req, res) => {
 
    //Expired insurance
    const expiredInsurances = checkExpiredInsurance.filter((insurance) => {
-        return checkExpiration(insurance.expirationDate) > 0
-               && checkExpiration(insurance.expirationDate) < 8
+        return checkExpiration(insurance.expirationDate) > -1
+               && checkExpiration(insurance.expirationDate) < 9
+               && insurance.renewalDate.toLocaleDateString() !== insurance.expirationDate.toLocaleDateString()
    });
 
    //Expired RoadWorthy
    const expiredRoadworthies = checkExpiredRoadworthy.filter((roadworthy) => {
-      return checkExpiration(roadworthy.expirationDate) > 0
-          && checkExpiration(roadworthy.expirationDate) < 8
+      return checkExpiration(roadworthy.expirationDate) > -1
+          && checkExpiration(roadworthy.expirationDate) < 9
+          && roadworthy.renewalDate.toLocaleDateString() !== roadworthy.expirationDate.toLocaleDateString()
    })
 
 
    //Expired Drivers license
    const expiredDriversLicenses = checkDriversLicense.filter((driverLicense) => {
       return checkExpiration(driverLicense.expirationDate) > 0
-          && checkExpiration(driverLicense.expirationDate) < 8
+          && checkExpiration(driverLicense.expirationDate) < 9
+          && driverLicense.renewalDate.toLocaleDateString() !== driverLicense.expirationDate.toLocaleDateString()
    })
 
    //Set alerts as session variables

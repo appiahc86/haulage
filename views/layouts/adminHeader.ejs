@@ -55,9 +55,9 @@
     const alertDriversLicensesTotal = alertDriversLicenses ? alertDriversLicenses.length : 0;
 
     const totalAlerts =
-                 alertInsurances ? alertInsurances.length : 0
-                 + alertRoadworthies ? alertRoadworthies.length : 0
-                 + alertDriversLicenses ? alertDriversLicenses.length : 0
+                 parseInt(alertInsurances ? alertInsurances.length : 0)
+                 + parseInt(alertRoadworthies ? alertRoadworthies.length : 0)
+                 + parseInt(alertDriversLicenses ? alertDriversLicenses.length : 0)
 
 
 
