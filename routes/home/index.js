@@ -1,16 +1,51 @@
 import express from "express";
-const router = express.Router();
 import moment from "moment";
+const router = express.Router();
 
+import auth from "../../middleware/auth.js";
+import InsuranceRenewal from "../../models/renewals/Insurance.js";
+import RoadWorthyRenewal from "../../models/renewals/RoadWorthy.js";
+import DriversLicense from "../../models/renewals/Driver.js";
 
 //Welcome Page
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
 
-   const expire = moment('2020-12-31')
-   const today = moment()
-   const check = expire.diff(today, 'days');
+   // Function to check for expiration dates
+   function checkExpiration(dateExpired){
 
-   // console.log(check)
+      const today = moment();
+      const expirationDate = moment(dateExpired);
+      return expirationDate.diff(today, 'days');
+   } // End of function
+
+   //Get records from the database
+   const checkExpiredInsurance = await InsuranceRenewal.find({}).populate('truck');
+   const checkExpiredRoadworthy = await RoadWorthyRenewal.find({}).populate('truck');
+   const checkDriversLicense = await DriversLicense.find({});
+
+   //Expired insurance
+   const expiredInsurances = checkExpiredInsurance.filter((insurance) => {
+        return checkExpiration(insurance.expirationDate) > 0
+               && checkExpiration(insurance.expirationDate) < 8
+   });
+
+   //Expired RoadWorthy
+   const expiredRoadworthies = checkExpiredRoadworthy.filter((roadworthy) => {
+      return checkExpiration(roadworthy.expirationDate) > 0
+          && checkExpiration(roadworthy.expirationDate) < 8
+   })
+
+
+   //Expired Drivers license
+   const expiredDriversLicenses = checkDriversLicense.filter((driverLicense) => {
+      return checkExpiration(driverLicense.expirationDate) > 0
+          && checkExpiration(driverLicense.expirationDate) < 8
+   })
+
+   //Set alerts as session variables
+    req.session.alertInsurances = expiredInsurances;
+    req.session.alertRoadworthies = expiredRoadworthies;
+    req.session.alertDriversLicenses = expiredDriversLicenses;
 
    res.render('home/index');
 

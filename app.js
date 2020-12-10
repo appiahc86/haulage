@@ -39,6 +39,9 @@ app.use((req, res, next)=>{
     res.locals.success_msg = req.flash('success_msg');
     res.locals.error_msg = req.flash('error_msg');
     res.locals.error = req.flash('error');
+    res.locals.alertInsurances = req.session.alertInsurances || null;    //eg. req.session.alertInsurances = [];
+    res.locals.alertRoadworthies = req.session.alertRoadworthies || null;
+    res.locals.alertDriversLicenses = req.session.alertDriversLicenses || null;
     next();
 });
 

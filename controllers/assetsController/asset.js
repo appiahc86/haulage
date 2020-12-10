@@ -79,7 +79,7 @@ const assetController = {
     destroy: async (req, res) => {
 
         const haveRecords = await AssetAccount.find({truck: req.params.id});
-        if (haveRecords){
+        if (haveRecords.length > 0){
             req.flash('error_msg', 'Sorry!!!, this asset has some records and cannot be deleted.');
             return  res.redirect('/admin/assets');
         }

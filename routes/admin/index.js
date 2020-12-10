@@ -4,9 +4,10 @@ const router = express.Router();
 import Truck from "../../models/assets/Truck.js";
 import AssetAccount from "../../models/assetAccount/assetAccount.js";
 import User from "../../models/users/User.js";
+import auth from "../../middleware/auth.js";
 
 // To admin dashboard
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
 
     const assetAccounts = await AssetAccount.find({}); //Get all records (expenses and truck sales)
     const trucks = await Truck.find({}); //Get all trucks
@@ -87,6 +88,8 @@ router.get('/', async (req, res) => {
         }
 
     );
+
+
 });
 
 

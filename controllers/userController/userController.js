@@ -189,6 +189,11 @@ const userController = {
 
     //Logout
     logout: (req, res) => {
+
+        delete req.session.alertInsurances;
+        delete req.session.alertRoadworthies;
+        delete req.session.alertDriversLicenses;
+
         req.logout();
         res.redirect('/users/login');
     }

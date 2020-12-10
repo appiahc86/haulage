@@ -42,40 +42,75 @@
                 <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
             </li>
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="" class="nav-link">Home</a>
+                <a href="/admin" class="nav-link">Admin Dashboard</a>
             </li>
+
         </ul>
+
+
+<%
+
+    const alertInsurancesTotal =  alertInsurances ? alertInsurances.length : 0;
+    const alertRoadworthiesTotal = alertRoadworthies ? alertRoadworthies.length : 0;
+    const alertDriversLicensesTotal = alertDriversLicenses ? alertDriversLicenses.length : 0;
+
+    const totalAlerts =
+                 alertInsurances ? alertInsurances.length : 0
+                 + alertRoadworthies ? alertRoadworthies.length : 0
+                 + alertDriversLicenses ? alertDriversLicenses.length : 0
+
+
+
+%>
+
+
+
+
+
+
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
+
+
+            <% if(totalAlerts > 0){ %>
 
             <!-- Notifications Dropdown Menu -->
             <li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-bell"></i>
-                    <span class="badge badge-warning navbar-badge">15</span>
+                    <span class="badge badge-warning navbar-badge"><%= totalAlerts %></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+                    <span class="dropdown-item dropdown-header"><%= totalAlerts %> Notification(s)</span>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-envelope mr-2"></i> 4 new messages
-                        <span class="float-right text-muted text-sm">3 mins</span>
+                    <a href="#" data-toggle="modal" data-target="#insuranceNotification"  class="dropdown-item">
+                        <i class="fas fa-list mr-2"></i> Insurance
+                        <span class="float-right <%= alertInsurancesTotal > 0 ? 'text-danger' : 'text-success' %> text-sm">
+                            <%= alertInsurancesTotal %> item(s)
+                        </span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-users mr-2"></i> 8 friend requests
-                        <span class="float-right text-muted text-sm">12 hours</span>
+                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#roadworthyNotification">
+                        <i class="fas fa-archway mr-2"></i> Roadworthy
+                        <span class="float-right <%= alertRoadworthiesTotal > 0 ? 'text-danger' : 'text-success' %> text-sm">
+                            <%= alertRoadworthiesTotal %> item(s)
+                        </span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item">
-                        <i class="fas fa-file mr-2"></i> 3 new reports
-                        <span class="float-right text-muted text-sm">2 days</span>
+                    <a href="#" class="dropdown-item" data-toggle="modal" data-target="#driverLicenseNotification">
+                        <i class="fas fa-id-card mr-2"></i> Drivers License
+                        <span class="float-right <%= alertDriversLicensesTotal > 0 ? 'text-danger' : 'text-success' %> text-sm">
+                            <%= alertDriversLicensesTotal %> item(s)
+                        </span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                    <a href="#" class="dropdown-item dropdown-footer"></a>
                 </div>
             </li>
+            <!-- ./Notifications Dropdown Menu -->
+
+            <% } %>
 
 
             <li class="nav-item dropdown">
@@ -108,7 +143,7 @@
     <!-- Main Sidebar Container -->
     <aside class="main-sidebar  sidebar-dark-secondar= elevation-4">
         <!-- Brand Logo -->
-        <a href="/admin" class="brand-link">
+        <a href="/" class="brand-link">
             <img src="/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3">
 
             <span class="brand-text font-weight-light text-white">Clemonic &reg;</span>
@@ -302,6 +337,208 @@
         </div>
         <!-- /.sidebar -->
     </aside>
+
+
+
+
+
+    <!-- insurance notification modal -->
+    <div class="modal fade" id="insuranceNotification" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+        <br><br>
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center " id="exampleModalLabel"><i class="fas fa-bell text-danger"></i><span> Insurance Renewal Notifications</span></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="card shadow">
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <% if (alertInsurancesTotal){ %>
+                                    <table class="table table-sm table-borderless">
+
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th>Truck Number</th>
+                                            <th>Renewal Date</th>
+                                            <th>Expiration Date</th>
+                                        </tr>
+                                        </thead>
+
+
+                                        <tbody>
+
+                                        <% for(const insurance of alertInsurances){ %>
+
+                                            <tr>
+                                                <td><%= insurance.truck.licenseNumber%></td>
+                                                <td><%= new Date(insurance.renewalDate).toDateString() %></td>
+                                                <td class="text-danger"><b><%= new Date(insurance.expirationDate).toDateString() %></b></td>
+                                            </tr>
+
+                                        <% } %>
+
+
+                                        </tbody>
+
+                                    </table>
+                                <% } else { %>
+
+                                        <h3 class="text-center">No Record Found</h3>
+
+                                    <%  } %>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- ./insurance notification modal -->
+
+
+
+
+
+
+    <!-- Roadworthy notification modal -->
+    <div class="modal fade" id="roadworthyNotification" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+        <br><br>
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center " id="exampleModalLabel"><i class="fas fa-bell text-danger"></i><span> Roadworthy Renewal Notifications</span></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="card shadow">
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <% if (alertRoadworthiesTotal){ %>
+                                    <table class="table table-sm table-borderless">
+
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th>Truck Number</th>
+                                            <th>Renewal Date</th>
+                                            <th>Expiration Date</th>
+                                        </tr>
+                                        </thead>
+
+
+                                        <tbody>
+
+                                        <% for(const roadworthy of alertRoadworthies){ %>
+
+                                            <tr>
+                                                <td><%= roadworthy.truck.licenseNumber%></td>
+                                                <td><%= new Date(roadworthy.renewalDate).toDateString() %></td>
+                                                <td class="text-danger"><b><%= new Date(roadworthy.expirationDate).toDateString() %></b></td>
+                                            </tr>
+
+                                        <% } %>
+
+
+                                        </tbody>
+
+                                    </table>
+                                <% } else { %>
+
+                                        <h3 class="text-center">No Record Found</h3>
+
+                                    <%  } %>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- ./roadworthy notification modal -->
+
+
+
+
+
+    <!-- Driver License notification modal -->
+    <div class="modal fade" id="driverLicenseNotification" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+        <br><br>
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center " id="exampleModalLabel"><i class="fas fa-bell text-danger"></i><span> Drivers License Renewal Notifications</span></h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+
+                    <div class="card shadow">
+                        <div class="card-body">
+
+                            <div class="table-responsive">
+                                <% if (alertDriversLicensesTotal){ %>
+                                    <table class="table table-sm table-borderless">
+
+                                        <thead class="thead-dark">
+                                        <tr>
+                                            <th>Truck Number</th>
+                                            <th>Driver's Name</th>
+                                            <th>Renewal Date</th>
+                                            <th>Expiration Date</th>
+                                        </tr>
+                                        </thead>
+
+
+                                        <tbody>
+
+                                        <% for(const license of alertDriversLicenses){ %>
+
+                                            <tr>
+                                                <td><%= license.truck%></td>
+                                                <td><%= license.name%></td>
+                                                <td><%= new Date(license.renewalDate).toDateString() %></td>
+                                                <td class="text-danger"><b><%= new Date(license.expirationDate).toDateString() %></b></td>
+                                            </tr>
+
+                                        <% } %>
+
+
+                                        </tbody>
+
+                                    </table>
+                                <% } else { %>
+
+                                    <h3 class="text-center">No Record Found</h3>
+
+                                <%  } %>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div><!-- ./Driver License  notification modal -->
+
+
+
+
+
+
+
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper" style="background: lightgrey !important;">
