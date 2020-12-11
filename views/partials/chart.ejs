@@ -1,14 +1,261 @@
 <script>
 
+<%
+
+
+   const thisYear = new Date().getFullYear();
+
+
+                  //Working on Income---------------------------------------------
+
+const JanArray = [0];  //For January
+const FebArray = [0]; //For February
+const MarArray = [0]; //For March
+const AprArray = [0]; //For April
+const MayArray = [0]; //For May
+const JunArray = [0]; //For June
+const JulArray = [0]; //For July
+const AugArray = [0]; //For August
+const SepArray = [0]; //For September
+const OctArray = [0]; //For October
+const NovArray = [0]; //For November
+const DecArray = [0]; //For December
+
+for(const sale of sales){
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 1){
+        JanArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 2){
+        FebArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 3){
+        MarArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 4){
+        AprArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 5){
+        MayArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 6){
+        JunArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 7){
+        JulArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 8){
+        AugArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 9){
+        SepArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 10){
+        OctArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 11){
+        NovArray.push(parseFloat(sale.amount));
+    }
+
+    if (new Date(sale.date).getFullYear() === thisYear && new Date(sale.date).getMonth() + 1 === 12){
+        DecArray.push(parseFloat(sale.amount));
+    }
+}
+
+
+
+    const January = JanArray.reduce( (previousValue, currentValue) => {  //January total
+        return previousValue + currentValue
+    })
+
+    const February = FebArray.reduce( (previousValue, currentValue) => {  //February total
+        return previousValue + currentValue
+    })
+
+    const March = MarArray.reduce( (previousValue, currentValue) => {  //March total
+        return previousValue + currentValue
+    })
+
+    const April = AprArray.reduce( (previousValue, currentValue) => {  //April total
+        return previousValue + currentValue
+    })
+
+    const May = MayArray.reduce( (previousValue, currentValue) => {  //May total
+        return previousValue + currentValue
+    })
+
+    const June = JunArray.reduce( (previousValue, currentValue) => {  //June total
+        return previousValue + currentValue
+    })
+
+    const July = JulArray.reduce( (previousValue, currentValue) => {  //July total
+        return previousValue + currentValue
+    })
+
+    const August = AugArray.reduce( (previousValue, currentValue) => {  //August total
+        return previousValue + currentValue
+    })
+
+    const September = SepArray.reduce( (previousValue, currentValue) => {  //September total
+        return previousValue + currentValue
+    })
+
+    const October = OctArray.reduce( (previousValue, currentValue) => {  //October total
+        return previousValue + currentValue
+    })
+
+    const November = NovArray.reduce( (previousValue, currentValue) => {  //November total
+        return previousValue + currentValue
+    })
+
+    const December = DecArray.reduce( (previousValue, currentValue) => {  //December total
+        return previousValue + currentValue
+    })
+
+
+//End of income----------------
+
+
+
+
+
+                    //Working on Expenses---------------------------------------
+const expJanArray = [0];  //For January
+const expFebArray = [0]; //For February
+const expMarArray = [0]; //For March
+const expAprArray = [0]; //For April
+const expMayArray = [0]; //For May
+const expJunArray = [0]; //For June
+const expJulArray = [0]; //For July
+const expAugArray = [0]; //For August
+const expSepArray = [0]; //For September
+const expOctArray = [0]; //For October
+const expNovArray = [0]; //For November
+const expDecArray = [0]; //For December
+
+        for(const expense of expenses){
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 1){ //January
+                expJanArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 2){ //February
+                expFebArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 3){ //March
+                expMarArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 4){ //April
+                expAprArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 5){ //May
+                expMayArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 6){ //June
+                expJunArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 7){ //July
+                expJulArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 8){ //August
+                expAugArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 9){ //September
+                expSepArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 10){ //October
+                expOctArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 11){ //November
+                expNovArray.push(parseFloat(expense.amount));
+            }
+
+            if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 12){ //December
+                expDecArray.push(parseFloat(expense.amount));
+            }
+
+
+        }
+
+
+        const expenseJanuary = expJanArray.reduce((previousValue, currentValue) => { //January Expense
+            return previousValue + currentValue
+        })
+
+        const expenseFebruary = expFebArray.reduce((previousValue, currentValue) => { //February Expense
+            return previousValue + currentValue
+        })
+
+        const expenseMarch = expMarArray.reduce((previousValue, currentValue) => { //March Expense
+            return previousValue + currentValue
+        })
+
+        const expenseApril = expAprArray.reduce((previousValue, currentValue) => { //April Expense
+            return previousValue + currentValue
+        })
+
+        const expenseMay = expMayArray.reduce((previousValue, currentValue) => { //May Expense
+            return previousValue + currentValue
+        })
+
+        const expenseJune = expJunArray.reduce((previousValue, currentValue) => { //June Expense
+            return previousValue + currentValue
+        })
+
+        const expenseJuly = expJulArray.reduce((previousValue, currentValue) => { //July Expense
+            return previousValue + currentValue
+        })
+
+        const expenseAugust = expAugArray.reduce((previousValue, currentValue) => { //August Expense
+            return previousValue + currentValue
+        })
+
+        const expenseSeptember = expSepArray.reduce((previousValue, currentValue) => { //September Expense
+            return previousValue + currentValue
+        })
+
+        const expenseOctober = expOctArray.reduce((previousValue, currentValue) => { //October Expense
+            return previousValue + currentValue
+        })
+
+        const expenseNovember = expNovArray.reduce((previousValue, currentValue) => { //November Expense
+            return previousValue + currentValue
+        })
+
+        const expenseDecember = expDecArray.reduce((previousValue, currentValue) => { //December Expense
+            return previousValue + currentValue
+        })
+
+
+//End of expenses--------------
+
+%>
+
+
+
 
     $(function () {
 
         'use strict'
 
-        /* ChartJS
-         * -------
-         * Here we will create a few charts using ChartJS
-         */
 
         //-----------------------
         //- MONTHLY SALES CHART -
@@ -18,7 +265,20 @@
         var salesChartCanvas = $('#salesChart').get(0).getContext('2d')
 
         var salesChartData = {
-            labels  : ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+            labels  : [
+                'January',
+                'February',
+                'March',
+                'April',
+                'May',
+                'June',
+                'July',
+                'August',
+                'September',
+                'October',
+                'November',
+                'December'
+            ],
             datasets: [
                 {
                     label               : 'Income',
@@ -27,9 +287,22 @@
                     pointRadius          : false,
                     pointColor          : '#3b8bba',
                     pointStrokeColor    : 'rgba(60,141,188,1)',
-                    pointHighlightFill  : '#fff',
+                    pointHighlightFill  : '#ffffff',
                     pointHighlightStroke: 'rgba(60,141,188,1)',
-                    data                : [28, 89, 40, 19, 86, 27, 90]
+                    data                : [
+                        <%= January %>,
+                        <%= February %>,
+                        <%= March %>,
+                        <%= April %>,
+                        <%= May %>,
+                        <%= June %>,
+                        <%= July %>,
+                        <%= August %>,
+                        <%= September %>,
+                        <%= October %>,
+                        <%= November %>,
+                        <%= December %>
+                    ]
                 },
                 {
                     label               : 'Expenditure',
@@ -40,10 +313,24 @@
                     pointStrokeColor    : '#c1c7d1',
                     pointHighlightFill  : '#fff',
                     pointHighlightStroke: 'rgba(220,220,220,1)',
-                    data                : [65, 59, 80, 81, 56, 55, 40]
+                    data                : [
+                        <%= expenseJanuary %>,
+                        <%= expenseFebruary %>,
+                        <%= expenseMarch %>,
+                        <%= expenseApril %>,
+                        <%= expenseMay %>,
+                        <%= expenseJune %>,
+                        <%= expenseJuly %>,
+                        <%= expenseAugust %>,
+                        <%= expenseSeptember %>,
+                        <%= expenseOctober %>,
+                        <%= expenseNovember %>,
+                        <%= expenseDecember %>
+                    ]
                 },
             ]
         }
+
 
         var salesChartOptions = {
             maintainAspectRatio : false,

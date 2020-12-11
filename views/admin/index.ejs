@@ -9,7 +9,7 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
               <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </div><!-- /.col -->
@@ -100,9 +100,9 @@
               <!-- /.card-header -->
               <div class="card-body">
                 <div class="row">
-                  <div class="col-md-8">
+                  <div class="col-md-9">
                     <p class="text-center">
-                      <strong>Sales: 1 Jan, 2020 - 30 Jul, 2020</strong>
+                      <strong>Sales: 1 Jan, <%= new Date().getFullYear() %> - 31 Dec, <%= new Date().getFullYear() %></strong>
                     </p>
 
                     <div class="chart">
@@ -115,13 +115,13 @@
                   </span>
 
                       <span>
-                    <i class="fas fa-square text-gray"></i> Expenditure
+                    <i class="fas fa-square" style="color: rgba(220,220,220,1);"></i> Expenditure
                   </span>
                     </div>
                     <!-- /.chart-responsive -->
                   </div>
                   <!-- /.col -->
-                  <div class="col-md-4">
+                  <div class="col-md-3">
 
 
                     <h1 id="mytime" class="text-center text-purple font-weight-bold" style="margin-top: 100px; font-size: 3em;"></h1>
@@ -194,5 +194,13 @@
 
 
   <%- include('../layouts/adminFooter') -%>
+
+  <script>
+    const mytime = document.querySelector('#mytime');
+
+    setInterval(()=>{
+      mytime.innerHTML = new Date().toLocaleTimeString();
+    }, 10)
+  </script>
 
   <%- include('../partials/chart') %>

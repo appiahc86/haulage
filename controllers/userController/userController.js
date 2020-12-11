@@ -196,8 +196,94 @@ const userController = {
 
         req.logout();
         res.redirect('/users/login');
-    }
+    },
 
+    //Show Password Reset form
+    passwordForm: (req, res) => {
+        res.render('home/password');
+    },
+
+    //Reset Password
+    resetPassword: async (req, res) => {
+        const {currentPassword, password, password_confirmation} = req.body;
+
+        const validation = new Validator(
+            {
+                currentPassword,
+                password,
+                password_confirmation
+            },
+            {
+                currentPassword: ['required', 'min:6'],
+                password: ['required',  'min:6', 'confirmed']
+            });
+
+
+        //if Validation fails
+        if (validation.fails()){
+
+            //get errors
+            const errCurrentPassword = validation.errors.get('currentPassword');
+            const errPassword = validation.errors.get('password');
+
+
+            return res.render(
+                'home/password',
+                {
+                    errCurrentPassword,
+                    errPassword,
+
+                    currentPassword,
+                    password
+                }
+            );
+
+        }  // ./if Validation fails
+
+
+
+        //if Validation passes
+
+        const isMatched = await bcrypt.compare(currentPassword, req.user.password);
+
+        if (!isMatched){
+
+            const errCurrentPassword = "Please enter your current password";
+
+            return res.render(
+                'home/password',
+                {
+                    errCurrentPassword,
+                    currentPassword,
+                    password
+                }
+            );
+
+
+        }else { //Reset was successful
+            req.user.password = password;
+            await req.user.save();
+            req.flash('success_mgs', 'Password reset was successful');
+            return res.redirect('/users/logout');
+        }
+
+    },
+
+
+    //Delete User
+    destroy: async (req, res) => {
+        try {
+            const user = await User.findById(req.params.id);
+            await user.remove();
+            req.flash('success_msg', 'User deleted successfully');
+            res.redirect('/users');
+        }catch (e) {
+            console.log(e);
+            req.flash('error_msg', 'sorry, operation failed');
+            res.redirect('/users');
+        }
+
+    }
 
 }
 

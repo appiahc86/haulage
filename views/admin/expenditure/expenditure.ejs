@@ -149,8 +149,6 @@
             </form> <!-- ./Form -->
 
 
-
-
         </div>
     </div>
 </div>
@@ -191,8 +189,8 @@
                         <td><%= expenditure.truck.licenseNumber %></td>
                         <td><%= new Date(expenditure.date).toDateString() %></td>
                         <td><%= expenditure.mode %></td>
-                        <td><b>₵ </b><%= expenditure.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
                         <td><%= expenditure.bank !== "" ? expenditure.bank : "..." %></td>
+                        <td><b>₵ </b><%= expenditure.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
                         <td><%= expenditure.transactionType %></td>
                         <td><%= expenditure.description.slice(0,15).concat("...") %></td>
                         <td>

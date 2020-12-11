@@ -81,6 +81,8 @@ router.get('/', auth, async (req, res) => {
         {
             users,
             trucks,
+            sales,  //this will be used in chart to calculate income
+            expenses, //this will be used in chart to calculate expenditure
             salesTotal,
             totalExpenses,
             monthlySalesTotal,
