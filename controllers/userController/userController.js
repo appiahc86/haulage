@@ -154,7 +154,7 @@ const userController = {
 
 
         }
-    },
+    }, // ./register
 
     //Login Form
     loginForm: async (req, res) => {
@@ -267,7 +267,7 @@ const userController = {
             return res.redirect('/users/logout');
         }
 
-    },
+    }, // ./Password Reset
 
 
     //Delete User
@@ -283,8 +283,37 @@ const userController = {
             res.redirect('/users');
         }
 
-    }
+    }, // ./destroy
 
-}
+    //Admin Modify User
+    adminModify: async (req, res) => {
+        const {firstName, lastName, password} = req.body;
+
+        try {
+
+            const user = await User.findById(req.params.id);
+            user.firstname = firstName;
+            user.lastName = lastName;
+
+            if (password !== ""){
+                user.password = password;
+            }
+
+            await user.save();
+            req.flash('success_msg', 'User has been updated');
+            res.redirect('/users');
+
+
+        }catch (e) {
+            console.log(e);
+            req.flash('error_msg', 'Sorry, the operation failed');
+            res.redirect('/users');
+        }
+
+    } // ./adminModify
+
+
+
+} // ./userController
 
 export default userController;

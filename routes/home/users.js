@@ -28,6 +28,9 @@ router.post('/login', userController.login);
 //Delete User
 router.delete('/delete/:id', auth, userController.destroy);
 
+//Admin modify User
+router.patch('/admin/modify/:id', auth, userController.adminModify);
+
 //Logout User
 router.get('/logout', auth, userController.logout);
 

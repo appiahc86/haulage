@@ -14,7 +14,7 @@
 
                 <div class="table-responsive">
 
-                    <table class="table table-hover table-borderless">
+                    <table class="table table-hover table-borderless table-sm table-striped">
                         <thead class="thead-dark">
                         <tr>
                             <th>First Name</th>
@@ -91,7 +91,7 @@
                         </div>
                         <div class="modal-body">
 
-                            <form action="" class="myform">
+                            <form action="/users/admin/modify/<%= user._id %>?_method=PATCH" method="post" class="myform">
 
                                 <div class="container">
                                     <div class="row">
@@ -131,7 +131,7 @@
                                                         <i class="fas fa-user"></i>
                                                     </div>
                                                 </div>
-                                                <input class="form-control" autocomplete="off" name="password" type="password" value="" minlength="6" required>
+                                                <input class="form-control" autocomplete="off" name="password" type="password" value="" minlength="6">
                                             </div>
                                             <br>
 
