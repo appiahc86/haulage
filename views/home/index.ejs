@@ -1,16 +1,81 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h3>Welcome <%= user.firstName %></h3>
+<%- include('../layouts/adminHeader'); %>
 
-    <a href="/admin"> to admin dashboard</a>
+<br>
 
-</body>
-</html>
+
+
+<div class="container-fluid">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-info">
+                <div class="inner">
+                    <h3><span class="fas fa-money-check-alt"></span></h3>
+
+                    <p>Record Sales</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-bag"></i>
+                </div>
+                <a href="/admin/assetAccounts" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-gradient-purple">
+                <div class="inner">
+                    <h3><span class="fas fa-calculator"></span></h3>
+
+                    <p>Expenditure</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="/admin/expenditures" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-gradient-maroon">
+                <div class="inner">
+                    <h3><span class="fas fa-building"></span></h3>
+
+                    <p>Bank Transfers</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-person-add"></i>
+                </div>
+                <a href="/admin/bankTransfers" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-gradient-navy">
+                <div class="inner">
+                    <h3><span class="fas fa-lock"></span></h3>
+
+                    <p>Reset Password</p>
+                </div>
+                <div class="icon">
+                    <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="/users/password/reset" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+        </div>
+        <!-- ./col -->
+    </div>
+    <!-- /.row -->
+    <!-- /.container-fluid -->
+</div>
+
+
+
+
+
+
+
+<%- include('../layouts/adminFooter'); %>
