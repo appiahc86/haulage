@@ -86,6 +86,7 @@ import expenditureRouter from "./routes/admin/expenditure/expenditure.js";
 import insuranceRouter from "./routes/admin/renewals/insurance.js";
 import roadWorthyRouter from "./routes/admin/renewals/roadWorthy.js";
 import driversLicenseRouter from "./routes/admin/renewals/drivers.js";
+import backupRouter from "./routes/admin/backup/backup.js";
 //Reports
 import balanceSheetRouter from "./routes/admin/reports/balanceSheet.js";
 
@@ -105,6 +106,7 @@ app.use('/admin/expenditures', expenditureRouter);
 app.use('/admin/renewals/insurance', insuranceRouter);
 app.use('/admin/renewals/roadWorthy', roadWorthyRouter);
 app.use('/admin/renewals/driversLicense', driversLicenseRouter);
+app.use('/backup', backupRouter);
 //Reports
 app.use('/report/balanceSheet', balanceSheetRouter);
 
