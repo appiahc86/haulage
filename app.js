@@ -117,7 +117,12 @@ app.use('/report/balanceSheet', balanceSheetRouter);
 //    app.use((err, req, res, next) => {
 //        console.log(err);
 //        res.status(500);
-//        res.send("server error 500");
+//        res.send(`
+// <h1 style="text-align: center; color: red; margin-top: 10%;">
+// Server Error
+// <span><button><a href="/">Back</a></button></span>
+// </h1>
+// `);
 //    });
 
 
