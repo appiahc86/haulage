@@ -1,0 +1,133 @@
+<%- include('../layouts/adminHeader'); %>
+<br>
+
+<%
+//Function to format number
+function formatNumber(amount){
+    return amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+}
+
+const fuelAndLubesArray = [0];
+const insuranceAndRenewalsArray = [0];
+const repairsAndMaintenanceArray = [0];
+const roadExpensesArray = [0];
+const wagesAndSalariesArray = [0];
+const otherExpensesArray = [0];
+
+
+for (const expense of expenses){
+
+    if (expense.transactionType === "fuelAndLubes"){ //Fuel and lubes
+        fuelAndLubesArray.push(parseFloat(expense.amount));
+    }
+
+    if (expense.transactionType === "insuranceAndRenewals"){ //insurance and renewals
+        insuranceAndRenewalsArray.push(parseFloat(expense.amount));
+    }
+
+    if (expense.transactionType === "repairsAndMaintenance"){ //repairs And Maintenance
+        repairsAndMaintenanceArray.push(parseFloat(expense.amount));
+    }
+
+    if (expense.transactionType === "roadExpenses"){ //road Expenses
+        roadExpensesArray.push(parseFloat(expense.amount));
+    }
+
+    if (expense.transactionType === "wagesAndSalaries"){ //wages And Salaries
+        wagesAndSalariesArray.push(parseFloat(expense.amount));
+    }
+
+    if (expense.transactionType === "otherExpenses"){ //Other Expenses
+        otherExpensesArray.push(parseFloat(expense.amount));
+    }
+
+}
+
+//Getting Totals
+const fuelAndLubesTotal = fuelAndLubesArray.reduce(function (previousValue, currentValue) { //Fuel and lubes
+    return previousValue + currentValue;
+})
+
+const insuranceAndRenewalsTotal = insuranceAndRenewalsArray.reduce(function (previousValue, currentValue) { //insurance And Renewals
+    return previousValue + currentValue;
+})
+
+const repairsAndMaintenanceTotal = repairsAndMaintenanceArray.reduce(function (previousValue, currentValue) {//Repairs and maintenance
+    return previousValue + currentValue;
+})
+
+const roadExpensesTotal = roadExpensesArray.reduce(function (previousValue, currentValue) {//road expenses
+    return previousValue + currentValue;
+})
+
+const wagesAndSalariesTotal = wagesAndSalariesArray.reduce(function (previousValue, currentValue) {//wages And Salaries
+    return previousValue + currentValue;
+})
+
+const otherExpensesTotal = otherExpensesArray.reduce(function (previousValue, currentValue) {//other ExpensesArray
+    return previousValue + currentValue;
+})
+
+ %>
+
+<h3 class="text-center font-weight-bold mb-2">Balance Sheet</h3>
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-success btn-sm mb-2" onclick="window.print()"><span class="fas fa-print"></span> Print</button>
+            <div class="card shadow p-3">
+
+                <h4><b>Assets</b></h4>
+                <table class="table table-bordered table-sm"> <!-- Assets Table -->
+
+                    <tr>
+                        <th>Cash Account</th>
+                        <td><%= formatNumber(cashAccount[0].balance) %></td>
+                    </tr>
+                    <tr>
+                        <th>Bank Accounts</th>
+                        <td><%= formatNumber(bankAccount) %></td>
+                    </tr>
+                    <tr>
+                        <th>Trucks</th>
+                        <td><%= formatNumber(trucksTotal) %></td>
+                    </tr>
+                </table>
+
+                <h4 class="text-danger"><b>Expenses</b></h4>
+                <table class="table table-bordered table-sm">
+                    <tr>
+                        <th>Fuel & Lubes</th>
+                        <td><%= formatNumber(fuelAndLubesTotal)%></td>
+                    </tr>
+                    <tr>
+                        <th>Insurance & Renewals</th>
+                        <td><%= formatNumber(insuranceAndRenewalsTotal)%></td>
+                    </tr>
+                    <tr>
+                        <th>Repairs & Maintenance</th>
+                        <td><%= formatNumber(repairsAndMaintenanceTotal)%></td>
+                    </tr>
+                    <tr>
+                        <th>Road Expenses</th>
+                        <td><%= formatNumber(roadExpensesTotal)%></td>
+                    </tr>
+                    <tr>
+                        <th>Wages & Salaries</th>
+                        <td><%= formatNumber(wagesAndSalariesTotal)%></td>
+                    </tr>
+                    <tr>
+                        <th>Other Expenses</th>
+                        <td><%= formatNumber(otherExpensesTotal)%></td>
+                    </tr>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<%- include('../layouts/adminFooter'); %>

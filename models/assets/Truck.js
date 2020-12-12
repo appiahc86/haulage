@@ -39,18 +39,26 @@ const truckSchema = new Schema({
 truckSchema.pre('save', async function (next) {
 
     //Save its road worthy record
-    const newRoadworthy = new RoadWorthyRenewal({
-        truck: this._id
-    });
 
-    await newRoadworthy.save();
+    const roadWorthyExist = await RoadWorthyRenewal.find({truck: this._id});
+
+    if (roadWorthyExist.length === 0){
+        const newRoadworthy = new RoadWorthyRenewal({
+            truck: this._id
+        });
+        await newRoadworthy.save();
+    }
+
 
     //Save its insurance renewal record
-    const newInsurance = new InsuranceRenewal({
-        truck: this._id
-    });
+    const insuranceExist = await InsuranceRenewal.find({truck: this._id});
 
-    await newInsurance.save();
+    if (insuranceExist.length === 0){
+        const newInsurance = new InsuranceRenewal({
+            truck: this._id
+        });
+        await newInsurance.save();
+    }
 
 
     next()
