@@ -1,5 +1,5 @@
 import Bank from "../../models/banking/Bank.js";
-import validator from "validatorjs";
+import BankTransfers from "../../models/banking/BankTransfers.js";
 
 const bankController = {
 
@@ -69,15 +69,29 @@ const bankController = {
     //Delete Bank Account
     destroy: async (req, res) => {
         try {
+
+            const hasRecords = await BankTransfers.find({fromAccount: req.params.id});
+            if (hasRecords.length > 0){
+                req.flash('error_msg', 'Sorry, cannot delete this bank because it has some records');
+                return res.redirect('/admin/banking');
+            }
+
+            const hasRecords2 = await BankTransfers.find({toAccount: req.params.id});
+            if (hasRecords2.length > 0){
+                req.flash('error_msg', 'Sorry, cannot delete this bank because it has some records');
+                return res.redirect('/admin/banking');
+            }
+
+
             const account = await Bank.findById(req.params.id);
             await account.remove();
             req.flash('success_msg', 'Account Deleted Successfully');
-            res.redirect('/admin/banking');
+            return  res.redirect('/admin/banking');
 
         }catch (e) {
             console.log(e);
             req.flash('error_msg', 'Sorry, Error occurred');
-            res.redirect('/admin/banking');
+            return res.redirect('/admin/banking');
         }
     }
 
