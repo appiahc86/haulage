@@ -1,5 +1,6 @@
 import Bank from "../../models/banking/Bank.js";
 import BankTransfers from "../../models/banking/BankTransfers.js";
+import AssetAccount from "../../models/assetAccount/assetAccount.js";
 
 const bankController = {
 
@@ -82,6 +83,11 @@ const bankController = {
                 return res.redirect('/admin/banking');
             }
 
+            const hasRecords3 = await AssetAccount.find({bankAccountNumber: req.params.id}); //check Asset Account collection
+            if (hasRecords3.length > 0){
+                req.flash('error_msg', 'Sorry, cannot delete this bank because it has some records');
+                return res.redirect('/admin/banking');
+            }
 
             const account = await Bank.findById(req.params.id);
             await account.remove();
