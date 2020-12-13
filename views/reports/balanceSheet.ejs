@@ -94,10 +94,40 @@ const totalExpenses = totalExpensesArray.reduce(function (previousValue, current
 
  %>
 
-<div class="text-center mb-2">
-    <h4><b>CLEMONIC</b></h4>
+
+<!-- wrapper fro printout-->
+<div id="printArea">
+
+
+    <style>
+        @media print {
+
+            .topHeader{
+                text-align: center;
+            }
+            .btn{
+                display: none;
+            }
+            .table{
+                width: 100%;
+                border-collapse: collapse;
+            }
+            th{
+                text-align: left;
+            }
+            th, td{
+                border: 1px solid black;
+                padding: 3px;
+            }
+
+        }
+    </style>
+
+
+<div class="text-center mb-2 topHeader">
+    <span class="text-center" style="font-size: 2em;"><b>CLEMONIC</b></span><br>
     <span class="text-center"><b>Balance Sheet</b></span><br>
-    <span class="text-center"> from <b>January <%= new Date().getFullYear() %></b> to <b><%= new Date().toDateString() %></b></span>
+    <span class="text-center"> from <b>Jan <%= new Date().getFullYear() %></b> to <b><%= new Date().toDateString() %></b></span>
 </div>
 
 
@@ -106,7 +136,7 @@ const totalExpenses = totalExpensesArray.reduce(function (previousValue, current
 <div class="container">
     <div class="row">
         <div class="col">
-            <button class="btn btn-success btn-sm mb-2" onclick="window.print()"><span class="fas fa-print"></span> Print</button>
+            <button class="btn btn-success btn-sm mb-2" onclick="printInvoice();"><span class="fas fa-print"></span> Print</button>
             <div class="card shadow p-3">
 
                 <h4 class="text-fuchsia"><b>Assets</b></h4>
@@ -184,4 +214,26 @@ const totalExpenses = totalExpensesArray.reduce(function (previousValue, current
 
 
 
+</div> <!-- ./Wrapper for printout -->
+
 <%- include('../layouts/adminFooter'); %>
+
+<script>
+              // Printout
+    function printInvoice(){
+
+        const divtoprint = document.querySelector("#printArea");
+        const newWindow = window.open('','Print-Window', 'height=600, width=1000');
+
+        newWindow.document.open();
+        newWindow.document.write("<html><body onload='window.print()'>"+divtoprint.innerHTML+"</body></html>");
+
+        newWindow.document.close();
+
+        setTimeout(function () {
+            newWindow.close();
+        },2000)
+
+    }
+
+</script>

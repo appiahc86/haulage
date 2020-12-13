@@ -157,17 +157,17 @@
                   <div class="col-sm-3 col-6">
                     <div class="description-block border-right">
                       <span class="description-percentage text-success"><i class="fas fa-money-bill"></i></span>
-                      <h5 class="description-header"><b>₵</b> <%= (salesTotal - totalExpenses).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %> </h5>
-                      <span class="description-text">TOTAL PROFIT</span>
+                      <h5 class="description-header"><b>₵</b> <%= (monthlySalesTotal - monthlyExpensesTotal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %> </h5>
+                      <span class="description-text">PROFIT THIS MONTH</span>
                     </div>
                     <!-- /.description-block -->
                   </div>
                   <!-- /.col -->
                   <div class="col-sm-3 col-6">
                     <div class="description-block">
-                      <span class="description-percentage text-primary"><i class="fas fa-pager"></i></span>
-                      <h5 class="description-header">1200</h5>
-                      <span class="description-text">GOAL COMPLETIONS</span>
+                      <span class="description-percentage text-teal"><i class="fas fa-money-check"></i></span>
+                      <h5 class="description-header"><%= profitThisYear.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></h5>
+                      <span class="description-text text-purple">PROFIT THIS YEAR</span>
                     </div>
                     <!-- /.description-block -->
                   </div>
