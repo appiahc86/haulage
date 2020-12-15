@@ -124,9 +124,10 @@ const totalExpenses = totalExpensesArray.reduce(function (previousValue, current
 
     <div class="text-center mb-2 topHeader">
         <span class="text-center" style="font-size: 2em;"><b>CLEMONIC</b></span><br>
-        <span class="text-center"><b>Profit And Loss</b></span><br>
-        <span class="text-center"> from <b>Jan <%= new Date().getFullYear() %></b> to <b><%= new Date().toDateString() %></b></span>
+        <span class="text-center text-maroon"><b>Profit And Loss Summary</b></span><br>
+        <span class="text-center"> from <b>Jan <%= new Date().getFullYear() %></b> to <b><%= new Date().toDateString().slice(3) %></b></span>
     </div>
+
 
 
 
@@ -137,7 +138,7 @@ const totalExpenses = totalExpensesArray.reduce(function (previousValue, current
                 <button class="btn btn-success btn-sm mb-2" onclick="printInvoice();"><span class="fas fa-print"></span> Print</button>
                 <div class="card shadow p-3">
 
-                    <h4 class="text-fuchsia"><b>PROFIT</b></h4>
+                    <h4 class="text-success"><b>PROFIT</b></h4>
 
                     <table class="table table-bordered table-sm">
                         <tr>
@@ -146,12 +147,12 @@ const totalExpenses = totalExpensesArray.reduce(function (previousValue, current
                         </tr>
 
                         <tr>
-                            <th class="text-danger">Total Income</th>
-                            <td class="text-danger"><b>₵ <%= formatNumber(totalSales) %></b></td>
+                            <th class="text-success">Total Income</th>
+                            <td class="text-success"><b>₵ <%= formatNumber(totalSales) %></b></td>
                         </tr>
                     </table>
 
-                    <h4 class="text-purple"><b>LOSS</b></h4>
+                    <h4 class="text-danger"><b>LOSS</b></h4>
                     <table class="table table-bordered table-sm">
                         <tr>
                             <th>Fuel & Lubes</th>
