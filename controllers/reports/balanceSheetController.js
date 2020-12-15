@@ -11,13 +11,14 @@ const balanceSheetController = {
 
         const bankQuery = await Bank.find({});
         const cashAccount = await Cash.find({});
-        const trucksQuery = await Truck.find({});
+        const trucksQuery = await Truck.find({deleted: 0});
         const assetAccountQuery = await AssetAccount.find({});
 
         const expenses = assetAccountQuery.filter((acc) => { //This year's expense
             return new Date(acc.date).getFullYear() === thisYear && acc.transactionType !== "sales";
         })
-        const sales = assetAccountQuery.filter((acc) => {//This year's sales
+
+        const sales = assetAccountQuery.filter((acc) => { //This year's sales
             return new Date(acc.date).getFullYear() === thisYear && acc.transactionType === "sales";
         })
 

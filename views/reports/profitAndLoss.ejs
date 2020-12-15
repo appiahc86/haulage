@@ -16,8 +16,6 @@ const totalSales = salesArray.reduce(function (previousValue, currentValue) {
     return previousValue + currentValue;
 })
 
-//get total cash account
-const totalCashAccount = parseFloat(cashAccount[0] ? cashAccount[0].balance : 0);
 
 
 const fuelAndLubesArray = [0];
@@ -92,7 +90,7 @@ const totalExpenses = totalExpensesArray.reduce(function (previousValue, current
     return previousValue + currentValue;
 })
 
- %>
+%>
 
 
 <!-- wrapper fro printout-->
@@ -124,93 +122,73 @@ const totalExpenses = totalExpensesArray.reduce(function (previousValue, current
     </style>
 
 
-<div class="text-center mb-2 topHeader">
-    <span class="text-center" style="font-size: 2em;"><b>CLEMONIC</b></span><br>
-    <span class="text-center"><b>Balance Sheet</b></span><br>
-    <span class="text-center"> from <b>Jan <%= new Date().getFullYear() %></b> to <b><%= new Date().toDateString() %></b></span>
-</div>
+    <div class="text-center mb-2 topHeader">
+        <span class="text-center" style="font-size: 2em;"><b>CLEMONIC</b></span><br>
+        <span class="text-center"><b>Profit And Loss</b></span><br>
+        <span class="text-center"> from <b>Jan <%= new Date().getFullYear() %></b> to <b><%= new Date().toDateString() %></b></span>
+    </div>
 
 
 
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <button class="btn btn-success btn-sm mb-2" onclick="printInvoice();"><span class="fas fa-print"></span> Print</button>
-            <div class="card shadow p-3">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-success btn-sm mb-2" onclick="printInvoice();"><span class="fas fa-print"></span> Print</button>
+                <div class="card shadow p-3">
 
-                <h4 class="text-fuchsia"><b>Assets</b></h4>
-                <table class="table table-bordered table-sm"> <!-- Assets Table -->
+                    <h4 class="text-fuchsia"><b>PROFIT</b></h4>
 
-                    <tr>
-                        <th>Cash Account</th>
-                        <td><%= formatNumber(totalCashAccount) %></td>
-                    </tr>
-                    <tr>
-                        <th>Bank Accounts</th>
-                        <td><%= formatNumber(bankAccount) %></td>
-                    </tr>
-                    <tr>
-                        <th>Trucks</th>
-                        <td><%= formatNumber(trucksTotal) %></td>
-                    </tr>
+                    <table class="table table-bordered table-sm">
+                        <tr>
+                            <th>Trucks Sales</th>
+                            <td><%= formatNumber(totalSales)%></td>
+                        </tr>
 
-                    <tr>
-                        <th class="text-danger">Total Assets</th>
-                        <td class="text-danger"><b>₵ <%= formatNumber(trucksTotal + bankAccount + totalCashAccount) %></b></td>
-                    </tr>
-                </table>
+                        <tr>
+                            <th class="text-danger">Total Income</th>
+                            <td class="text-danger"><b>₵ <%= formatNumber(totalSales) %></b></td>
+                        </tr>
+                    </table>
 
-                <h4 class="text-purple"><b>Expenses</b></h4>
-                <table class="table table-bordered table-sm">
-                    <tr>
-                        <th>Fuel & Lubes</th>
-                        <td><%= formatNumber(fuelAndLubesTotal)%></td>
-                    </tr>
-                    <tr>
-                        <th>Insurance & Renewals</th>
-                        <td><%= formatNumber(insuranceAndRenewalsTotal)%></td>
-                    </tr>
-                    <tr>
-                        <th>Repairs & Maintenance</th>
-                        <td><%= formatNumber(repairsAndMaintenanceTotal)%></td>
-                    </tr>
-                    <tr>
-                        <th>Road Expenses</th>
-                        <td><%= formatNumber(roadExpensesTotal)%></td>
-                    </tr>
-                    <tr>
-                        <th>Wages & Salaries</th>
-                        <td><%= formatNumber(wagesAndSalariesTotal)%></td>
-                    </tr>
-                    <tr>
-                        <th>Other Expenses</th>
-                        <td><%= formatNumber(otherExpensesTotal)%></td>
-                    </tr>
+                    <h4 class="text-purple"><b>LOSS</b></h4>
+                    <table class="table table-bordered table-sm">
+                        <tr>
+                            <th>Fuel & Lubes</th>
+                            <td><%= formatNumber(fuelAndLubesTotal)%></td>
+                        </tr>
+                        <tr>
+                            <th>Insurance & Renewals</th>
+                            <td><%= formatNumber(insuranceAndRenewalsTotal)%></td>
+                        </tr>
+                        <tr>
+                            <th>Repairs & Maintenance</th>
+                            <td><%= formatNumber(repairsAndMaintenanceTotal)%></td>
+                        </tr>
+                        <tr>
+                            <th>Road Expenses</th>
+                            <td><%= formatNumber(roadExpensesTotal)%></td>
+                        </tr>
+                        <tr>
+                            <th>Wages & Salaries</th>
+                            <td><%= formatNumber(wagesAndSalariesTotal)%></td>
+                        </tr>
+                        <tr>
+                            <th>Other Expenses</th>
+                            <td><%= formatNumber(otherExpensesTotal)%></td>
+                        </tr>
 
-                    <tr>
-                        <th class="text-danger">Total Expenses</th>
-                        <td class="text-danger"><b>₵ <%= formatNumber(totalExpenses) %></b></td>
-                    </tr>
-                </table>
+                        <tr>
+                            <th class="text-danger">Total Expenses</th>
+                            <td class="text-danger"><b>₵ <%= formatNumber(totalExpenses) %></b></td>
+                        </tr>
+                    </table>
 
-                <h4 class="text-purple"><b>Income</b></h4>
-                <table class="table table-bordered table-sm">
-                    <tr>
-                        <th>Trucks Sales</th>
-                        <td><%= formatNumber(totalSales)%></td>
-                    </tr>
 
-                    <tr>
-                        <th class="text-danger">Total Income</th>
-                        <td class="text-danger"><b>₵ <%= formatNumber(totalSales) %></b></td>
-                    </tr>
-                </table>
-
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 
 
@@ -219,7 +197,7 @@ const totalExpenses = totalExpensesArray.reduce(function (previousValue, current
 <%- include('../layouts/adminFooter'); %>
 
 <script>
-              // Printout
+    // Printout
     function printInvoice(){
 
         const divtoprint = document.querySelector("#printArea");

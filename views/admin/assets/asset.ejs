@@ -56,9 +56,13 @@
                                              </button>
 
 
-                                             <div class="modal-body text-center text-primary">
+                                             <div class="modal-body ">
 
                                                  <%
+                                                     function formatNumber(amount){
+                                                         return amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+                                                     }
+
                                                      function monthDiff(dateFrom, dateTo) {
                                                          return dateTo.getMonth() - dateFrom.getMonth() +
                                                                  (12 * (dateTo.getFullYear() - dateFrom.getFullYear()));
@@ -76,7 +80,12 @@
 
                                                   %>
 
-                                                 <h3>New Value <b>₵</b> <%= newAssetValue.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></h3>
+                                                 <li><span class="font-weight-bold">Purchased Amount:</span> ₵ <%= formatNumber(asset.amount) %></li>
+                                                 <li><span class="font-weight-bold">Date Purchased:</span> <span class="text-success font-weight-bold"><%= new Date(asset.datePurchased).getMonth()+1 %> / <%= new Date(asset.datePurchased).getFullYear() %></span></li>
+                                                 <li><span class="font-weight-bold">Months Elapsed:</span> <%= monthsElapsed %></li>
+                                                 <li><span class="font-weight-bold">Depreciation:</span> % <%= asset.depreciation %></li>
+                                                 <li><span class="font-weight-bold">Depreciated By:</span> <span class="text-danger">₵ <%= formatNumber(depreciatedBy) %></span></li>
+                                                 <h4 class="text-center p-3"><span>Value After Depreciation</span><br> <span class="text-maroon"><b>₵</b> <%= formatNumber(newAssetValue) %></span></h4>
                                              </div>
 
                                      </div>
@@ -176,7 +185,7 @@
                                                                          %
                                                                      </div>
                                                                  </div>
-                                                                 <input class="form-control" placeholder="eg. 0.43" required="required" min="0" step="0.01" name="edit_depreciation" autocomplete="off" type="number" value="<%= asset.depreciation %>" id="edit_depreciation">
+                                                                 <input class="form-control" placeholder="eg. 0.43" required="required" min="0" step="0.0001" name="edit_depreciation" autocomplete="off" type="number" value="<%= asset.depreciation %>" id="edit_depreciation">
                                                              </div>
                                                          </div>
 
@@ -291,7 +300,7 @@
                                                 %
                                             </div>
                                         </div>
-                                        <input class="form-control" placeholder="eg. 0.43" required="required" min="0" step="0.01" name="depreciation" autocomplete="off" type="number" value="" id="depreciation">
+                                        <input class="form-control" placeholder="eg. 0.43" required="required" min="0" step="0.0001" name="depreciation" autocomplete="off" type="number" value="" id="depreciation">
                                     </div>
                                 </div>
 

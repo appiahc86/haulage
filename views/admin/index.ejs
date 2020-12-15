@@ -18,6 +18,13 @@
     </div>
     <!-- /.content-header -->
 
+  <%
+    const trucksWithoutDeleted = trucks.filter((truck) => {
+       return truck.deleted === false;
+    })
+
+  %>
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -30,7 +37,7 @@
               <div class="info-box-content">
                 <span class="info-box-text">Assets</span>
                 <span class="info-box-number">
-                  <%= trucks.length %>
+                  <%= trucksWithoutDeleted.length %>
                 </span>
               </div>
               <!-- /.info-box-content -->

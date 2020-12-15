@@ -5,7 +5,7 @@ const assetController = {
 
     //Get all assets
     index: async (req, res) => {
-        const assets = await Truck.find({});
+        const assets = await Truck.find({deleted: 0});
         res.render('admin/assets/asset', {assets});
     },
 
@@ -78,19 +78,31 @@ const assetController = {
     //Delete Asset
     destroy: async (req, res) => {
 
+        try {
+                //Set deleted to true if asset has records
         const haveRecords = await AssetAccount.find({truck: req.params.id});
         if (haveRecords.length > 0){
-            req.flash('error_msg', 'Sorry!!!, this asset has some records and cannot be deleted.');
+            const asset = await Truck.findById(req.params.id);
+            asset.deleted = 1;
+            await asset.save();
+
+            req.flash('success_msg', 'Record Deleted Successfully.');
             return  res.redirect('/admin/assets');
-        }
 
-        try {
 
+        } else {
+                    //Delete asset if it has no records
             const asset = await Truck.findById(req.params.id)
-
             req.flash('success_msg', 'Record Deleted Successfully');
             await asset.remove();
             res.redirect('/admin/assets');
+
+
+        }
+
+
+
+
 
         }catch (e) {
             console.log(e)

@@ -6,7 +6,7 @@ import Cash from "../../models/cash/Cash.js";
 const assetAccountController = {
     //Get list of all asset accounts
     index: async (req, res) => {
-        const trucks = await Truck.find({});
+        const trucks = await Truck.find({deleted: 0});
         const banks = await Bank.find({});
         const query = await AssetAccount.find({}).populate("truck").populate("bankAccount");
 

@@ -89,6 +89,7 @@ import driversLicenseRouter from "./routes/admin/renewals/drivers.js";
 import backupRouter from "./routes/admin/backup/backup.js";
 //Reports
 import balanceSheetRouter from "./routes/admin/reports/balanceSheet.js";
+import profitAndLossRouter from "./routes/admin/reports/profitAndLoss.js";
 
 
 
@@ -109,6 +110,7 @@ app.use('/admin/renewals/driversLicense', driversLicenseRouter);
 app.use('/backup', backupRouter);
 //Reports
 app.use('/report/balanceSheet', balanceSheetRouter);
+app.use('/report/profitAndLoss', profitAndLossRouter);
 
 
 
@@ -124,6 +126,13 @@ Server Error
 </h1>
 `);
    });
+
+
+
+   // import Truck from "./models/assets/Truck.js";
+   //
+   // Truck.updateMany({amount: {$gt: 5}}, {deleted: 0}).then(()=> console.log("done"))
+
 
 
 //404 Page

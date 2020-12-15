@@ -8,7 +8,7 @@ const expenditureController = {
     index: async (req, res) => {
 
         const banks = await Bank.find({});
-        const trucks = await Truck.find({});
+        const trucks = await Truck.find({deleted: 0});
 
         const newQuery = await AssetAccount.find({}).populate('truck');
 

@@ -4,7 +4,7 @@ import {exec} from "child_process";
 const backupController = {
     backup: async (req, res) => {
 
-        exec('mongodump --db haulage --out c:/backup', (error, stdout, stderr) => {
+        exec('mongodump --db haulage --out /home/innocent/Desktop/backup', (error, stdout, stderr) => {
             if (error){
                 req.flash('error_msg', 'Sorry Database Backup Failed');
                 return res.redirect('/');

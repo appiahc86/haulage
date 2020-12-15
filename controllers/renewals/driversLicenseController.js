@@ -4,7 +4,7 @@ import Truck from "../../models/assets/Truck.js";
 const driversLicenseController = {
     
     index: async (req, res) => {
-        const trucks = await Truck.find({});
+        const trucks = await Truck.find({deleted: 0});
         const licenses = await DriversLicense.find({});
         res.render('admin/renewals/driversLicense', {trucks, licenses});
     },

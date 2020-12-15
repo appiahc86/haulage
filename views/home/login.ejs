@@ -82,7 +82,7 @@
           <div class="card shadow-lg p-5">
               <form action="/users/login" method="post" class="myform">
                   <div class="form-group">
-                      <input type="text" placeholder="Username" name="username" class="form-control <%= userErrorStyle %>" required>
+                      <input type="text" placeholder="Username" name="username" class="form-control <%= userErrorStyle %>" autocomplete="off" autofocus required>
 
                       <% if (userError !== ""){ %>
                       <span class="invalid-feedback error-message" role="alert">

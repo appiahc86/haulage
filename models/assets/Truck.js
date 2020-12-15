@@ -30,6 +30,11 @@ const truckSchema = new Schema({
     description: {
        type: String,
         trim: true
+    },
+
+    deleted: {
+       type: Boolean,
+        default: 0
     }
 
 }, {timestamps: true});
@@ -38,27 +43,37 @@ const truckSchema = new Schema({
 //save insurance and road worthy Renewal first
 truckSchema.pre('save', async function (next) {
 
-    //Save its road worthy record
+    if (this.deleted == 1){
+        await InsuranceRenewal.deleteOne({truck: this._id});
+        await RoadWorthyRenewal.deleteOne({truck: this._id});
+    }
+    else {
 
-    const roadWorthyExist = await RoadWorthyRenewal.find({truck: this._id});
+        //Save its road worthy record
 
-    if (roadWorthyExist.length === 0){
-        const newRoadworthy = new RoadWorthyRenewal({
-            truck: this._id
-        });
-        await newRoadworthy.save();
+        const roadWorthyExist = await RoadWorthyRenewal.find({truck: this._id});
+
+        if (roadWorthyExist.length === 0){
+            const newRoadworthy = new RoadWorthyRenewal({
+                truck: this._id
+            });
+            await newRoadworthy.save();
+        }
+
+
+        //Save its insurance renewal record
+        const insuranceExist = await InsuranceRenewal.find({truck: this._id});
+
+        if (insuranceExist.length === 0){
+            const newInsurance = new InsuranceRenewal({
+                truck: this._id
+            });
+            await newInsurance.save();
+        }
+
+
     }
 
-
-    //Save its insurance renewal record
-    const insuranceExist = await InsuranceRenewal.find({truck: this._id});
-
-    if (insuranceExist.length === 0){
-        const newInsurance = new InsuranceRenewal({
-            truck: this._id
-        });
-        await newInsurance.save();
-    }
 
 
     next()

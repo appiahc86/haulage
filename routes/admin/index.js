@@ -14,7 +14,6 @@ router.get('/', auth, async (req, res) => {
     const users = await User.find({});
 
 
-
     //Filter Asset account to get sales records only
     const sales = assetAccounts.filter((account) => {
         return account.transactionType === "sales";
