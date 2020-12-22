@@ -44,7 +44,8 @@ const cashTransfersController = {
              const newTransfer = new CashTransfers({
                  date,
                  amount: parseFloat(amount),
-                 bank
+                 bank,
+                 user: req.user._id
              });
 
              await newTransfer.save();

@@ -17,10 +17,10 @@
     <div class="row">
         <div class="col">
 
-
+<div class="card shadow p-3">
 
             <!-- ./Form -->
-            <form action="/admin/assetAccounts/store" method="post" class="myform">
+            <form action="/admin/sales/store" method="post" class="myform">
 
                 <div class="row">
                     <div class="form-group  col-md-3">
@@ -123,7 +123,7 @@
                 </div>
             </form> <!-- ./Form -->
 
-
+</div>
 
 
         </div>
@@ -139,9 +139,11 @@
 
 
       <!-- Container for table -->
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <div class="col">
+            <div class="card shadow p-3">
+
             <div class="table-responsive">
                 <table class="table table-hover table-sm" id="myTable">
 
@@ -158,17 +160,17 @@
                     </thead>
 
                     <tbody>
-                         <% for(let account of accounts) { %>
+                         <% for(let sale of sales) { %>
 
                              <tr>
-                                 <td><%= account.truck.licenseNumber %></td>
-                                 <td><%= new Date(account.date).toDateString()%></td>
-                                 <td><%= account.mode %></td>
-                                 <td><%= account.bank !== "" ? account.bank : "..." %></td>
-                                 <td><b>₵</b> <%= account.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
-                                 <td><%= account.description.slice(0,15).concat("...") %></td>
+                                 <td><%= sale.truck.licenseNumber %></td>
+                                 <td><%= new Date(sale.date).toDateString()%></td>
+                                 <td><%= sale.mode %></td>
+                                 <td><%= sale.bank !== "" ? sale.bank : "..." %></td>
+                                 <td><b>₵</b> <%= sale.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                                 <td><%= sale.description.slice(0,15).concat("...") %></td>
                                  <td>
-                                     <button data-toggle="modal" data-target="#del<%= account._id %>" class="btn btn-danger btn-sm">
+                                     <button data-toggle="modal" data-target="#del<%= sale._id %>" class="btn btn-danger btn-sm">
                                          <span class="fas fa-trash-alt"></span>
                                      </button>
                                  </td>
@@ -177,8 +179,8 @@
 
 
 
-                             <!--  Modal for deleting record-->
-                             <div class="modal fade" id="del<%= account._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                             <!-- Modal for deleting record -->
+                             <div class="modal fade" id="del<%= sale._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
                                  <br><br>
                                  <div class="modal-dialog" role="document">
                                      <div class="modal-content">
@@ -188,7 +190,7 @@
                                                  <span aria-hidden="true">×</span>
                                              </button>
                                          </div>
-                                         <form action="/admin/assetAccounts/<%= account._id %>?_method=DELETE" method="post" class="myform">
+                                         <form action="/admin/sales/<%= sale._id %>?_method=DELETE" method="post" class="myform">
                                              <div class="modal-body">
 
                                                  Are you sure you want to delete this record?
@@ -196,12 +198,11 @@
                                                  <div class="col-md-12 text-right">
                                                      <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
                                                      <input type="submit" class="btn btn-danger btn-sm mybtn" value="Delete">
-
                                                  </div>
+
                                              </div>
                                          </form>
                                      </div>
-
                                  </div>
                              </div> <!-- ./delete modal -->
 
@@ -210,6 +211,7 @@
                     </tbody>
 
                 </table>
+            </div>
             </div>
         </div>
     </div>

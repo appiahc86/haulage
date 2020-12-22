@@ -1,0 +1,133 @@
+<%- include('../../layouts/adminHeader') %>
+
+<br>
+
+<h3 class="text-center mb-2">Expense Type</h3>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+
+            <form action="/expenseType" method="post" class="myform mb-2">
+                <div class="input-group">
+                    <input type="text" class="form-control" name="name" placeholder="Name" autocomplete="off" required>
+
+                    <input type="submit" value="Save" class="btn btn-primary mybtn">
+                </div>
+            </form>
+
+
+           <div class="card shadow p-2">
+
+               <table class="table table-borderless table-sm table-striped table-hover" id="myTable">
+
+                   <thead class="thead-dark">
+                   <tr>
+                       <th>Name</th>
+                       <th></th>
+                       <th></th>
+                   </tr>
+                   </thead>
+
+                   <% for(const expenseType of expenseTypes) { %>
+
+                       <tr>
+                           <td><%= expenseType.name %></td>
+                           <td>
+                               <a href="" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit<%= expenseType._id %>">
+                                   <span class="fas fa-edit"></span>
+                               </a>
+                           </td>
+                           <td>
+                               <a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= expenseType._id %>">
+                                   <span class="fas fa-trash-alt"></span>
+                               </a>
+
+                           </td>
+                       </tr>
+
+
+                       <!--  Modal for deleting record-->
+                       <div class="modal fade" id="del<%= expenseType._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                           <br><br>
+                           <div class="modal-dialog" role="document">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                       <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete This Record</span></h5>
+                                       <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                           <span aria-hidden="true">×</span>
+                                       </button>
+                                   </div>
+                                   <form action="/expenseType/<%= expenseType._id %>?_method=DELETE" method="post" class="myform">
+                                       <div class="modal-body">
+
+                                           Are you sure you want to delete this record?
+
+                                           <div class="col-md-12 text-right">
+                                               <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                               <input type="submit" class="btn btn-danger btn-sm mybtn" value="Delete">
+
+                                           </div>
+                                       </div>
+                                   </form>
+                               </div>
+
+                           </div>
+                       </div> <!-- ./delete modal -->
+
+
+                       <!--  Editing Modal -->
+                       <div class="modal fade" id="edit<%= expenseType._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                           <br><br>
+                           <div class="modal-dialog" role="document">
+                               <div class="modal-content">
+                                   <div class="modal-header">
+                                       <h5 class="modal-title text-center text-success" id="exampleModalLabel"><i class="fas fa-pencil-alt"></i><span class="text-success"> Update Record</span></h5>
+                                       <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                           <span aria-hidden="true">×</span>
+                                       </button>
+                                   </div>
+                                   <form action="/expenseType/<%= expenseType._id %>?_method=PATCH" method="post" class="myform">
+                                       <div class="modal-body">
+
+                                           <div class="input-group mb-2">
+                                               <input type="text" name="name" value="<%= expenseType.name %>" placeholder="Name" required class="form-control">
+                                           </div>
+
+                                           <div class="col-md-12 text-right">
+                                               <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                               <input type="submit" class="btn btn-success btn-sm mybtn" value="Update">
+                                           </div>
+                                       </div>
+                                   </form>
+                               </div>
+
+                           </div>
+                       </div> <!-- ./Editing modal -->
+
+
+                   <% } %>
+
+               </table>
+
+           </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%- include('../../layouts/adminFooter') %>

@@ -1,0 +1,137 @@
+<%- include('../../layouts/adminHeader') %>
+<br>
+
+<h3 class="text-center"><b>Vendors</b></h3>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <form action="/vendors" method="post" class="myform mb-2">
+                <div class="input-group">
+                    <input type="text" name="name" minlength="3" class="form-control" placeholder="Name" required autocomplete="off">
+                    <input type="text" name="contact" minlength="10" class="form-control" placeholder="Contact" required autocomplete="off">
+                    <input type="text" name="location" minlength="3" class="form-control" placeholder="Location" required autocomplete="off">
+                    <button type="submit" class="btn btn-primary mybtn">Save</button>
+
+                </div>
+            </form>
+
+            <div class="card shadow p-2">
+
+
+                <table class="table table-hover table-bordered table-sm" id="myTable">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Contact</th>
+                            <th>Location</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <% for (const vendor of vendors){ %>
+
+                        <tr>
+                            <td><%= vendor.name %></td>
+                            <td><%= vendor.contact %></td>
+                            <td><%= vendor.location %></td>
+                            <td><a href="" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit<%= vendor._id %>"><span class="fas fa-edit"></span></a></td>
+                            <td><a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= vendor._id %>"><span class="fas fa-trash-alt"></span></a></td>
+                        </tr>
+
+
+                        <!--  Modal for editing record-->
+                        <div class="modal fade" id="edit<%= vendor._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <br><br>
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center text-success" id="exampleModalLabel"><i class="fas fa-edit"></i><span class="text-success"> Edit This Record</span></h5>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <form action="/vendors/<%= vendor._id %>?_method=PATCH" method="post" class="myform">
+                                        <div class="modal-body">
+
+                                            <div class="form-group">
+                                                <label for="">Name</label>
+                                                <input type="text" name="name" minlength="3" class="form-control" value="<%= vendor.name %>" placeholder="Name" required autocomplete="off">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="">Contact</label>
+                                                <input type="text" name="contact" minlength="10"  class="form-control" value="<%= vendor.contact %>" placeholder="Contact" required autocomplete="off">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="">Location</label>
+                                                <input type="text" name="location" minlength="3" class="form-control" value="<%= vendor.location %>" placeholder="Location" required autocomplete="off">
+                                            </div>
+
+                                            <div class="col-md-12 text-right">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <input type="submit" class="btn btn-success btn-sm mybtn" value="Update">
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div> <!-- ./Edit modal -->
+
+
+                        <!--  Modal for deleting record-->
+                        <div class="modal fade" id="del<%= vendor._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <br><br>
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete This Record</span></h5>
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <form action="/vendors/<%= vendor._id %>?_method=DELETE" method="post" class="myform">
+                                        <div class="modal-body">
+
+                                            Are you sure you want to delete this record?
+
+                                            <div class="col-md-12 text-right">
+                                                <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                <input type="submit" class="btn btn-danger btn-sm mybtn" value="Delete">
+
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div> <!-- ./delete modal -->
+
+                    <% } %>
+
+
+                    </tbody>
+
+
+                </table>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<%- include('../../layouts/adminFooter'); %>
+
+
+

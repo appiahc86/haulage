@@ -78,18 +78,25 @@ import userRouter from "./routes/home/users.js";
 import adminRouter from "./routes/admin/index.js";
 import bankRouter from "./routes/admin/banking/account.js";
 import assetRouter from "./routes/admin/assets/asset.js";
-import assetAccountRouter from "./routes/admin/assets/assetAccount.js";
+import salesRouter from "./routes/admin/sales/sales.js"
 import cashAccountRouter from "./routes/admin/cash/cashAccount.js";
 import cashTransfersRouter from "./routes/admin/cash/cashTransfers.js";
 import bankTransfersRouter from "./routes/admin/banking/transfer.js";
-import expenditureRouter from "./routes/admin/expenditure/expenditure.js";
+import expenseRouter from "./routes/admin/expenses/expenses.js";
 import insuranceRouter from "./routes/admin/renewals/insurance.js";
 import roadWorthyRouter from "./routes/admin/renewals/roadWorthy.js";
 import driversLicenseRouter from "./routes/admin/renewals/drivers.js";
 import backupRouter from "./routes/admin/backup/backup.js";
+import expenseTypeRouter from "./routes/admin/expenseType/expenseType.js";
+import vendorsRouter from "./routes/admin/vendors/vendors.js";
+import billsRouter from "./routes/admin/bills/bills.js";
+import depreciationRouter from "./routes/admin/depreciation/depreciation.js";
+import tripsRouter from "./routes/admin/trips/trips.js";
+import activitiesRouter from "./routes/admin/activities/activities.js";
+
 //Reports
-import balanceSheetRouter from "./routes/admin/reports/balanceSheet.js";
-import profitAndLossRouter from "./routes/admin/reports/profitAndLoss.js";
+// import balanceSheetRouter from "./routes/admin/reports/balanceSheet.js";
+// import profitAndLossRouter from "./routes/admin/reports/profitAndLoss.js";
 
 
 
@@ -99,20 +106,26 @@ app.use('/users', userRouter);
 app.use('/admin', adminRouter);
 app.use('/admin/banking', bankRouter);
 app.use('/admin/assets', assetRouter);
-app.use('/admin/assetAccounts', assetAccountRouter);
+app.use('/admin/sales', salesRouter);
 app.use('/admin/cashAccounts', cashAccountRouter);
 app.use('/admin/cashTransfers', cashTransfersRouter);
 app.use('/admin/bankTransfers', bankTransfersRouter);
-app.use('/admin/expenditures', expenditureRouter);
+app.use('/admin/expenses', expenseRouter);
 app.use('/admin/renewals/insurance', insuranceRouter);
 app.use('/admin/renewals/roadWorthy', roadWorthyRouter);
 app.use('/admin/renewals/driversLicense', driversLicenseRouter);
 app.use('/backup', backupRouter);
+app.use('/expenseType', expenseTypeRouter);
+app.use('/vendors', vendorsRouter);
+app.use('/bills', billsRouter);
+app.use('/depreciation', depreciationRouter);
+app.use('/trips', tripsRouter);
+app.use('/activities', activitiesRouter);
+
 //Reports
-app.use('/report/balanceSheet', balanceSheetRouter);
-app.use('/report/profitAndLoss', profitAndLossRouter);
-
-
+// app.use('/report/balanceSheet', balanceSheetRouter);
+// app.use('/report/profitAndLoss', profitAndLossRouter);
+//
 
 
 // Turn off errors in production
@@ -120,18 +133,12 @@ app.use('/report/profitAndLoss', profitAndLossRouter);
        console.log(err);
        res.status(500);
        res.send(`
-<h1 style="text-align: center; color: red; margin-top: 10%;">
-Server Error
-<span><button><a href="/">Back</a></button></span>
-</h1>
-`);
+    <h1 style="text-align: center; color: red; margin-top: 10%;">
+    Server Error
+    <span><button><a href="/">Back</a></button></span>
+    </h1>
+    `);
    });
-
-
-
-   // import Truck from "./models/assets/Truck.js";
-   //
-   // Truck.updateMany({amount: {$gt: 5}}, {deleted: 0}).then(()=> console.log("done"))
 
 
 

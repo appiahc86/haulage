@@ -1,21 +1,17 @@
 import Truck from "../../models/assets/Truck.js";
 import Bank from "../../models/banking/Bank.js";
-import AssetAccount from "../../models/assetAccount/assetAccount.js";
 import Cash from "../../models/cash/Cash.js";
+import Sale from "../../models/sales/Sale.js";
 
-const assetAccountController = {
-    //Get list of all asset accounts
+const salesController = {
+
+    //Get list of all sales records
     index: async (req, res) => {
         const trucks = await Truck.find({deleted: 0});
         const banks = await Bank.find({});
-        const query = await AssetAccount.find({}).populate("truck").populate("bankAccount");
+        const sales = await Sale.find({}).populate("truck");
 
-
-        const accounts = query.filter((record) => {
-           return record.transactionType === "sales";
-        });
-
-       res.render('admin/assetAccount/index', {trucks, banks, accounts});
+        res.render('admin/sales/index', {trucks, banks, sales});
     },
 
 
@@ -24,57 +20,59 @@ const assetAccountController = {
 
         const {truck, date, amount, mode, bank, description} = req.body;
 
-           //Validation goes here
+        //Validation goes here
 
         try {
 
-            const newAssetAccount = new AssetAccount({
-               truck,
-               date,
-               amount : parseFloat(amount),
-               mode,
-               description
+            const sale = new Sale({
+                truck,
+                date,
+                amount : parseFloat(amount),
+                mode,
+                description,
+                user: req.user._id
             });
 
             //if mode of payment is bank
             if (bank !== ""){
                 const bankAccount = await Bank.findById(bank);
 
-                newAssetAccount.bank = bankAccount.bankName + " (" + bankAccount.accountNumber + ")";
-                newAssetAccount.bankAccountNumber = bank;
+                sale.bank = bankAccount.bankName + " (" + bankAccount.accountNumber + ")";
+                sale.bankAccountNumber = bank;
 
                 //Add amount to bank account
                 bankAccount.balance += parseFloat(amount);
                 await bankAccount.save();
 
             }else { //If mode of payment is CASH
-                newAssetAccount.bank = "";
-                newAssetAccount.bankAccountNumber = "";
+                sale.bank = "";
+                sale.bankAccountNumber = "";
 
                 //First check if the cash account does not exist, then create it
                 const accountExists = await Cash.findOne({name: "cashAccount"});
-                    if (!accountExists){
-                        await Cash.create({
-                            name: "cashAccount",
-                            balance: 0
-                        });
-                    }
+                if (!accountExists){
+                    await Cash.create({
+                        name: "cashAccount",
+                        balance: 0
+                    });
+                }
 
                 //Add amount to cash account
-                 const addToCashAccount = await Cash.findOne({name: "cashAccount"});
-                 addToCashAccount.balance += parseFloat(amount);
-                 await addToCashAccount.save();
+                const addToCashAccount = await Cash.findOne({name: "cashAccount"});
+                addToCashAccount.balance += parseFloat(amount);
+                await addToCashAccount.save();
 
             }
 
             //Save record to database
-            await newAssetAccount.save();
+            await sale.save();
             req.flash('success_msg', 'Record Saved Successfully');
-            res.redirect('/admin/assetAccounts');
+            res.redirect('/admin/sales');
 
         }catch (e) {
             console.log(e);
             req.flash('error_msg', 'Error Occurred');
+            res.redirect('/admin/sales');
         }
 
     },
@@ -84,7 +82,7 @@ const assetAccountController = {
 
         try {
 
-            const record = await AssetAccount.findById(req.params.id);
+            const record = await Sale.findById(req.params.id);
 
             //If money was paid to bank account, deduct amount from it
             if (record.bankAccountNumber !== ""){
@@ -92,7 +90,7 @@ const assetAccountController = {
                 bank.balance -= parseFloat(record.amount); //Subtract the money from the bank account
                 await bank.save();
 
-            //If money was paid to Cash account deduct amount from it
+                //If money was paid to Cash account deduct amount from it
             }else {
                 const deductFromCashAccount = await Cash.findOne({name: "cashAccount"});
                 deductFromCashAccount.balance -= parseFloat(record.amount);
@@ -102,20 +100,16 @@ const assetAccountController = {
             //Delete sales record
             await record.remove();
             req.flash('success_msg', 'Record deleted successfully');
-            res.redirect('/admin/assetAccounts');
-
+            res.redirect('/admin/sales');
 
 
         }catch (e) {
             console.log(e);
             req.flash('error_msg', 'Sorry!!, Error Occurred');
-            res.redirect('/admin/assetAccounts');
+            res.redirect('/admin/sales');
         }
 
     } // ./delete sales record
-
-
-
 
 }
 
@@ -126,5 +120,4 @@ const assetAccountController = {
 
 
 
-
-export default assetAccountController;
+export default salesController;

@@ -1,24 +1,19 @@
-import AssetAccount from "../../models/assetAccount/assetAccount.js";
+import Expense from "../../models/expenses/Expense.js";
 import Bank from "../../models/banking/Bank.js";
 import Truck from "../../models/assets/Truck.js";
 import Cash from "../../models/cash/Cash.js";
+import ExpenseType from "../../models/expenseType/expenseType.js";
 
-const expenditureController = {
+const expenseController = {
 
     index: async (req, res) => {
 
         const banks = await Bank.find({});
         const trucks = await Truck.find({deleted: 0});
+        const expenses = await Expense.find({}).populate('truck').populate('expenseType');
+        const expenseTypes = await ExpenseType.find({});
 
-        const newQuery = await AssetAccount.find({}).populate('truck');
-
-        //Filter query to get only expenditures (By removing those with transactionType, "sales")
-        const expenditures = newQuery.filter((record) => {
-            return record.transactionType !== "sales";
-        });
-
-
-        res.render('admin/expenditure/expenditure', {banks, trucks, expenditures});
+        res.render('admin/expenses/index', {banks, trucks, expenses, expenseTypes});
 
     },
 
@@ -28,16 +23,17 @@ const expenditureController = {
 
         const {truck, type, date, amount, mode, bank, description} = req.body;
 
-    //    Validation Goes here
+        //    Validation Goes here
         try {
 
-            const newRecord = new AssetAccount({
+            const newRecord = new Expense({
                 truck,
                 date,
                 amount: parseFloat(amount),
-                transactionType: type,
+                expenseType: type,
                 mode,
-                description
+                description,
+                user: req.user._id
             });
 
             //if mode of payment is bank
@@ -76,14 +72,14 @@ const expenditureController = {
             //Save record to database
             await newRecord.save();
             req.flash('success_msg', 'Record Saved Successfully');
-            res.redirect('/admin/expenditures');
+            res.redirect('/admin/expenses');
 
 
 
         }catch (e) {
             console.log(e);
             req.flash('error_msg', 'Sorry!!, Error Occurred');
-            res.redirect('/admin/expenditures');
+            res.redirect('/admin/expenses');
         }
 
     },
@@ -91,36 +87,36 @@ const expenditureController = {
     //Delete Expenditure
     destroy: async (req, res) => {
 
-       try {
+        try {
 
-           const record = await AssetAccount.findById(req.params.id);
+            const record = await Expense.findById(req.params.id);
 
-           //If money was paid to bank account, deduct amount from it
-           if (record.bankAccountNumber !== ""){
-               const bank = await Bank.findById(record.bankAccountNumber); //Find the bank account
-               bank.balance += parseFloat(record.amount); //Subtract the money from the bank account
-               await bank.save();
-
-
-               //If money was deducted from cash account, add it back
-           }else {
-               const addToCashAccount = await Cash.findOne({name: "cashAccount"});
-               addToCashAccount.balance += parseFloat(record.amount);
-               await addToCashAccount.save();
-
-           }
-
-           //Delete expenditure record
-           await record.remove();
-           req.flash('success_msg', 'Record deleted successfully');
-           res.redirect('/admin/expenditures');
+            //If money was paid to bank account, deduct amount from it
+            if (record.bankAccountNumber !== ""){
+                const bank = await Bank.findById(record.bankAccountNumber); //Find the bank account
+                bank.balance += parseFloat(record.amount); //Subtract the money from the bank account
+                await bank.save();
 
 
-       }catch (e) {
-           console.log(e);
-           req.flash('error_msg', 'Sorry!!, Error Occurred');
-           res.redirect('/admin/expenditures');
-       }
+                //If money was deducted from cash account, add it back
+            }else {
+                const addToCashAccount = await Cash.findOne({name: "cashAccount"});
+                addToCashAccount.balance += parseFloat(record.amount);
+                await addToCashAccount.save();
+
+            }
+
+            //Delete expenses record
+            await record.remove();
+            req.flash('success_msg', 'Record deleted successfully');
+            res.redirect('/admin/expenses');
+
+
+        }catch (e) {
+            console.log(e);
+            req.flash('error_msg', 'Sorry!!, Error Occurred');
+            res.redirect('/admin/expenses');
+        }
 
 
     }
@@ -131,4 +127,4 @@ const expenditureController = {
 
 
 
-export default expenditureController;
+export default expenseController;

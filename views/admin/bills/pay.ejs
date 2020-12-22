@@ -1,0 +1,108 @@
+<%- include('../../layouts/adminHeader') %>
+<br>
+
+<style>
+    .makeVisible{
+        display: block;
+    }
+
+    .makeHidden{
+        display: none;
+    }
+</style>
+
+<h2 class="text-center">Outstanding Bills</h2>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow p-3">
+
+                <table class="table table-borderless table-sm table-hover" id="myTable">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Vendor</th>
+                        <th>Ref#</th>
+                        <th>Truck</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th>Amount Due</th>
+                        <th>Description</th>
+                        <th>History</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <% for (const bill of bills){ %>
+
+                        <tr>
+                            <td><%= bill.vendor.name %></td>
+                            <td><%= bill.refNumber %></td>
+                            <td><%= bill.truck.licenseNumber %></td>
+                            <td><%= new Date(bill.date).toDateString() %></td>
+                            <td><%= bill.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                            <td><%= (bill.amount - bill.paid).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                            <td><%= bill.description %></td>
+                            <td class="text-center"><a href="" data-toggle="modal" data-target="#view<%= bill._id %>"><span class="fas fa-eye"></span></a></td>
+                            <td class="text-teal"><a href="/bills/pay/single/<%= bill._id %>">pay</a></td>
+                        </tr>
+
+
+                        <!--  Modal for viewing history-->
+                        <div class="modal fade" id="view<%= bill._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <br><br>
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title text-center " id="exampleModalLabel">
+                                            <i class="fas fa-list"></i>
+                                            <span>Payment History</span></h5>
+
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+
+                                        <div class="modal-body">
+
+                                            <h5 class="text-center mb-2">Ref#: <b><%= bill.refNumber %></b></h5>
+
+
+
+
+                                                <% for(const payment of bill.payments) { %>
+
+                                                    <div><b>Date: </b><%= new Date(payment.date).toDateString() %></div>
+                                                    <div><b>Amount: </b><%= payment.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></div>
+                                                    <div><b>Mode Of Payment: </b><%= payment.modeOfPayment %></div>
+                                                <hr><br>
+
+                                                <% } %>
+
+
+                                        </div>
+
+                                </div>
+
+                            </div>
+                        </div> <!-- ./view modal -->
+
+
+
+                    <% } %>
+
+                    </tbody>
+
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<%- include('../../layouts/adminFooter') %>

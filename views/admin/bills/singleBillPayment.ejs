@@ -1,0 +1,155 @@
+<%- include('../../layouts/adminHeader') %>
+<br>
+
+<style>
+    .makeVisible{
+        display: block;
+    }
+
+    .makeHidden{
+        display: none;
+    }
+</style>
+
+<h3 class="text-center">Pay Bill</h3>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="card shadow p-3">
+
+                <h5>Ref# : <%= bill.refNumber %> &nbsp; Vendor: <%= bill.vendor.name %></h5>
+
+                    <form action="/bills/pay/<%= bill._id %>" method="post" class="myform">
+
+                        <div class="row">
+
+                            <div class="form-group  col-md-4">
+                                <label for="date">Date</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-calendar"></i>
+                                        </div>
+                                    </div>
+                                    <input class="form-control" required="required" autocomplete="off" name="date" type="date" id="date">
+                                </div>
+                            </div>
+
+                            <div class="form-group  col-md-4">
+                                <label for="amount">Amount</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            ₵
+                                        </div>
+                                    </div>
+                                    <input class="form-control" required="required" min="0" step="0.01" name="amount" autocomplete="off" type="number" value="" id="amount">
+                                </div>
+                            </div>
+
+                            <div class="form-group  col-md-4">
+                                <label>Mode Of Payment</label>
+                                <div class="input-group">
+
+                                    <label class="form-check-label">Cash
+                                        <input type="radio" class="form-check-inline mode" name="mode" value="cash" required>
+                                    </label>
+
+                                    <label class="form-check-label">Bank
+                                        <input type="radio" class="form-check-inline mode" name="mode" value="bank" required>
+                                    </label>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group toggleVisibility col-md-4 makeHidden" >
+                                <label for="bank">Bank Account</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <div class="input-group-text">
+                                            <i class="fas fa-building"></i>
+                                        </div>
+                                    </div>
+                                    <select name="bank" class="form-control bank">
+                                        <option value=""></option>
+                                        <% for(let bank of banks){ %>
+                                            <option value="<%= bank._id %>"><%= bank.bankName + ' **** ' + bank.accountNumber  %></option>
+                                        <% } %>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-4 text-right">
+                                <label class="text-white">.</label>
+
+                                <input class="btn btn-primary btn-block mybtn" type="submit" value="Pay">
+                            </div>
+
+                        </div>
+
+
+
+                    </form>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+
+
+    const modes = document.querySelectorAll(".mode");
+    const toggleVisibilities = document.querySelectorAll(".toggleVisibility");
+    const banks = document.querySelectorAll(".bank");
+
+
+
+    for (let mode of modes) {
+        mode.onclick = function (){
+            if (this.value === "bank"){
+
+                for(let toggleVisibility of toggleVisibilities ){
+                    toggleVisibility.classList.remove("makeHidden");
+                    toggleVisibility.classList.add("makeVisible");
+                }
+
+                for(const bank of banks){
+                    bank.required = "required";
+                }
+
+            }else {
+
+                for(let toggleVisibility of toggleVisibilities){
+                    toggleVisibility.classList.remove("makeVisible");
+                    toggleVisibility.classList.add("makeHidden");
+                }
+
+                for(const bank of banks){
+                    bank.required = undefined;
+                }
+
+
+            }
+        }
+    }
+
+
+
+
+</script>
+
+
+
+
+
+
+
+<%- include('../../layouts/adminFooter') %>

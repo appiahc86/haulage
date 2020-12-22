@@ -36,7 +36,8 @@ const bankTransferController = {
                 date,
                 amount: parseFloat(amount),
                 fromAccount,
-                toAccount
+                toAccount,
+                user: req.user._id
             });
 
             await newTransaction.save();

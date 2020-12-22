@@ -28,6 +28,10 @@ const accountSchema = new Schema({
 
     contact: {
         type: String
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
     }
 
 }, {timestamps: true});

@@ -2,22 +2,18 @@ import express from "express";
 const router = express.Router();
 
 import Truck from "../../models/assets/Truck.js";
-import AssetAccount from "../../models/assetAccount/assetAccount.js";
+import Sale from "../../models/sales/Sale.js";
 import User from "../../models/users/User.js";
 import auth from "../../middleware/auth.js";
 
 // To admin dashboard
 router.get('/', auth, async (req, res) => {
 
-    const assetAccounts = await AssetAccount.find({}); //Get all records (expenses and truck sales)
+    const salesQuery = await Sale.find({}); //Get all records (expenses and truck sales)
     const trucks = await Truck.find({}); //Get all trucks
     const users = await User.find({});
 
 
-    //Filter Asset account to get sales records only
-    const sales = assetAccounts.filter((account) => {
-        return account.transactionType === "sales";
-    })
 
     let salesArray = [0];
     for(const sale of sales){
@@ -27,10 +23,8 @@ router.get('/', auth, async (req, res) => {
            return previousValue + currentValue;
     })
 
-    //Filter Asset account to get expenditure records only
-    const expenses = assetAccounts.filter((account) => {
-        return account.transactionType !== "sales";
-    })
+    //Filter Asset account to get expenses records only
+
 
     const expensesArray = [0];
     for (const expense of expenses) {
@@ -106,7 +100,7 @@ router.get('/', auth, async (req, res) => {
             users,
             trucks,
             sales,  //this will be used in chart to calculate income
-            expenses, //this will be used in chart to calculate expenditure
+            expenses, //this will be used in chart to calculate expenses
             salesTotal,
             totalExpenses,
             profitThisYear, //Annual Profit

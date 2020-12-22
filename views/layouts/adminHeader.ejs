@@ -33,7 +33,7 @@
     </style>
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" oncontextmenu="return false">
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" >
 <div class="wrapper">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background: #f6f6f6">
@@ -222,25 +222,78 @@
                     </li>
                     <br>
 
-                        <!--  Expenditure  -->
+
+                    <!-- Vendors -->
                     <li class="nav-item">
-                        <a href="/admin/expenditures" class="nav-link">
+                        <a href="/vendors" class="nav-link">
                             <i class="nav-icon fas fa-atom"></i>
                             <p>
-                                Expenditure
+                                Vendors
+                            </p>
+                        </a>
+                    </li>
+                    <li class="nav-header text-warning">Bills</li>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-money-bill"></i>
+                            <p>
+                                Click To Expand
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="/bills" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Create Bill</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/bills/pay" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Pay Bill</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
+                        <!--  Expenditure  -->
+                    <li class="nav-item mt-1">
+                        <a href="/admin/expenses" class="nav-link">
+                            <i class="nav-icon fas fa-atom"></i>
+                            <p>
+                                Expenses
+                            </p>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="/depreciation" class="nav-link">
+                            <i class="nav-icon fas fa-calculator"></i>
+                            <p>
+                                Depreciation
                             </p>
                         </a>
                     </li>
 
 
+                    <li class="nav-item">
+                        <a href="/trips" class="nav-link">
+                            <i class="nav-icon fas fa-truck-loading"></i>
+                            <p>
+                               Trips
+                            </p>
+                        </a>
+                    </li>
+
+
+
                     <li class="nav-header text-warning">SALES</li>
                     <li class="nav-item">
-                        <a href="/admin/assetAccounts" class="nav-link">
+                        <a href="/admin/sales" class="nav-link">
                             <i class="nav-icon fas fa-calendar-alt"></i>
                             <p>
                                 Record Sales
-                              
                             </p>
                         </a>
                     </li>
@@ -302,6 +355,12 @@
                                 </a>
                             </li>
 
+                            <li class="nav-item">
+                                <a href="/activities" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>Audit Trail</p>
+                                </a>
+                            </li>
 
                         </ul>
                     </li>

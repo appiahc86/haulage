@@ -17,6 +17,11 @@ const truckSchema = new Schema({
         required: true
     },
 
+    trips:{
+          type: Number,
+        default: 0
+    },
+
     amount: {
        type: Number,
         required: true
@@ -32,9 +37,15 @@ const truckSchema = new Schema({
         trim: true
     },
 
+
     deleted: {
        type: Boolean,
         default: 0
+    },
+
+    user: {
+       type: Schema.Types.ObjectId,
+        ref: 'users'
     }
 
 }, {timestamps: true});

@@ -1,6 +1,8 @@
 import Bank from "../../models/banking/Bank.js";
 import BankTransfers from "../../models/banking/BankTransfers.js";
-import AssetAccount from "../../models/assetAccount/assetAccount.js";
+import Sale from "../../models/sales/Sale.js";
+import Expense from "../../models/expenses/Expense.js";
+
 
 const bankController = {
 
@@ -26,7 +28,8 @@ const bankController = {
                 accountNumber: account_number,
                 balance: parseFloat(balance),
                 branch: branch,
-                contact: contact_number
+                contact: contact_number,
+                user: req.user._id
             });
 
             await newBankAccount.save();
@@ -83,8 +86,14 @@ const bankController = {
                 return res.redirect('/admin/banking');
             }
 
-            const hasRecords3 = await AssetAccount.find({bankAccountNumber: req.params.id}); //check Asset Account collection
+            const hasRecords3 = await Sale.find({bankAccountNumber: req.params.id}); //check Asset Account collection
             if (hasRecords3.length > 0){
+                req.flash('error_msg', 'Sorry, cannot delete this bank because it has some records');
+                return res.redirect('/admin/banking');
+            }
+
+            const hasRecords4 = await Expense.find({bankAccountNumber: req.params.id}); //check Asset Account collection
+            if (hasRecords4.length > 0){
                 req.flash('error_msg', 'Sorry, cannot delete this bank because it has some records');
                 return res.redirect('/admin/banking');
             }

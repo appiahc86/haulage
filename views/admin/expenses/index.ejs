@@ -11,7 +11,7 @@
 </style>
 
 <br>
-<h2 class="text-sm-center"><span class="fas fa-money-check"></span> Record Expenditure</h2>
+<h2 class="text-sm-center"><span class="fas fa-money-check"></span> Record expense</h2>
 
 <div class="container">
     <div class="row">
@@ -19,7 +19,7 @@
 
 
             <!-- ./Form -->
-            <form action="/admin/expenditures/store" method="post" class="myform">
+            <form action="/admin/expenses/store" method="post" class="myform">
 
                 <div class="row">
                     <div class="form-group  col-md-3">
@@ -47,7 +47,7 @@
                     </div>
                             <!--  Expense Type  -->
                     <div class="form-group  col-md-3">
-                        <label for="type">Expense Type</label>
+                        <label for="type">Expense Type <span><a href="/expenseType">Create New</a></span></label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">
@@ -57,12 +57,10 @@
                             <select name="type" id="type" class="form-control" required>
 
                                 <option value="">--Select Option--</option>
-                                <option value="fuelAndLubes">FUEL & LUBES</option>
-                                <option value="insuranceAndRenewals">INSURANCE & RENEWALS</option>
-                                <option value="repairsAndMaintenance">REPAIRS & MAINTENANCE</option>
-                                <option value="roadExpenses">ROAD EXPENSES</option>
-                                <option value="wagesAndSalaries">WAGES & SALARIES</option>
-                                <option value="otherExpenses">OTHER EXPENSES</option>
+
+                                <% for(const expenseType of expenseTypes){ %>
+                                    <option value="<%= expenseType._id %>"><%= expenseType.name %></option>
+                                <% } %>
 
                             </select>
                         </div>
@@ -158,13 +156,11 @@
 
 
 
-
-
-
 <!-- Container for table -->
 <div class="container">
     <div class="row">
         <div class="col">
+            <div class="card shadow p-3">
             <div class="table-responsive">
                 <table class="table table-hover table-sm" id="myTable">
 
@@ -183,25 +179,25 @@
 
                     <tbody>
 
-                    <% for(const expenditure of expenditures){ %>
+                    <% for(const expense of expenses){ %>
 
                         <tr>
-                        <td><%= expenditure.truck.licenseNumber %></td>
-                        <td><%= new Date(expenditure.date).toDateString() %></td>
-                        <td><%= expenditure.mode %></td>
-                        <td><%= expenditure.bank !== "" ? expenditure.bank : "..." %></td>
-                        <td><b>₵ </b><%= expenditure.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
-                        <td><%= expenditure.transactionType %></td>
-                        <td><%= expenditure.description.slice(0,15).concat("...") %></td>
+                        <td><%= expense.truck.licenseNumber %></td>
+                        <td><%= new Date(expense.date).toDateString() %></td>
+                        <td><%= expense.mode %></td>
+                        <td><%= expense.bank !== "" ? expense.bank : "..." %></td>
+                        <td><b>₵ </b><%= expense.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                        <td><%= expense.expenseType.name %></td>
+                        <td><%= expense.description.slice(0,15).concat("...") %></td>
                         <td>
-                            <button data-toggle="modal" data-target="#del<%= expenditure._id %>" class="btn btn-danger btn-sm">
+                            <button data-toggle="modal" data-target="#del<%= expense._id %>" class="btn btn-danger btn-sm">
                                 <span class="fas fa-trash-alt"></span>
                             </button>
                         </td>
                         </tr>
 
-                        <!--  Modal for deleting record-->
-                        <div class="modal fade" id="del<%= expenditure._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <!--  Modal for deleting record -->
+                        <div class="modal fade" id="del<%= expense._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
                             <br><br>
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -211,7 +207,7 @@
                                             <span aria-hidden="true">×</span>
                                         </button>
                                     </div>
-                                    <form action="/admin/expenditures/<%= expenditure._id %>?_method=DELETE" method="post" class="myform">
+                                    <form action="/admin/expenses/<%= expense._id %>?_method=DELETE" method="post" class="myform">
                                         <div class="modal-body">
 
                                             Are you sure you want to delete this record?
@@ -237,31 +233,41 @@
                 </table>
             </div>
         </div>
+        </div>
     </div>
 </div>
 <br><br>
 
 
-<script>
-    const modes = document.querySelectorAll(".mode");
-    const toggleVisibility = document.querySelector("#toggleVisibility");
-    const bank = document.querySelector("#bank");
-
-    for (let mode of modes) {
-        mode.onclick = function (){
-            if (this.value === "bank"){
-                toggleVisibility.classList.remove("makeHidden");
-                toggleVisibility.classList.add("makeVisible");
-                bank.required = "required";
-            }else {
-                bank.required = undefined;
-                toggleVisibility.classList.remove("makeVisible");
-                toggleVisibility.classList.add("makeHidden");
-            }
-        }
-    }
-
-</script>
-
 
 <%- include('../../layouts/adminFooter') %>
+
+
+<script>
+
+
+
+
+         const modes = document.querySelectorAll(".mode");
+         const toggleVisibility = document.querySelector("#toggleVisibility");
+         const bank = document.querySelector("#bank");
+
+
+
+         for (let mode of modes) {
+             mode.onclick = function (){
+                 if (this.value === "bank"){
+                     toggleVisibility.classList.remove("makeHidden");
+                     toggleVisibility.classList.add("makeVisible");
+                     bank.required = "required";
+                 }else {
+                     bank.required = undefined;
+                     toggleVisibility.classList.remove("makeVisible");
+                     toggleVisibility.classList.add("makeHidden");
+                 }
+             }
+         }
+
+
+
+</script>

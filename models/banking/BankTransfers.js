@@ -20,6 +20,11 @@ const bankTransferSchema = new Schema({
         ref: "banks"
     },
 
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
+    }
+
 
 }, {timestamps: true});
 

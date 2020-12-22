@@ -1,0 +1,191 @@
+
+<%- include('../../layouts/adminHeader') %>
+<br>
+
+<h3 class="text-center font-weight-bold">Depreciation</h3>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col md-8">
+            <div class="card shadow p-3">
+
+                <form action="/depreciation" method="post" class="myform">
+
+                    <div class="row">
+                    <div class="form-group  col-md-3">
+                        <label for="">Truck</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-truck"></i>
+                                </div>
+                            </div>
+                            <select name="truck" id="truck" class="form-control selectpicker trucks"
+                                    data-live-search="true"
+                                    title="Select a truck"
+                                    required
+                            >
+
+                                <option></option>
+
+                                <% for(const truck of trucks){ %>
+
+                                    <option value="<%= truck._id %>" data-amount="<%= truck.amount %>" data-depreciation="<%= truck.depreciation %>">
+                                        <%= truck.licenseNumber %>
+                                    </option>
+                                <% } %>
+
+                            </select>
+                        </div>
+                    </div>
+
+
+
+
+                        <div class="form-group  col-md-3">
+                            <label for="date">Date</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-calendar"></i>
+                                    </div>
+                                </div>
+                                <input class="form-control" required="required" autocomplete="off" name="date" type="date" id="date">
+                            </div>
+                        </div>
+
+                    <div class="form-group  col-md-3">
+                        <label for="amount">Amount</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <b>₵</b>
+                                </div>
+                            </div>
+                            <input class="form-control" step="0.01" required="required" name="amount" type="number" id="amount" readonly>
+                        </div>
+                    </div>
+
+                        <div class="form-group  col-md-3">
+                            <label for="" class="text-white">.</label>
+                            <div class="input-group">
+                                <button type="submit" class="btn btn-primary mybtn"><span class="fas fa-save"></span> Save</button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow p-3">
+
+                <table class="table table-hover table-sm" id="myTable">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Truck</th>
+                        <th>Date</th>
+                        <th>Amount</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                        <% for(const dep of depreciation){ %>
+                            <tr>
+                                <td><%= dep.truck.licenseNumber %></td>
+                                <td><%= new Date(dep.date).toDateString() %></td>
+                                <td><%= dep.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                                <td><a href="" data-toggle="modal" data-target="#del<%= dep._id %>"  class="btn btn-danger btn-sm"><span class="fas fa-trash-alt"></span></a></td>
+                            </tr>
+
+                            <div class="modal fade" id="del<%= dep._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <br><br>
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete Record</span></h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <form action="/depreciation/<%= dep._id %>?_method=DELETE" method="post" class="myform">
+                                            <div class="modal-body">
+
+                                                Are you sure you want to delete this record?
+
+                                                <div class="col-md-12 text-right">
+                                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                    <input type="submit" class="btn btn-danger btn-sm mybtn" value="Delete">
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div> <!-- ./delete modal -->
+
+
+                        <% } %>
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%- include('../../layouts/adminFooter') %>
+
+<script>
+
+    function dep(amount, depreciation) {
+
+        return (depreciation / 100) * amount;
+
+    }
+
+    $('.trucks').on('change', function(e){
+
+        if ($(this).find('option:selected').val() !== ""){
+
+            let amt = parseFloat($(this).find('option:selected').attr('data-amount'));
+            let depreciation = parseFloat($(this).find('option:selected').attr('data-depreciation'));
+            $('#amount').val(dep(amt, depreciation).toFixed(2));
+
+        }
+
+    }).change();
+
+
+
+
+</script>

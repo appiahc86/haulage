@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
-const assetAccountSchema = new Schema({
+const expenseSchema = new Schema({
     amount: {
         type: Number,
         required: true
@@ -28,16 +28,21 @@ const assetAccountSchema = new Schema({
         type: String
     },
 
-    transactionType: {
-        type: String,
-        default: 'sales'
+   expenseType: {
+        type: Schema.Types.ObjectId,
+        ref: 'expense_types'
     },
 
     description: {
         type: String
+    },
+
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'users'
     }
 
 }, {timestamps: true});
 
-const AssetAccount = mongoose.model('asset_accounts', assetAccountSchema);
-export default AssetAccount;
+const Expense = mongoose.model('expenses', expenseSchema);
+export default Expense;

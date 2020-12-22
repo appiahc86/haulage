@@ -1,5 +1,9 @@
 import Truck from "../../models/assets/Truck.js";
-import AssetAccount from "../../models/assetAccount/assetAccount.js";
+import Sale from "../../models/sales/Sale.js";
+import Expense from "../../models/expenses/Expense.js";
+import Bill from "../../models/bills/Bill.js";
+
+
 
 const assetController = {
 
@@ -20,7 +24,8 @@ const assetController = {
                 datePurchased,
                 amount,
                 depreciation,
-                description
+                description,
+                user: req.user._id
             });
 
             const checkDuplicate = await Truck.findOne({licenseNumber: licenseNumber.trim().toUpperCase()});
@@ -79,9 +84,12 @@ const assetController = {
     destroy: async (req, res) => {
 
         try {
-                //Set deleted to true if asset has records
-        const haveRecords = await AssetAccount.find({truck: req.params.id});
-        if (haveRecords.length > 0){
+                //Set deleted to true if Truck has sales or expense records
+        const hasRecords = await Sale.find({truck: req.params.id});
+        const hasRecords2 = await Expense.find({truck: req.params.id});
+        const hasRecords3 = await Bill.find({truck: req.params.id});
+
+        if (hasRecords.length > 0 || hasRecords2.length > 0 || hasRecords3.length > 0){
             const asset = await Truck.findById(req.params.id);
             asset.deleted = 1;
             await asset.save();

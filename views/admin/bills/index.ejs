@@ -1,0 +1,328 @@
+<%- include('../../layouts/adminHeader') %>
+<br>
+<h3 class="text-center">Create Bill</h3>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+
+    <div class="card shadow p-3">
+
+        <form action="/bills/create" method="post" class="myform">
+
+            <div class="row">
+                    <div class="form-group  col-md-3">
+                        <label for="vendor">Vendor</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-sort-numeric-down-alt"></i>
+                                </div>
+                            </div>
+                            <select name="vendor" id="vendor" class="form-control selectpicker"
+                                    data-live-search="true"
+                                    title="Select Vendor"
+                                    required
+                            >
+
+                                <% for(let vendor of vendors){ %>
+                                    <option value="<%= vendor._id %>"><%= vendor.name %></option>
+                                <% } %>
+
+                            </select>
+                        </div>
+                    </div>
+
+                <div class="form-group  col-md-3">
+                    <label for="refNumber">Ref#</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                        </div>
+                        <input class="form-control" required="required" autocomplete="off" name="refNumber" type="text" id="refNumber">
+                    </div>
+                </div>
+
+                <div class="form-group  col-md-3">
+                    <label for="truck">Truck</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                        </div>
+                        <select name="truck" id="truck" class="form-control selectpicker"
+                                data-live-search="true"
+                                title="Select a truck"
+                                required
+                        >
+
+                            <% for(let truck of trucks){ %>
+                                <option value="<%= truck._id %>"><%= truck.licenseNumber %></option>
+                            <% } %>
+
+                        </select>
+                    </div>
+                </div>
+
+
+                    <div class="form-group  col-md-3">
+                        <label for="date">Date</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <div class="input-group-text">
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                            </div>
+                            <input class="form-control" required="required" autocomplete="off" name="date" type="date" id="date">
+                        </div>
+                    </div>
+
+                <div class="form-group  col-md-3">
+                    <label for="amount">Amount</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <b>₵</b>
+                            </div>
+                        </div>
+                        <input class="form-control" step="0.01" required="required" autocomplete="off" name="amount" type="number" id="amount">
+                    </div>
+                </div>
+
+                <div class="form-group  col-md-3">
+                    <label for="description">Description</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fas fa-list"></i>
+                            </div>
+                        </div>
+                  <textarea class="form-control" required="required" name="description" id="description" cols="30" rows="1"></textarea>
+                    </div>
+                </div>
+
+
+                <div class="form-group  col-md-3">
+                    <label for="" class="text-white">.</label>
+                    <div class="input-group">
+                        <button type="submit" class="btn btn-primary mybtn"><span class="fas fa-save"></span> Save</button>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+    </div>
+    </div>
+</div>
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow p-3">
+
+
+                <div class="table-responsive">
+                    <table class="table table-borderless table-sm table-hover" id="myTable">
+
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>Vendor</th>
+                            <th>Ref#</th>
+                            <th>Truck</th>
+                            <th>Date</th>
+                            <th>Amount</th>
+                            <th>Description</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+
+<!--                        <tbody>-->
+
+                        <% for(let bill of bills){ %>
+                            <tr>
+                                <td><%= bill.vendor.name %></td>
+                                <td><%= bill.refNumber %></td>
+                                <td><%= bill.truck.licenseNumber %></td>
+                                <td><%= new Date(bill.date).toDateString() %></td>
+                                <td><%= bill.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                                <td><%= bill.description %></td>
+                                <td><a class="btn btn-success btn-sm" href="" data-toggle="modal" data-target="#edit<%= bill._id %>" ><span class="fas fa-edit"></span></a></td>
+                                <td>
+<!--                                    <a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= bill._id %>" ><span class="fas fa-trash-alt"></span></a>-->
+                                </td>
+
+
+
+
+                            </tr>
+
+                            <!--  Edit Modal-->
+                            <div class="modal fade" id="edit<%= bill._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <br><br>
+                                <div class="modal-dialog modal-lg" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-center" id="exampleModalLabel"><i class="fas fa-truck"></i><span class="text-primary"> Edit Bill</span></h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+
+
+                                            <!-- ./Form -->
+                                            <form action="/bills/update/<%= bill._id %>?_method=PATCH" method="post" class="myform">
+
+
+                                                <div class="row">
+                                                    <div class="form-group  col-md-4">
+                                                        <label for="editVendor">Vendor</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">
+                                                                    <i class="fas fa-sort-numeric-down-alt"></i>
+                                                                </div>
+                                                            </div>
+                                                            <select name="editVendor" class="form-control " id="editVendor"
+                                                                    data-live-search="true"
+                                                                    required
+                                                            >
+
+                                                                <option value="<%= bill.vendor._id %>"><%= bill.vendor.name %></option>
+
+                                                                <% for(const vendor of vendors){
+
+                                                                    if (vendor._id === bill.vendor._id){
+                                                                        continue
+                                                                    } %>
+
+                                                                <option value="<%= vendor._id %>"><%= vendor.name %></option>
+                                                                <% } %>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group  col-md-4">
+                                                        <label for="">Ref#</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">
+                                                                    <i class="fas fa-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                            <input class="form-control" value="<%= bill.refNumber %>" required="required" autocomplete="off" name="editRefNumber" type="text">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group  col-md-4">
+                                                        <label for="">Truck</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">
+                                                                    <i class="fas fa-truck"></i>
+                                                                </div>
+                                                            </div>
+                                                            <select name="editTruck" id="truck" class="form-control "
+                                                                    data-live-search="true"
+                                                                    required
+                                                            >
+
+                                                                <option value="<%= bill.truck._id %>"> <%= bill.truck.licenseNumber  %></option>
+                                                                <% for(let truck of trucks){ %>
+                                                                    <option value="<%= truck._id %>"><%= truck.licenseNumber %></option>
+                                                                <% } %>
+
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="form-group  col-md-4">
+                                                        <label for="">Date</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">
+                                                                    <i class="fas fa-calendar"></i>
+                                                                </div>
+                                                            </div>
+                                                            <input class="form-control" autocomplete="off" name="editDate" type="date">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group  col-md-4">
+                                                        <label for="">Amount</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">
+                                                                    <b>₵</b>
+                                                                </div>
+                                                            </div>
+                                                            <input class="form-control" step="0.01" value="<%= bill.amount %>" required="required" autocomplete="off" name="editAmount" type="number" id="amount">
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group  col-md-4">
+                                                        <label for="">Description</label>
+                                                        <div class="input-group">
+                                                            <div class="input-group-prepend">
+                                                                <div class="input-group-text">
+                                                                    <i class="fas fa-list"></i>
+                                                                </div>
+                                                            </div>
+                                                            <textarea class="form-control" required="required" name="editDescription" id="description" cols="30" rows="1"><%= bill.description %></textarea>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-md-12 text-right">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                        <input class="btn btn-violet mybtn" type="submit" value="Update">
+                                                    </div>
+
+                                                </div>
+
+
+
+                                            </form> <!-- ./Form -->
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> <!-- ./Edit  modal -->
+
+
+
+                        <% } %>
+<!--                        </tbody>-->
+
+                    </table>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+<%- include('../../layouts/adminFooter') %>
