@@ -22,4 +22,7 @@ router.get('/pay/single/:id', billsController.singlePayment);
 //Pay Bill
 router.post('/pay/:id', billsController.pay);
 
+//Delete bill
+router.delete('/:id', billsController.destroy);
+
 export default router;

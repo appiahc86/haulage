@@ -3,6 +3,7 @@ import Truck from "../../models/assets/Truck.js";
 import Vendor from "../../models/vendors/Vendor.js";
 import Bank from "../../models/banking/Bank.js";
 import Cash from "../../models/cash/Cash.js";
+import Activity from "../../models/activities/Activity.js";
 
 const billsController = {
 
@@ -20,6 +21,7 @@ const billsController = {
 
         const {vendor, refNumber, truck, date, amount, description} = req.body;
 
+        try {
         //Check if ref number exists
         const refExists = await Bill.find({refNumber: refNumber.toUpperCase()});
 
@@ -39,12 +41,25 @@ const billsController = {
                 user: req.user._id
             });
 
+        const findVendor = await Vendor.findById(vendor);
+
+        //Record Activity
+        const newActivity = new Activity({
+            user: req.params.id,
+            refNumber: refNumber.trim().toUpperCase(),
+            status: 'Created',
+            table: 'bills',
+            amount: parseFloat(amount),
+            vendor: findVendor.name,
+            details: description
+        })
+        await newActivity.save();
+
+
             await bill.save();
             req.flash('success_msg', 'Record Saved Successfully');
             res.redirect('/bills');
 
-
-        try {
 
         }catch (e) {
             console.log(e);
@@ -131,12 +146,12 @@ const billsController = {
 
                 const bankAccount = await Bank.findById(bank);
                 //Deduct Amount from bank account
-                bankAccount.balance -= amount;
+                bankAccount.balance -= parseFloat(amount);
                 await bankAccount.save();
 
                 bill.payments.push({
                     date,
-                    amount,
+                    amount: parseFloat(amount),
                     modeOfPayment: mode,
                     bankName: bankAccount.bankName + " ("  + bankAccount.accountNumber + ")",
                     bank: bankAccount._id,
@@ -189,10 +204,38 @@ const billsController = {
 
         }
 
+    },
+
+
+//Delete bill
+    destroy: async (req, res) => {
+
+        try {
+            const bill = await Bill.findById(req.params.id);
+
+            //Record Activity
+            const newActivity = new Activity({
+                user: req.params.id,
+                refNumber: bill.refNumber,
+                status: 'Deleted',
+                table: 'bills',
+                amount: bill.amount,
+                vendor: bill.vendor.name,
+                details: bill.description
+            })
+            await newActivity.save();
+
+            await bill.remove();
+            req.flash('success_msg', 'Record deleted Successful');
+            return res.redirect('/bills');
+
+        }catch (e) {
+            console.log(e);
+            req.flash('error_msg', 'Sorry, Error Occurred');
+            return  res.redirect('/bills');
+        }
+
     }
-
-
-
 
 
 

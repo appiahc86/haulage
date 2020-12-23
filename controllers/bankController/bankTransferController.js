@@ -1,5 +1,6 @@
 import Bank from "../../models/banking/Bank.js";
 import BankTransfers from "../../models/banking/BankTransfers.js";
+import Activity from "../../models/activities/Activity.js";
 
 
 const bankTransferController = {
@@ -40,6 +41,17 @@ const bankTransferController = {
                 user: req.user._id
             });
 
+            //Record activity
+            const newActivity = new Activity({
+                user: req.user._id,
+                table: 'bankTransfers',
+                status: 'Transfer',
+                fromAcc: debitAccount.bankName + " (" + debitAccount.accountNumber + ")",
+                toAcc: creditAccount.bankName + " (" + creditAccount.accountNumber + ")",
+                amount: parseFloat(amount)
+            })
+            await newActivity.save();
+
             await newTransaction.save();
             req.flash('success_msg', 'Transaction was successful');
             res.redirect('/admin/bankTransfers');
@@ -59,7 +71,19 @@ const bankTransferController = {
 
         try {
 
-            const record = await BankTransfers.findById(req.params.id);
+            const record = await BankTransfers.findById(req.params.id).populate('fromAccount').populate('toAccount');
+
+            //Record activity
+            const newActivity = new Activity({
+                user: req.user._id,
+                table: 'bankTransfers',
+                status: 'Deleted',
+                fromAcc: record.fromAccount.bankName + " (" + record.fromAccount.accountNumber + ")",
+                toAcc: record.toAccount.bankName + " (" + record.toAccount.accountNumber + ")",
+                amount: parseFloat(record.amount)
+            })
+            await newActivity.save();
+
 
             //Add amount bank to (From-Account)
             const debitAccount = await Bank.findById(record.fromAccount);

@@ -20,6 +20,10 @@ const activitiesSchema = new Schema({
       type: String
     },
 
+    amount:{
+      type: Number
+    },
+
     //Assets
     licenseNumber: {
         type: String
@@ -36,8 +40,23 @@ const activitiesSchema = new Schema({
 
     balance: {
         type: Number
+    },
+//Transfers
+    fromAcc: {
+        type: String
+    },
+    toAcc: {
+        type: String
+    },
+
+//Bills
+    refNumber: {
+        type: String
+    },
+    vendor:{
+        type: String
     }
-//
+
 
 
 

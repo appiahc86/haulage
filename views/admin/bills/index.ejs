@@ -159,13 +159,43 @@
                                 <td><%= bill.description %></td>
                                 <td><a class="btn btn-success btn-sm" href="" data-toggle="modal" data-target="#edit<%= bill._id %>" ><span class="fas fa-edit"></span></a></td>
                                 <td>
-<!--                                    <a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= bill._id %>" ><span class="fas fa-trash-alt"></span></a>-->
+                                    <a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= bill._id %>" ><span class="fas fa-trash-alt"></span></a>
                                 </td>
 
 
 
 
                             </tr>
+
+
+                            <!--  Modal for deleting transfer history-->
+                            <div class="modal fade" id="del<%= bill._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <br><br>
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete This record</span></h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <form action="/bills/<%= bill._id %>?_method=DELETE" method="post" class="myform">
+                                            <div class="modal-body">
+
+                                                Are you sure you want to delete this record?
+
+                                                <div class="col-md-12 text-right">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                    <input type="submit" class="btn btn-danger mybtn" value="Delete">
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div> <!-- ./delete modal -->
+
 
                             <!--  Edit Modal-->
                             <div class="modal fade" id="edit<%= bill._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -300,6 +330,7 @@
                                     </div>
                                 </div>
                             </div> <!-- ./Edit  modal -->
+
 
 
 

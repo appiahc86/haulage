@@ -2,6 +2,7 @@ import Bank from "../../models/banking/Bank.js";
 import BankTransfers from "../../models/banking/BankTransfers.js";
 import Sale from "../../models/sales/Sale.js";
 import Expense from "../../models/expenses/Expense.js";
+import Activity from "../../models/activities/Activity.js";
 
 
 const bankController = {
@@ -32,12 +33,23 @@ const bankController = {
                 user: req.user._id
             });
 
+            const newActivity = new Activity({
+                user:req.user._id,
+                table: 'banks',
+                bank: bank_name + " (" + account_number + ")",
+                balance: parseFloat(balance),
+                status: 'Created'
+            })
+            await newActivity.save();
+
             await newBankAccount.save();
             req.flash('success_msg', 'Account Created Successfully');
             res.redirect('/admin/banking');
 
         }catch (e) {
             console.log(e)
+            req.flash('error_msg', 'Sorry, error occurred');
+            res.redirect('/admin/banking');
         }
 
     },
@@ -51,6 +63,18 @@ const bankController = {
         try {
 
             const account = await Bank.findById(req.params.id);
+
+            //Record Activity
+            const newActivity = new Activity({
+                user:req.user._id,
+                table: 'banks',
+                bank: edit_bank_name + " (" + edit_account_number + ")",
+                balance: parseFloat(edit_balance),
+                status: 'Modified',
+                details: parseFloat(account.balance ) !== parseFloat(edit_balance) ? `balance changed from ${account.balance } to ${edit_balance}` : ''
+            })
+
+            await newActivity.save();
 
                  account.holderName = edit_holder_name;
                  account.bankName = edit_bank_name;
@@ -99,6 +123,16 @@ const bankController = {
             }
 
             const account = await Bank.findById(req.params.id);
+            //Record Activity
+            const newActivity = new Activity({
+                user:req.user._id,
+                table: 'banks',
+                bank: account.bankName + " (" + account.accountNumber + ")",
+                balance: parseFloat(account.balance),
+                status: 'Deleted'
+            })
+            await newActivity.save();
+
             await account.remove();
             req.flash('success_msg', 'Account Deleted Successfully');
             return  res.redirect('/admin/banking');
