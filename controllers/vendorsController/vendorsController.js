@@ -1,4 +1,5 @@
 import Vendor from "../../models/vendors/Vendor.js";
+import Bill from "../../models/bills/Bill.js";
 
 const vendorsController = {
 
@@ -59,6 +60,13 @@ const vendorsController = {
     destroy: async (req, res) => {
 
         try {
+
+            const checkBills = await Bill.find({vendor: req.params.id});
+            if (checkBills.length > 0){
+                req.flash('error_msg', 'Sorry, we cannot remove this vendor because it has bills records');
+                return res.redirect('/vendors');
+            }
+
             const vendor = await Vendor.findById(req.params.id);
             await vendor.remove();
 

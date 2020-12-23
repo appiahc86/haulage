@@ -8,12 +8,16 @@ const activitiesSchema = new Schema({
         ref: 'users'
     },
 
-    collection: {
+    table: {
         type: String
     },
 
     status: {
         type: String
+    },
+
+    details: {
+      type: String
     },
 
     //Assets
@@ -39,3 +43,6 @@ const activitiesSchema = new Schema({
 
 
 }, {timestamps: true})
+
+const Activity = mongoose.model('activities', activitiesSchema);
+export default Activity;
