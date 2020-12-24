@@ -1,6 +1,14 @@
 import express from "express";
 const router = express.Router();
+
+import auth from "../../../middleware/auth.js";
+import admin from "../../../middleware/admin.js";
+
 import assetController from "../../../controllers/assetsController/asset.js";
+
+router.all('/*', auth, admin, (req, res, next)=>{
+    next();
+});
 
 //Get all assets
 router.get('/', assetController.index);

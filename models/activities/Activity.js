@@ -67,6 +67,10 @@ truck:{
 //Expenses
     expenseType:{
         type: String
+    },
+
+    modeOfPayment: {
+        type: String
     }
 
 

@@ -136,7 +136,7 @@ const userController = {
                     firstName,
                     lastName,
                     username: username.trim().toLowerCase(),
-                    role,
+                    role: parseInt(role),
                     password
                 });
 
@@ -172,7 +172,7 @@ const userController = {
                 firstName: "Developer",
                 lastName: "Developer",
                 username: "developer",
-                role: "admin",
+                role: 1,
                 password: "Passwd@123"
             });
         } // ./create acc for dev

@@ -69,6 +69,17 @@ const billsController = {
 
     },
 
+    //Edit bill
+    editBill: async (req, res) => {
+
+        const bill = await Bill.findById(req.params.id).populate('vendor').populate('truck');
+        const trucks = await Truck.find({deleted: 0});
+        const vendors = await Vendor.find({});
+
+        res.render('admin/bills/edit', {bill, trucks, vendors});
+
+    },
+
     //Update Bill
     update: async (req, res) => {
 

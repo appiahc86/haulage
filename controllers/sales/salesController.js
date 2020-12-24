@@ -2,6 +2,7 @@ import Truck from "../../models/assets/Truck.js";
 import Bank from "../../models/banking/Bank.js";
 import Cash from "../../models/cash/Cash.js";
 import Sale from "../../models/sales/Sale.js";
+import Activity from "../../models/activities/Activity.js";
 
 const salesController = {
 
@@ -66,6 +67,20 @@ const salesController = {
 
             //Save record to database
             await sale.save();
+
+            const truckRecord = await Truck.findById(sale.truck);
+
+            const newActivity = new Activity({
+                user: req.user._id,
+                table: 'sales',
+                status: 'Created',
+                truck: truckRecord.licenseNumber,
+                amount: sale.amount,
+                modeOfPayment: sale.bank === '' ? 'Cash' : sale.bank
+            })
+            await newActivity.save();
+
+
             req.flash('success_msg', 'Record Saved Successfully');
             res.redirect('/admin/sales');
 
@@ -99,6 +114,21 @@ const salesController = {
 
             //Delete sales record
             await record.remove();
+
+            //Record Activity
+
+            const truckRecord = await Truck.findById(record.truck);
+
+            const newActivity = new Activity({
+                user: req.user._id,
+                table: 'sales',
+                status: 'Deleted',
+                truck: truckRecord.licenseNumber,
+                amount: record.amount,
+                modeOfPayment: record.bank === '' ? 'Cash' : record.bank
+            })
+            await newActivity.save();
+
             req.flash('success_msg', 'Record deleted successfully');
             res.redirect('/admin/sales');
 

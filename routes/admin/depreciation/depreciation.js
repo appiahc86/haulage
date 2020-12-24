@@ -2,15 +2,16 @@ import express from "express";
 const router = express.Router();
 
 import depreciationController from "../../../controllers/depreciationController/depreciationController.js";
+import auth from "../../../middleware/auth.js";
 
 //Index
-router.get('/', depreciationController.index);
+router.get('/', auth, depreciationController.index);
 
 //Store
-router.post('/', depreciationController.store);
+router.post('/', auth, depreciationController.store);
 
 //Delete
-router.delete('/:id', depreciationController.destroy);
+router.delete('/:id', auth, depreciationController.destroy);
 
 
 

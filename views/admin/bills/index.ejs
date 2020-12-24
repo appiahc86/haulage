@@ -157,7 +157,7 @@
                                 <td><%= new Date(bill.date).toDateString() %></td>
                                 <td><%= bill.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
                                 <td><%= bill.description %></td>
-                                <td><a class="btn btn-success btn-sm" href="" data-toggle="modal" data-target="#edit<%= bill._id %>" ><span class="fas fa-edit"></span></a></td>
+                                <td><a class="btn btn-success btn-sm" href="/bills/edit/<%= bill._id %>"><span class="fas fa-edit"></span></a></td>
                                 <td>
                                     <a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= bill._id %>" ><span class="fas fa-trash-alt"></span></a>
                                 </td>

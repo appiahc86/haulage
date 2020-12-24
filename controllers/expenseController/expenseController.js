@@ -3,6 +3,7 @@ import Bank from "../../models/banking/Bank.js";
 import Truck from "../../models/assets/Truck.js";
 import Cash from "../../models/cash/Cash.js";
 import ExpenseType from "../../models/expenseType/expenseType.js";
+import Activity from "../../models/activities/Activity.js";
 
 const expenseController = {
 
@@ -72,7 +73,21 @@ const expenseController = {
             //Save record to database
             await newRecord.save();
 
-            console.log(newRecord)
+            //Record Activity
+            const truckRecord = await Truck.findById(newRecord.truck);
+            const expenseType = await ExpenseType.findById(newRecord.expenseType);
+
+            const newActivity = new Activity({
+                user: req.user._id,
+                table: 'expenses',
+                status: 'Created',
+                truck: truckRecord.licenseNumber,
+                details: expenseType.name,
+                amount: newRecord.amount,
+                modeOfPayment: newRecord.bank === '' ? 'Cash' : newRecord.bank
+            })
+            await newActivity.save();
+
 
             req.flash('success_msg', 'Record Saved Successfully');
             res.redirect('/admin/expenses');
@@ -111,6 +126,25 @@ const expenseController = {
 
             //Delete expenses record
             await record.remove();
+
+
+            console.log(record)
+            //Record Activity
+            const truckRecord = await Truck.findById(record.truck);
+            const expenseType = await ExpenseType.findById(record.expenseType);
+
+            const newActivity = new Activity({
+                user: req.user._id,
+                table: 'expenses',
+                status: 'Deleted',
+                truck: truckRecord.licenseNumber,
+                details: expenseType.name,
+                amount: record.amount,
+                modeOfPayment: record.bank === '' ? 'Cash' : record.bank
+            })
+            await newActivity.save();
+
+
             req.flash('success_msg', 'Record deleted successfully');
             res.redirect('/admin/expenses');
 
