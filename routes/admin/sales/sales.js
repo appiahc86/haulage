@@ -2,6 +2,12 @@ import express from "express";
 const router = express.Router();
 
 import salesController from "../../../controllers/sales/salesController.js";
+import auth from "../../../middleware/auth.js";
+
+
+router.all('/*', auth, (req, res, next)=>{
+    next();
+});
 
 //Get list of Asset Accounts
 router.get('/', salesController.index);

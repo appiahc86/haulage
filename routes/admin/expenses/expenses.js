@@ -2,6 +2,12 @@ import express from "express";
 const router = express.Router();
 
 import expenseController from "../../../controllers/expenseController/expenseController.js";
+import auth from "../../../middleware/auth.js";
+
+
+router.all('/*', auth, (req, res, next)=>{
+    next();
+});
 
 router.get('/', expenseController.index);
 

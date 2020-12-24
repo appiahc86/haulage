@@ -5,9 +5,10 @@ import Truck from "../../models/assets/Truck.js";
 import Sale from "../../models/sales/Sale.js";
 import User from "../../models/users/User.js";
 import auth from "../../middleware/auth.js";
+import admin from "../../middleware/admin.js";
 
 // To admin dashboard
-router.get('/', auth, async (req, res) => {
+router.get('/', auth, admin, async (req, res) => {
 
     const salesQuery = await Sale.find({}); //Get all records (expenses and truck sales)
     const trucks = await Truck.find({}); //Get all trucks
