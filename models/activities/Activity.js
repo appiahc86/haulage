@@ -49,13 +49,26 @@ const activitiesSchema = new Schema({
         type: String
     },
 
-//Bills
+//Bills and Payments
     refNumber: {
         type: String
     },
+
     vendor:{
         type: String
+    },
+
+
+//Depreciation
+truck:{
+        type: String
+},
+
+//Expenses
+    expenseType:{
+        type: String
     }
+
 
 
 

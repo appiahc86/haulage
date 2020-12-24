@@ -71,6 +71,9 @@ const expenseController = {
 
             //Save record to database
             await newRecord.save();
+
+            console.log(newRecord)
+
             req.flash('success_msg', 'Record Saved Successfully');
             res.redirect('/admin/expenses');
 

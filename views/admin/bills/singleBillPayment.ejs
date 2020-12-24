@@ -19,7 +19,10 @@
 
             <div class="card shadow p-3">
 
-                <h5>Ref# : <%= bill.refNumber %> &nbsp; Vendor: <%= bill.vendor.name %></h5>
+                <h5><span class="text-indigo">Ref# : <%= bill.refNumber %> </span>&nbsp;
+                    <span class="text-olive ml-2" style="text-align: center;">Vendor: <%= bill.vendor.name %></span>
+                    <span style="float: right;" class="text-danger">Amount Due: <%= (bill.amount - bill.paid).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></span>
+                </h5>
 
                     <form action="/bills/pay/<%= bill._id %>" method="post" class="myform">
 

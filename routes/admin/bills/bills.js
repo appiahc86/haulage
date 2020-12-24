@@ -22,6 +22,9 @@ router.get('/pay/single/:id', billsController.singlePayment);
 //Pay Bill
 router.post('/pay/:id', billsController.pay);
 
+//Delete Payment
+router.get('/pay/delete/:billId/:paymentId', billsController.deletePayment);
+
 //Delete bill
 router.delete('/:id', billsController.destroy);
 

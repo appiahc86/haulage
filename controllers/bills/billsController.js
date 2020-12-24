@@ -140,7 +140,7 @@ const billsController = {
 
         try {
 
-            const bill = await Bill.findById(req.params.id);
+            const bill = await Bill.findById(req.params.id).populate('vendor');
             // If mode of payment is bank
             if (bank !== ""){
 
@@ -193,6 +193,17 @@ const billsController = {
 
             }
 
+            //Record Activity
+            const newActivity = new Activity({
+                user: req.user._id,
+                table: 'payments',
+                status: 'Paid',
+                refNumber: bill.refNumber,
+                vendor: bill.vendor.name,
+                amount: amount
+            })
+            await newActivity.save();
+
             req.flash('success_msg', 'Payment Was Successful');
             return res.redirect('/bills/pay');
 
@@ -203,6 +214,82 @@ const billsController = {
             res.redirect('/bills');
 
         }
+
+    },
+
+    //Delete Payment
+    deletePayment: async (req, res) => {
+
+      try {
+
+          const bill = await Bill.findById(req.params.billId).populate('vendor');
+          const payment = bill.payments.filter((b)=> {
+              return b._id == req.params.paymentId; // must 2 equal signs
+          });
+
+          //If payment was made with bank account
+          if (payment[0].modeOfPayment === "bank"){
+
+              const bank = await Bank.findById(payment[0].bank);
+              bank.balance += parseFloat(payment[0].amount); //Credit bank account
+              await bank.save();
+
+              bill.paid -= parseFloat(payment[0].amount) //Subtract from paid record
+
+              bill.payments = bill.payments.filter((b) => { //Remove this payment
+                  return b._id != req.params.paymentId;
+              })
+
+              //Record Activity
+              const newActivity = new Activity({
+                  user: req.user._id,
+                  table: 'payments',
+                  status: 'Deleted',
+                  refNumber: bill.refNumber,
+                  vendor: bill.vendor.name,
+                  amount: parseFloat(payment[0].amount)
+              })
+              await newActivity.save();
+
+
+              await bill.save();
+              req.flash('success_msg', 'Record Successfully Saved');
+              return res.redirect('/bills/pay');
+
+          }else { // If payment was made with cash account
+              const cash = await Cash.findOne({name: "cashAccount"});
+              cash.balance += parseFloat(payment[0].amount); //Credit Cash Account
+              await cash.save();
+
+              bill.paid -= parseFloat(payment[0].amount) //Subtract from paid record
+
+              bill.payments = bill.payments.filter((b) => { //Remove this payment
+                  return b._id != req.params.paymentId;
+              })
+
+              //Record Activity
+              const newActivity = new Activity({
+                  user: req.user._id,
+                  table: 'payments',
+                  status: 'Deleted',
+                  refNumber: bill.refNumber,
+                  vendor: bill.vendor.name,
+                  amount: parseFloat(payment[0].amount)
+              })
+              await newActivity.save();
+
+              await bill.save();
+              req.flash('success_msg', 'Record Successfully Saved');
+              return res.redirect('/bills/pay');
+          }
+
+
+      }catch (e) {
+          console.log(e);
+          req.flash('error_msg', 'Sorry, Error Occurred');
+          return res.redirect('/bills/pay');
+      }
+
 
     },
 

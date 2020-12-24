@@ -67,16 +67,20 @@
 
                                         <div class="modal-body">
 
-                                            <h5 class="text-center mb-2">Ref#: <b><%= bill.refNumber %></b></h5>
-
-
+                                            <h5 class="mb-2">
+                                                <span style="color: #4e2d89">Vendor: <b><%= bill.vendor.name %></b></span>
+                                                <span style="float: right; color: #aa4e01">Ref#: <b><%= bill.refNumber %></b></span>
+                                            </h5>
 
 
                                                 <% for(const payment of bill.payments) { %>
 
                                                     <div><b>Date: </b><%= new Date(payment.date).toDateString() %></div>
                                                     <div><b>Amount: </b><%= payment.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></div>
-                                                    <div><b>Mode Of Payment: </b><%= payment.modeOfPayment %></div>
+                                                    <div><b>Mode Of Payment: </b><%= payment.bankName === "" ? "Cash" : payment.bankName %></div>
+                                                <div class="badge badge-danger badge-pill p-2">
+                                                    <a href="/bills/pay/delete/<%= bill._id %>/<%= payment._id %>" class="text-white" onclick="return confirm('Are you sure you want to undo this transaction?')">Undo Transaction</a>
+                                                </div>
                                                 <hr><br>
 
                                                 <% } %>
