@@ -1,5 +1,13 @@
-<%- include('../../layouts/adminHeader') %>
 
+<% if (parseInt(user.role) ===1 || parseInt(user.role) === 2){ %>
+
+    <%- include('../../layouts/adminHeader') %>
+
+<% } else { %>
+
+    <%- include('../../layouts/userHeader') %>
+
+<% } %>
 <style>
     .makeVisible{
         display: block;
@@ -173,7 +181,11 @@
                         <th>Amount</th>
                         <th>Expense Type</th>
                         <th>Description</th>
+
+                    <% if (parseInt(user.role) ===1 ){ %>
                         <th></th>
+                    <% } %>
+
                     </tr>
                     </thead>
 
@@ -189,11 +201,15 @@
                         <td><b>₵ </b><%= expense.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
                         <td><%= expense.expenseType.name %></td>
                         <td><%= expense.description.slice(0,15).concat("...") %></td>
+
+                    <% if (parseInt(user.role) ===1 ){ %>
                         <td>
                             <button data-toggle="modal" data-target="#del<%= expense._id %>" class="btn btn-danger btn-sm">
                                 <span class="fas fa-trash-alt"></span>
                             </button>
                         </td>
+                    <% } %>
+
                         </tr>
 
                         <!--  Modal for deleting record -->
