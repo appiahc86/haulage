@@ -6,6 +6,33 @@
       return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
     }
 
+    const thisYear = new Date().getFullYear();
+    const thisMonth = new Date().getMonth() + 1;
+
+    // Calculate Bills
+    const billsArray = [0];
+    const monthlyBillsArray = [0];
+
+
+    for(const bill of bills){
+      let remaining = parseFloat(bill.amount) - parseFloat(bill.paid);
+      billsArray.push(remaining);
+
+      if (new Date(bill.date).getFullYear() === thisYear && new Date(bill.date).getMonth() + 1 === thisMonth){
+        monthlyBillsArray.push(remaining);
+      }
+
+    }
+
+
+    const totalBills = billsArray.reduce(function (previousValue, currentValue) {
+       return previousValue + currentValue;
+    })
+
+    const monthlyBills = monthlyBillsArray.reduce(function (previousValue, currentValue) {
+       return previousValue + currentValue;
+    })
+
  %>
 
     <!-- Content Header (Page header) -->
@@ -43,7 +70,7 @@
               <span class="info-box-icon bg-info elevation-1"><i class="fas fa-truck"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Assets</span>
+                <span class="info-box-text">Total Trucks</span>
                 <span class="info-box-number">
                   <%= trucksWithoutDeleted.length %>
                 </span>
@@ -88,8 +115,8 @@
               <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-list-alt"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Bills</span>
-                <span class="info-box-number">7</span>
+                <span class="info-box-text">Outstanding Bills</span>
+                <span class="info-box-number">₵ <%= formatNumber(totalBills) %></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -172,8 +199,8 @@
                   <div class="col-sm-3 col-6">
                     <div class="description-block border-right">
                       <span class="description-percentage text-success"><i class="fas fa-money-bill"></i></span>
-                      <h5 class="description-header"><b>₵</b> <%= formatNumber(monthlySalesTotal - monthlyExpensesTotal) %> </h5>
-                      <span class="description-text">PROFIT THIS MONTH</span>
+                      <h5 class="description-header"><b>₵</b> <%= formatNumber(monthlyBills) %> </h5>
+                      <span class="description-text">BILLS THIS MONTH</span>
                     </div>
                     <!-- /.description-block -->
                   </div>

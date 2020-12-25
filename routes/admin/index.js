@@ -8,6 +8,7 @@ import Expense from "../../models/expenses/Expense.js";
 
 import auth from "../../middleware/auth.js";
 import admin from "../../middleware/admin.js";
+import Bill from "../../models/bills/Bill.js";
 
 
 // To admin dashboard
@@ -16,8 +17,12 @@ router.get('/', auth, admin, async (req, res) => {
     const sales = await Sale.find({}); //Get sales records
     const trucks = await Truck.find({}); //Get all trucks
     const expenses = await Expense.find({}); //Get expenses
+    const billsQuery = await Bill.find({});
 
-
+  //Filter Bills to get outstanding ones
+    const bills = billsQuery.filter((bill) => {
+        return bill.amount > bill.paid;
+    })
 
     let salesArray = [0];
     for(const sale of sales){
@@ -97,9 +102,11 @@ router.get('/', auth, admin, async (req, res) => {
 
     const profitThisYear = annualSales - annualExpenses;
 
+
     res.render(
         'admin/index',
         {
+            bills,
             trucks,
             sales,  //this will be used in chart to calculate income
             expenses, //this will be used in chart to calculate expenses

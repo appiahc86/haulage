@@ -48,7 +48,7 @@
                                             ₵
                                         </div>
                                     </div>
-                                    <input class="form-control" required="required" min="0" step="0.01" name="amount" autocomplete="off" type="number" value="" id="amount">
+                                    <input class="form-control" required="required" min="0" max="<%= bill.amount - bill.paid %>" step="0.01" name="amount" autocomplete="off" type="number" value="" id="amount">
                                 </div>
                             </div>
 

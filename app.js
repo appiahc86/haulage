@@ -95,8 +95,7 @@ import tripsRouter from "./routes/admin/trips/trips.js";
 import activitiesRouter from "./routes/admin/activities/activities.js";
 
 //Reports
-// import balanceSheetRouter from "./routes/admin/reports/balanceSheet.js";
-// import profitAndLossRouter from "./routes/admin/reports/profitAndLoss.js";
+import profitAndLossRouter from "./routes/admin/reports/profitAndLoss/profitAndLoss.js";
 
 
 
@@ -123,9 +122,8 @@ app.use('/trips', tripsRouter);
 app.use('/activities', activitiesRouter);
 
 //Reports
-// app.use('/report/balanceSheet', balanceSheetRouter);
-// app.use('/report/profitAndLoss', profitAndLossRouter);
-//
+app.use('/report/profitAndLoss', profitAndLossRouter);
+
 
 
 // Turn off errors in production
