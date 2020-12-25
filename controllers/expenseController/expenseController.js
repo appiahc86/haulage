@@ -128,7 +128,6 @@ const expenseController = {
             await record.remove();
 
 
-            console.log(record)
             //Record Activity
             const truckRecord = await Truck.findById(record.truck);
             const expenseType = await ExpenseType.findById(record.expenseType);

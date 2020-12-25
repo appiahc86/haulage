@@ -156,18 +156,9 @@
                          with font-awesome or any other icon font library -->
 
 
-                    <!--  Expenses -->
-                    <li class="nav-item mt-1">
-                        <a href="/admin/expenses" class="nav-link">
-                            <i class="nav-icon fas fa-atom"></i>
-                            <p>
-                                Expenses
-                            </p>
-                        </a>
-                    </li>
 
 
-                    <li class="nav-header text-warning">SALES</li>
+                <% if (parseInt(user.role) === 3 ){ %>
                     <li class="nav-item">
                         <a href="/admin/sales" class="nav-link">
                             <i class="nav-icon fas fa-calendar-alt"></i>
@@ -176,7 +167,20 @@
                             </p>
                         </a>
                     </li>
+                <% } else { %>
 
+
+                        <!--  Expenses -->
+                        <li class="nav-item mt-1">
+                            <a href="/admin/expenses" class="nav-link">
+                                <i class="nav-icon fas fa-atom"></i>
+                                <p>
+                                    Expenses
+                                </p>
+                            </a>
+                        </li>
+
+                <%  } %>
 
 
                 </ul>

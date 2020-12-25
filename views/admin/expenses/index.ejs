@@ -55,7 +55,13 @@
                     </div>
                             <!--  Expense Type  -->
                     <div class="form-group  col-md-3">
-                        <label for="type">Expense Type <span><a href="/expenseType">Create New</a></span></label>
+                        <label for="type">Expense Type
+
+                            <% if (parseInt(user.role) ===1 ){ %>
+                                <span><a href="/expenseType">Create New</a></span>
+                            <% } %>
+
+                        </label>
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <div class="input-group-text">

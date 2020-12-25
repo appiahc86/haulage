@@ -1,5 +1,13 @@
   <%- include('../layouts/adminHeader'); %>
 
+  <%
+
+    function formatNumber(number){
+      return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+ %>
+
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
@@ -50,8 +58,8 @@
               <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-calculator"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Expenditure</span>
-                <span class="info-box-number"><b>₵</b> <%= totalExpenses.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></span>
+                <span class="info-box-text">Expenses</span>
+                <span class="info-box-number"><b>₵</b> <%= formatNumber(totalExpenses) %></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -68,7 +76,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Income</span>
-                <span class="info-box-number"><b>₵</b> <%= salesTotal.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></span>
+                <span class="info-box-number"><b>₵</b> <%= formatNumber(salesTotal) %></span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -77,11 +85,11 @@
           <!-- /.col -->
           <div class="col-12 col-sm-6 col-md-3">
             <div class="info-box mb-3">
-              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
+              <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-list-alt"></i></span>
 
               <div class="info-box-content">
-                <span class="info-box-text">Users</span>
-                <span class="info-box-number"><%= users.length - 1 %></span>
+                <span class="info-box-text">Bills</span>
+                <span class="info-box-number">7</span>
               </div>
               <!-- /.info-box-content -->
             </div>
@@ -122,7 +130,7 @@
                   </span>
 
                       <span>
-                    <i class="fas fa-square" style="color: rgba(220,220,220,1);"></i> Expenditure
+                    <i class="fas fa-square" style="color: rgba(220,220,220,1);"></i> Expenses
                   </span>
                     </div>
                     <!-- /.chart-responsive -->
@@ -146,8 +154,8 @@
                   <div class="col-sm-3 col-6">
                     <div class="description-block border-right">
                       <span class="description-percentage text-danger"><i class="fas fa-calculator"></i></span>
-                      <h5 class="description-header"><b>₵</b> <%= monthlyExpensesTotal.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></h5>
-                      <span class="description-text"> EXPENDITURE THIS MONTH</span>
+                      <h5 class="description-header"><b>₵</b> <%= formatNumber(monthlyExpensesTotal) %></h5>
+                      <span class="description-text"> EXPENSES THIS MONTH</span>
                     </div>
                     <!-- /.description-block -->
                   </div>
@@ -155,7 +163,7 @@
                   <div class="col-sm-3 col-6">
                     <div class="description-block border-right">
                       <span class="description-percentage text-info"><i class="fas fa-thumbs-up"></i></span>
-                      <h5 class="description-header"><b>₵</b> <%= monthlySalesTotal.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></h5>
+                      <h5 class="description-header"><b>₵</b> <%= formatNumber(monthlySalesTotal) %></h5>
                       <span class="description-text">INCOME THIS MONTH</span>
                     </div>
                     <!-- /.description-block -->
@@ -164,7 +172,7 @@
                   <div class="col-sm-3 col-6">
                     <div class="description-block border-right">
                       <span class="description-percentage text-success"><i class="fas fa-money-bill"></i></span>
-                      <h5 class="description-header"><b>₵</b> <%= (monthlySalesTotal - monthlyExpensesTotal).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %> </h5>
+                      <h5 class="description-header"><b>₵</b> <%= formatNumber(monthlySalesTotal - monthlyExpensesTotal) %> </h5>
                       <span class="description-text">PROFIT THIS MONTH</span>
                     </div>
                     <!-- /.description-block -->
@@ -173,7 +181,7 @@
                   <div class="col-sm-3 col-6">
                     <div class="description-block">
                       <span class="description-percentage text-teal"><i class="fas fa-money-check"></i></span>
-                      <h5 class="description-header"><%= profitThisYear.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></h5>
+                      <h5 class="description-header"><%= formatNumber(profitThisYear) %></h5>
                       <span class="description-text text-purple">PROFIT THIS YEAR</span>
                     </div>
                     <!-- /.description-block -->

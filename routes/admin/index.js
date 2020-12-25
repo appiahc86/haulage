@@ -4,15 +4,18 @@ const router = express.Router();
 import Truck from "../../models/assets/Truck.js";
 import Sale from "../../models/sales/Sale.js";
 import User from "../../models/users/User.js";
+import Expense from "../../models/expenses/Expense.js";
+
 import auth from "../../middleware/auth.js";
 import admin from "../../middleware/admin.js";
+
 
 // To admin dashboard
 router.get('/', auth, admin, async (req, res) => {
 
-    const salesQuery = await Sale.find({}); //Get all records (expenses and truck sales)
+    const sales = await Sale.find({}); //Get sales records
     const trucks = await Truck.find({}); //Get all trucks
-    const users = await User.find({});
+    const expenses = await Expense.find({}); //Get expenses
 
 
 
@@ -24,7 +27,6 @@ router.get('/', auth, admin, async (req, res) => {
            return previousValue + currentValue;
     })
 
-    //Filter Asset account to get expenses records only
 
 
     const expensesArray = [0];
@@ -98,7 +100,6 @@ router.get('/', auth, admin, async (req, res) => {
     res.render(
         'admin/index',
         {
-            users,
             trucks,
             sales,  //this will be used in chart to calculate income
             expenses, //this will be used in chart to calculate expenses
