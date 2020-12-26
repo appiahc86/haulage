@@ -1,0 +1,146 @@
+<%- include('../../../layouts/adminHeader') %>
+
+<%
+    function formatNumber(number){
+        return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+    }
+
+%>
+
+<br>
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col">
+
+            <div class="text-center">
+                <span><b>CLEMONIC LIMITED</b></span><br>
+                <span>Asset Account</span>
+            </div>
+
+            <div class="card shadow p-3">
+
+                <style>
+                    @media print {
+
+
+                        .strike-through{
+                            text-decoration: line-through;
+                        }
+
+
+                    }
+
+                </style>
+
+
+
+                <table class="table table-hover table-striped table-borderless table-sm">
+
+                    <thead>
+                    <tr>
+                        <th>Truck</th>
+                        <th>Cost</th>
+                        <th>Sales</th>
+                        <th>Expenses</th>
+                        <th>Depreciation</th>
+                        <th>Outstanding Bill</th>
+                    </tr>
+                    </thead>
+
+            <tbody>
+            <% for (const truck of trucks){ %>
+
+
+                <tr>
+                    <td class="<%= truck.deleted ? 'text-danger strike-through' : '' %>"><%= truck.licenseNumber %></td>
+                    <td><%= formatNumber(parseFloat(truck.amount)) %></td>
+
+  <%
+  //Get truck sales
+  const salesArray = [0];
+  for (const sale of sales){
+      if (sale.truck.toString() === truck._id.toString()){
+          salesArray.push(parseFloat(sale.amount));
+      }
+  }
+  const totalSales = salesArray.reduce(function (previousValue, currentValue) {
+      return previousValue + currentValue;
+  });
+
+
+      //Get truck expenses
+      const expensesArray = [0];
+      for (const expense of expenses){
+          if (expense.truck.toString() === truck._id.toString()){
+              expensesArray.push(parseFloat(expense.amount));
+          }
+      }
+      const totalExpenses = expensesArray.reduce(function (previousValue, currentValue) {
+          return previousValue + currentValue;
+      });
+
+
+      //Get truck Depreciation
+      const depreciationArray = [0];
+      for (const dep of depreciation){
+          if (dep.truck.toString() === truck._id.toString()){
+              depreciationArray.push(parseFloat(dep.amount));
+          }
+      }
+      const totalDepreciation = depreciationArray.reduce(function (previousValue, currentValue) {
+          return previousValue + currentValue;
+      });
+
+
+      //Get truck Outstanding bills
+      const billsArray = [0];
+      for (const bill of bills){
+          if (bill.truck.toString() === truck._id.toString()){
+              billsArray.push(parseFloat(bill.amount) - parseFloat(bill.paid));
+          }
+      }
+      const totalBills = billsArray.reduce(function (previousValue, currentValue) {
+          return previousValue + currentValue;
+      });
+
+ %>
+                    <td><%= formatNumber(totalSales) %></td>
+                    <td><%= formatNumber(totalExpenses) %></td>
+                    <td><%= formatNumber(totalDepreciation) %></td>
+                    <td><%= formatNumber(totalBills) %></td>
+
+
+
+                </tr>
+
+
+            <% } %>
+
+
+            </tbody>
+
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<%- include('../../../layouts/adminFooter') %>

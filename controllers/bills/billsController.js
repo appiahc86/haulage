@@ -123,7 +123,7 @@ const billsController = {
             .populate('vendor');
 
         const bills = billsQuery.filter(bill => {
-            return bill.paid < bill.amount;
+            return parseFloat(bill.paid ) < parseFloat(bill.amount);
         })
 
         res.render('admin/bills/pay', {trucks, vendors, bills, banks});

@@ -63,7 +63,7 @@ const expenseTypeController = {
 
             const hasRecords = await Expense.find({expenseType: req.params.id});
             if (hasRecords.length > 0){
-                req.flash('error_msg', 'Sorry, you cannot delete this record because it is associated some records');
+                req.flash('error_msg', 'Sorry, you cannot delete this record because it is associated with some records');
                 return res.redirect('/expenseType');
             }
 

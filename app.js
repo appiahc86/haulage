@@ -96,6 +96,7 @@ import activitiesRouter from "./routes/admin/activities/activities.js";
 
 //Reports
 import profitAndLossRouter from "./routes/admin/reports/profitAndLoss/profitAndLoss.js";
+import assetAccountRouter from "./routes/admin/reports/assetAccount/assetAccount.js";
 
 
 
@@ -123,6 +124,7 @@ app.use('/activities', activitiesRouter);
 
 //Reports
 app.use('/report/profitAndLoss', profitAndLossRouter);
+app.use('/report/assetAccount', assetAccountRouter);
 
 
 
