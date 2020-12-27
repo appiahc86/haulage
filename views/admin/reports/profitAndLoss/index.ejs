@@ -62,20 +62,22 @@ const titleCase = (phrase) => {
             .topHeader{
                 text-align: center;
             }
+            h4{
+                margin-bottom: 0;
+                font-size: 1.5em;
+            }
             .btn{
                 display: none;
             }
-            .table{
+            table{
                 width: 100%;
                 border-collapse: collapse;
+                margin-top: 0;
             }
             th{
                 text-align: left;
             }
-            th, td{
-                border: 1px solid black;
-                padding: 3px;
-            }
+
 
         }
     </style>
@@ -91,13 +93,13 @@ const titleCase = (phrase) => {
                 <span><b>CLEMONIC LIMITED</b></span><br>
                 <span>Profit & Loss Statement</span><br>
                 <span><b>From</b> <%= new Date(from).toDateString()%> <b>To</b> <%= new Date(to).toDateString() %></span>
-
+                <hr>
             </div>
             <div class="card shadow p-3">
            <h4 class="text-purple mb-0"><b>Revenues</b></h4>
                 <table class="table table-bordered table-sm mt-0">
                     <tr>
-                        <th>Trucks Sales</th>
+                        <td>Trucks Sales</td>
                         <td><%= formatNumber(totalSales)%></td>
                     </tr>
 
@@ -115,7 +117,7 @@ const titleCase = (phrase) => {
                     <% for(const type of types){ %>
 
                     <tr>
-                        <th><%= titleCase(type.name) %></th>
+                        <td><%= titleCase(type.name) %></td>
 
  <%
      let expenseTypeArray = [0];
@@ -147,7 +149,7 @@ const titleCase = (phrase) => {
             return previousValue + currentValue;
         }) %>
                     <tr>
-                        <th>Depreciation</th>
+                        <td>Depreciation</td>
                         <td><%= formatNumber(totalDepreciation) %></td>
                     </tr>
 

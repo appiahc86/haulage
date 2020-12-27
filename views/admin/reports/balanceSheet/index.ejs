@@ -1,0 +1,138 @@
+<%- include('../../../layouts/adminHeader') %>
+
+<%
+//Format Number
+function formatNumber(number){
+    return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
+//Capitalize Every first letter
+const titleCase = (phrase) => {
+    return phrase
+            .toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+};
+
+%>
+
+<br>
+    <div class="container" id="printArea">
+
+        <style>
+            @media print {
+
+                .details{
+                    text-align: center;
+                }
+                .topHeader{
+                    text-align: center;
+                }
+                h4{
+                    margin-bottom: 0;
+                    font-size: 1.5em;
+                }
+                .btn{
+                    display: none;
+                }
+                table{
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 0;
+                }
+                th{
+                    text-align: left;
+                }
+
+
+            }
+        </style>
+
+
+
+
+
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-success btn-sm mb-2" onclick="printInvoice();"><span class="fas fa-print"></span> Print</button>
+                <div class="text-center details">
+                    <span><b>CLEMONIC LIMITED</b></span><br>
+                    <span>Balance Sheet</span><br>
+                    <span>As of <%= new Date().toDateString() %></span>
+                    <hr>
+                </div>
+                <div class="card shadow p-3">
+                    <h4 class="text-purple mb-0"><b>Asset</b></h4>
+                    <table class="table table-bordered table-sm mt-0">
+                        <tr>
+                            <td>Cash</td>
+                            <td><%= formatNumber(totalCash) %></td>
+                        </tr>
+
+                        <tr>
+                            <td>Bank Account</td>
+                            <td><%= formatNumber(totalBankBalance) %></td>
+                        </tr>
+
+                        <tr>
+                            <td>Trucks</td>
+                            <td><%= formatNumber(totalTrucksAfterDepreciation) %></td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-danger">Total Assets</th>
+                            <td class="text-danger"><b> ₵ 9880</b></td>
+                        </tr>
+                    </table>
+
+                    <h4 class="text-purple mb-0"><b>Liabilities</b></h4>
+                    <table class="table table-bordered table-sm mt-0">
+
+
+                        <tr>
+                            <td>Accounts Payable</td>
+                            <td><%= formatNumber(totalBills) %></td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-danger">Total Liabilities</th>
+                            <td class="text-danger"><b> ₵ <%= formatNumber(totalBills) %></b></td>
+                        </tr>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+<%- include('../../../layouts/adminFooter') %>
+
+
+
+
+<script>
+    // Printout
+    function printInvoice(){
+
+        const divtoprint = document.querySelector("#printArea");
+        const newWindow = window.open('','Print-Window', 'height=600, width=1000');
+
+        newWindow.document.open();
+        newWindow.document.write("<html><body onload='window.print()'>"+divtoprint.innerHTML+"</body></html>");
+
+        newWindow.document.close();
+
+        setTimeout(function () {
+            newWindow.close();
+        },2000)
+
+    }
+
+</script>

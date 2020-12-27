@@ -12,30 +12,41 @@
 
 
 <div class="container">
-    <div class="row">
-        <div class="col">
 
-            <div class="text-center">
+    <button class="btn btn-success btn-sm mb-2" onclick="printInvoice();"><span class="fas fa-print"></span> Print</button>
+    <div class="row">
+        <div class="col" id="printArea">
+
+            <style>
+                @media print {
+
+                    .company{
+                        text-align: center;
+                    }
+
+                    .strike-through{
+                        text-decoration: line-through;
+                    }
+                    table{
+                        border-collapse: collapse;
+                        width: 100%;
+                    }
+                    th, td{
+                        text-align: left;
+                    }
+
+
+                }
+
+            </style>
+
+            <div class="text-center company">
                 <span><b>CLEMONIC LIMITED</b></span><br>
                 <span>Asset Account</span>
+                <hr>
             </div>
 
             <div class="card shadow p-3">
-
-                <style>
-                    @media print {
-
-
-                        .strike-through{
-                            text-decoration: line-through;
-                        }
-
-
-                    }
-
-                </style>
-
-
 
                 <table class="table table-hover table-striped table-borderless table-sm">
 
@@ -51,7 +62,7 @@
                     </thead>
 
             <tbody>
-            <% for (const truck of trucks){ %>
+            <% for (const truck of trucks){ //if(truck.deleted) continue %>
 
 
                 <tr>
@@ -131,16 +142,25 @@
 </div>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 <%- include('../../../layouts/adminFooter') %>
+
+
+<script>
+    // Printout
+    function printInvoice(){
+
+        const divtoprint = document.querySelector("#printArea");
+        const newWindow = window.open('','Print-Window', 'height=600, width=1000');
+
+        newWindow.document.open();
+        newWindow.document.write("<html><body onload='window.print()'>"+divtoprint.innerHTML+"</body></html>");
+
+        newWindow.document.close();
+
+        setTimeout(function () {
+            newWindow.close();
+        },2000)
+
+    }
+
+</script>

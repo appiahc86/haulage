@@ -5,9 +5,9 @@ import assetAccountController from "../../../../controllers/reports/assetAccount
 import auth from "../../../../middleware/auth.js";
 import admin from "../../../../middleware/admin.js";
 
-// router.all('/*', auth, admin, (req, res, next)=>{
-//     next();
-// });
+router.all('/*', auth, admin, (req, res, next)=>{
+    next();
+});
 
 router.get('/', assetAccountController.index);
 

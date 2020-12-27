@@ -63,7 +63,6 @@ mongoose.connect(process.env.DB_CONNECTION,
 
 
 
-
 const port = process.env.port || 3000;
 
 
@@ -97,6 +96,7 @@ import activitiesRouter from "./routes/admin/activities/activities.js";
 //Reports
 import profitAndLossRouter from "./routes/admin/reports/profitAndLoss/profitAndLoss.js";
 import assetAccountRouter from "./routes/admin/reports/assetAccount/assetAccount.js";
+import balanceSheetRouter from "./routes/admin/reports/balanceSheet/balanceSheet.js";
 
 
 
@@ -125,6 +125,7 @@ app.use('/activities', activitiesRouter);
 //Reports
 app.use('/report/profitAndLoss', profitAndLossRouter);
 app.use('/report/assetAccount', assetAccountRouter);
+app.use('/report/balanceSheet', balanceSheetRouter);
 
 
 
