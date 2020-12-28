@@ -30,10 +30,14 @@
             background: darkmagenta;
             color: wheat;
         }
+
+        body{
+            user-select: none;
+        }
     </style>
 
 </head>
-<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" >
+<body class="hold-transition sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed" oncontextmenu="return false">
 <div class="wrapper">
     <!-- Navbar -->
     <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="background: #f6f6f6">
@@ -168,239 +172,301 @@
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
 
-                    <li class="nav-item">
-                        <a href="/admin/assets" class="nav-link">
-                            <i class="nav-icon fas fa-truck-moving"></i>
-                            <p>
-                                Assets(Trucks)
-
-                            </p>
-                        </a>
-                    </li>
-
-                    <li class="nav-header text-warning">ACCOUNTS</li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-money-check"></i>
-                            <p>
-                                Banking
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="/admin/banking" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Account</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/admin/bankTransfers" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Transfer</p>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </li>
+                <!--     If user is admin     -->
+                 <% if (parseInt(user.role) === 1){ %>
 
 
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-money-bill"></i>
-                            <p>
-                                Cash
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="/admin/cashAccounts" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Account</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/admin/cashTransfers" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Transfer</p>
-                                </a>
-                            </li>
+                        <li class="nav-item">
+                            <a href="/admin/assets" class="nav-link">
+                                <i class="nav-icon fas fa-truck-moving"></i>
+                                <p>
+                                    Assets(Trucks)
 
-                        </ul>
-                    </li>
-                    <br>
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-header text-warning">ACCOUNTS</li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-money-check"></i>
+                                <p>
+                                    Banking
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/admin/banking" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Account</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/admin/bankTransfers" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Transfer</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
 
 
-                    <!-- Vendors -->
-                    <li class="nav-item">
-                        <a href="/vendors" class="nav-link">
-                            <i class="nav-icon fas fa-atom"></i>
-                            <p>
-                                Vendors
-                            </p>
-                        </a>
-                    </li>
-                    <li class="nav-header text-warning">Bills</li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-money-bill"></i>
-                            <p>
-                                Click To Expand
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="/bills" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Create Bill</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/bills/pay" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Pay Bill</p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-money-bill"></i>
+                                <p>
+                                    Cash
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/admin/cashAccounts" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Account</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/admin/cashTransfers" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Transfer</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+                        <br>
+
+
+                        <!-- Vendors -->
+                        <li class="nav-item">
+                            <a href="/vendors" class="nav-link">
+                                <i class="nav-icon fas fa-atom"></i>
+                                <p>
+                                    Vendors
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-header text-warning">Bills</li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-money-bill"></i>
+                                <p>
+                                    Click To Expand
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/bills" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Create Bill</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/bills/pay" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Pay Bill</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
 
                         <!--  Expenditure  -->
-                    <li class="nav-item mt-1">
-                        <a href="/admin/expenses" class="nav-link">
-                            <i class="nav-icon fas fa-atom"></i>
-                            <p>
-                                Expenses
-                            </p>
-                        </a>
-                    </li>
+                        <li class="nav-item mt-1">
+                            <a href="/admin/expenses" class="nav-link">
+                                <i class="nav-icon fas fa-atom"></i>
+                                <p>
+                                    Expenses
+                                </p>
+                            </a>
+                        </li>
 
-                    <li class="nav-item">
-                        <a href="/depreciation" class="nav-link">
-                            <i class="nav-icon fas fa-calculator"></i>
-                            <p>
-                                Depreciation
-                            </p>
-                        </a>
-                    </li>
-
-
-                    <li class="nav-item">
-                        <a href="/trips" class="nav-link">
-                            <i class="nav-icon fas fa-truck-loading"></i>
-                            <p>
-                               Trips
-                            </p>
-                        </a>
-                    </li>
+                        <li class="nav-item">
+                            <a href="/depreciation" class="nav-link">
+                                <i class="nav-icon fas fa-calculator"></i>
+                                <p>
+                                    Depreciation
+                                </p>
+                            </a>
+                        </li>
 
 
+                        <li class="nav-item">
+                            <a href="/trips" class="nav-link">
+                                <i class="nav-icon fas fa-truck-loading"></i>
+                                <p>
+                                    Trips
+                                </p>
+                            </a>
+                        </li>
 
-                    <li class="nav-header text-warning">SALES</li>
-                    <li class="nav-item">
-                        <a href="/admin/sales" class="nav-link">
-                            <i class="nav-icon fas fa-calendar-alt"></i>
-                            <p>
-                                 Sales
-                            </p>
-                        </a>
-                    </li>
 
-                    <!--  Insurance And Renewals   -->
-                    <li class="nav-header text-warning">Insurance And Renewals</li>
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-money-bill"></i>
-                            <p>
-                                Click To Expand
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="/admin/renewals/insurance" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Insurance</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/admin/renewals/roadworthy" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Roadworthy</p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="/admin/renewals/driversLicense" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Driver's License</p>
-                                </a>
-                            </li>
 
-                        </ul>
-                    </li>
-                    <br>
+                        <li class="nav-header text-warning">SALES</li>
+                        <li class="nav-item">
+                            <a href="/admin/sales" class="nav-link">
+                                <i class="nav-icon fas fa-calendar-alt"></i>
+                                <p>
+                                    Sales
+                                </p>
+                            </a>
+                        </li>
 
-                    <!--   Reports    -->
-                    <li class="nav-item has-treeview">
-                        <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-list"></i>
-                            <p>
-                                Reports
-                                <i class="right fas fa-angle-left"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="/report/profitAndLoss" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Profit And Loss</p>
-                                </a>
-                            </li>
+                        <!--  Insurance And Renewals   -->
+                        <li class="nav-header text-warning">Insurance And Renewals</li>
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-money-bill"></i>
+                                <p>
+                                    Click To Expand
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/admin/renewals/insurance" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Insurance</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/admin/renewals/roadworthy" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Roadworthy</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/admin/renewals/driversLicense" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Driver's License</p>
+                                    </a>
+                                </li>
 
-                            <li class="nav-item">
-                                <a href="/report/balanceSheet" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Balance Sheet</p>
-                                </a>
-                            </li>
+                            </ul>
+                        </li>
+                        <br>
 
-                            <li class="nav-item">
-                                <a href="/report/assetAccount" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Asset Account</p>
-                                </a>
-                            </li>
+                        <!--   Reports    -->
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>
+                                    Reports
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/report/profitAndLoss" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Profit And Loss</p>
+                                    </a>
+                                </li>
 
-                            <li class="nav-item">
-                                <a href="/activities" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Audit Trail</p>
-                                </a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="/report/balanceSheet" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Balance Sheet</p>
+                                    </a>
+                                </li>
 
-                        </ul>
-                    </li>
+                                <li class="nav-item">
+                                    <a href="/report/assetAccount" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Asset Account</p>
+                                    </a>
+                                </li>
 
-                                    <!--  Users    -->
-                    <li class="nav-item">
-                        <a href="/users" class="nav-link">
-                            <i class="nav-icon fas fa-user-friends"></i>
-                            <p>
-                                Manage Users
-                            </p>
-                        </a>
-                    </li>
-                    <br>
+                                <li class="nav-item">
+                                    <a href="/activities" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Audit Trail</p>
+                                    </a>
+                                </li>
 
-                    <li class="nav-item">
-                        <a href="/backup" class="nav-link" onclick="return confirm('You are about to back up the database. click ok to continue')">
-                            <i class="nav-icon fas fa-database text-purple"></i>
-                            <p>
-                                Backup Database
-                            </p>
-                        </a>
-                    </li>
+                            </ul>
+                        </li>
+
+                        <!--  Users    -->
+                        <li class="nav-item">
+                            <a href="/users" class="nav-link">
+                                <i class="nav-icon fas fa-user-friends"></i>
+                                <p>
+                                    Manage Users
+                                </p>
+                            </a>
+                        </li>
+                        <br>
+
+                        <li class="nav-item">
+                            <a href="/backup" class="nav-link" onclick="return confirm('You are about to back up the database. click ok to continue')">
+                                <i class="nav-icon fas fa-database text-purple"></i>
+                                <p>
+                                    Backup Database
+                                </p>
+                            </a>
+                        </li>
+
+
+
+                    <% } %>
+
+
+
+                    <!--     If user is Auditor       -->
+                    <% if (parseInt(user.role) === 2){ %>
+
+
+
+                        <li class="nav-item">
+                            <a href="/activities" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Audit Trail</p>
+                            </a>
+                        </li>
+
+                        <!--   Reports    -->
+                        <li class="nav-item has-treeview">
+                            <a href="#" class="nav-link">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p>
+                                    Reports
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="/report/profitAndLoss" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Profit And Loss</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="/report/balanceSheet" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Balance Sheet</p>
+                                    </a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a href="/report/assetAccount" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Asset Account</p>
+                                    </a>
+                                </li>
+
+                            </ul>
+                        </li>
+
+
+
+
+
+                    <% } %>
 
 
                 </ul>

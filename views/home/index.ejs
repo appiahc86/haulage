@@ -2,79 +2,89 @@
 
 <br>
 
+<!-- Admin-->
+<% if (parseInt(user.role) === 1){ %>
 
+    <div class="container-fluid">
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3><span class="fas fa-money-check-alt"></span></h3>
 
-<div class="container-fluid">
-    <!-- Small boxes (Stat box) -->
-    <div class="row">
-        <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-info">
-                <div class="inner">
-                    <h3><span class="fas fa-money-check-alt"></span></h3>
-
-                    <p>Record Sales</p>
+                        <p>Record Sales</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-bag"></i>
+                    </div>
+                    <a href="/admin/sales" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
-                <div class="icon">
-                    <i class="ion ion-bag"></i>
-                </div>
-                <a href="/admin/sales" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-gradient-purple">
-                <div class="inner">
-                    <h3><span class="fas fa-calculator"></span></h3>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-gradient-purple">
+                    <div class="inner">
+                        <h3><span class="fas fa-calculator"></span></h3>
 
-                    <p>Expenses</p>
+                        <p>Expenses</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-stats-bars"></i>
+                    </div>
+                    <a href="/admin/expenses" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
-                <div class="icon">
-                    <i class="ion ion-stats-bars"></i>
-                </div>
-                <a href="/admin/expenses" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-gradient-maroon">
-                <div class="inner">
-                    <h3><span class="fas fa-building"></span></h3>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-gradient-maroon">
+                    <div class="inner">
+                        <h3><span class="fas fa-building"></span></h3>
 
-                    <p>Bank Transfers</p>
+                        <p>Bank Transfers</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-add"></i>
+                    </div>
+                    <a href="/admin/bankTransfers" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
-                <div class="icon">
-                    <i class="ion ion-person-add"></i>
-                </div>
-                <a href="/admin/bankTransfers" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
             </div>
-        </div>
-        <!-- ./col -->
-        <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-gradient-navy">
-                <div class="inner">
-                    <h3><span class="fas fa-lock"></span></h3>
+            <!-- ./col -->
+            <div class="col-lg-3 col-6">
+                <!-- small box -->
+                <div class="small-box bg-gradient-navy">
+                    <div class="inner">
+                        <h3><span class="fas fa-lock"></span></h3>
 
-                    <p>Reset Password</p>
+                        <p>Reset Password</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-pie-graph"></i>
+                    </div>
+                    <a href="/users/password/reset" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
                 </div>
-                <div class="icon">
-                    <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="/users/password/reset" class="small-box-footer">Click here <i class="fas fa-arrow-circle-right"></i></a>
             </div>
+            <!-- ./col -->
         </div>
-        <!-- ./col -->
+        <!-- /.row -->
+        <!-- /.container-fluid -->
     </div>
-    <!-- /.row -->
-    <!-- /.container-fluid -->
-</div>
+
+<% } %>
 
 
 
 
+
+<!-- Auditor-->
+<% if (parseInt(user.role) === 2){ %>
+
+    <h3 class="text-center">Welcome <%= user.firstName %></h3>
+
+<% } %>
 
 
 

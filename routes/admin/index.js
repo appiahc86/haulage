@@ -3,12 +3,12 @@ const router = express.Router();
 
 import Truck from "../../models/assets/Truck.js";
 import Sale from "../../models/sales/Sale.js";
-import User from "../../models/users/User.js";
 import Expense from "../../models/expenses/Expense.js";
 
 import auth from "../../middleware/auth.js";
 import admin from "../../middleware/admin.js";
 import Bill from "../../models/bills/Bill.js";
+import Depreciation from "../../models/depreciation/Depreciation.js";
 
 
 // To admin dashboard
@@ -18,6 +18,9 @@ router.get('/', auth, admin, async (req, res) => {
     const trucks = await Truck.find({}); //Get all trucks
     const expenses = await Expense.find({}); //Get expenses
     const billsQuery = await Bill.find({});
+    const depreciationQuery = await Depreciation.find({});
+
+
 
   //Filter Bills to get outstanding ones
     const bills = billsQuery.filter((bill) => {
@@ -48,6 +51,19 @@ router.get('/', auth, admin, async (req, res) => {
 
     const annualExpensesArray = [0]; //Annual sales
     const annualSalesArray = [0]; //Annual Expenses
+
+
+    //Depreciation This month
+    const depreciation = depreciationQuery.filter(dep => {
+        return new Date(dep.date).getFullYear() === thisYear  && new Date(dep.date).getMonth() + 1 === thisMonth;
+    })
+    const depreciationArray = [0];
+    for (const de of depreciation){
+        depreciationArray.push(parseFloat(de.amount));
+    }
+    const depreciationThisMonth = depreciationArray.reduce((previousValue, currentValue) => {
+        return previousValue + currentValue;
+    })
 
     //let's get monthly expenses
     const monthlyExpensesArray = [0];
@@ -114,7 +130,8 @@ router.get('/', auth, admin, async (req, res) => {
             totalExpenses,
             profitThisYear, //Annual Profit
             monthlySalesTotal,
-            monthlyExpensesTotal
+            monthlyExpensesTotal,
+            depreciationThisMonth
         }
 
     );
