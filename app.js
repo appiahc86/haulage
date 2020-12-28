@@ -42,6 +42,7 @@ app.use((req, res, next)=>{
     res.locals.alertInsurances = req.session.alertInsurances || null;    //eg. req.session.alertInsurances = [];
     res.locals.alertRoadworthies = req.session.alertRoadworthies || null;
     res.locals.alertDriversLicenses = req.session.alertDriversLicenses || null;
+    res.locals.alertOil = req.session.alertOil || null;
     next();
 });
 

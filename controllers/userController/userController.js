@@ -9,6 +9,7 @@ import InsuranceRenewal from "../../models/renewals/Insurance.js";
 import RoadWorthyRenewal from "../../models/renewals/RoadWorthy.js";
 import DriversLicense from "../../models/renewals/Driver.js";
 import Activity from "../../models/activities/Activity.js";
+import Truck from "../../models/assets/Truck.js";
 
 //Passport Strategy
 passport.use(new LocalStrategy({
@@ -194,6 +195,7 @@ const userController = {
         const checkExpiredInsurance = await InsuranceRenewal.find({}).populate('truck');
         const checkExpiredRoadworthy = await RoadWorthyRenewal.find({}).populate('truck');
         const checkDriversLicense = await DriversLicense.find({});
+        const alertOil = await Truck.find({deleted: 0, trips: {$gt: 13}});
 
         //Expired insurance
         const expiredInsurances = checkExpiredInsurance.filter((insurance) => {
@@ -217,14 +219,14 @@ const userController = {
                 && driverLicense.renewalDate.toLocaleDateString() !== driverLicense.expirationDate.toLocaleDateString()
         })
 
+        // Engine Oil
+
+
         //Set alerts as session variables
         req.session.alertInsurances = expiredInsurances;
         req.session.alertRoadworthies = expiredRoadworthies;
         req.session.alertDriversLicenses = expiredDriversLicenses;
-
-
-
-
+        req.session.alertOil = alertOil;
 
 
         res.render('home/login');
@@ -247,6 +249,7 @@ const userController = {
         delete req.session.alertInsurances;
         delete req.session.alertRoadworthies;
         delete req.session.alertDriversLicenses;
+        delete req.session.alertOil;
 
         req.logout();
         res.redirect('/users/login');
