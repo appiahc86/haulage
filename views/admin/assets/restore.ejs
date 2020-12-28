@@ -1,0 +1,94 @@
+<%- include('../../layouts/adminHeader') %>
+
+<br>
+<div class="container">
+
+
+    <div class="row">
+        <div class="col">
+            <div class="card shadow p-3">
+            <h2 class="text-center"><b><span class="fas fa-truck"></span>DELETED ASSETS(TRUCKS)</b></h2>
+                <div class="table-responsive">
+                    <table class="table table-borderless table-hover table-striped table-sm" id="myTable">
+                        <thead>
+                        <tr class="thead-dark">
+                            <th>License #</th>
+                            <th>Purchased Date</th>
+                            <th>Cost</th>
+                            <th>Depreciation(%)</th>
+                            <th>Description</th>
+                            <th>Restore</th>
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <% for(const asset of assets){ %>
+
+                            <tr>
+                                <td><%= asset.licenseNumber %></td>
+                                <td><%= new Date(asset.datePurchased).toDateString() %></td>
+                                <td><b>₵</b> <%= asset.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                                <td class="text-center">
+                                    <div class="badge  badge-success" style="cursor: pointer;" data-toggle="modal" data-target="#depreciation<%= asset._id %>" title="Click to view">
+                                        <b>%</b> <%= asset.depreciation.toFixed(2) %>
+                                    </div>
+                                </td>
+                                <td title="<%= asset.description %>"><%= asset.description.slice(0,15).concat("...") %></td>
+                                <td><a data-toggle="modal" data-target="#restore<%= asset._id %>"  class="text-white btn btn-sm btn-violet" title="Restore"><span class="fas fa-trash-restore-alt"></span></a></td>
+
+                            </tr>
+
+
+
+
+                            <!--  Modal for restoring Asset-->
+                            <div class="modal fade" id="restore<%= asset._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <br><br>
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-center text-success" id="exampleModalLabel"><i class="fas fa-trash-restore"></i><span class="text-success"> Restore this Record</span></h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <form action="/admin/assets/restore/<%= asset._id %>?_method=PATCH" method="post" class="myform">
+                                            <div class="modal-body">
+
+                                                Are you sure you want to Restore this record?
+
+                                                <div class="col-md-12 text-right">
+                                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                    <input type="submit" class="btn btn-success btn-sm mybtn" value="Yes">
+
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+                            </div> <!-- ./restore modal -->
+
+
+
+
+                        <% } %>
+                        </tbody>
+
+                    </table>
+                </div>
+                </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+<%- include('../../layouts/adminFooter') %>

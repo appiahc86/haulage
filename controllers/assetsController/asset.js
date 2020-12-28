@@ -5,10 +5,6 @@ import Bill from "../../models/bills/Bill.js";
 import Activity from "../../models/activities/Activity.js";
 
 
-
-
-
-
 const assetController = {
 
     //Get all assets
@@ -142,7 +138,6 @@ const assetController = {
         } else {
                     //Delete asset if it has no records
             const asset = await Truck.findById(req.params.id)
-            req.flash('success_msg', 'Record Deleted Successfully');
 
             //Save to Activities
             const newActivity = new Activity({
@@ -155,6 +150,7 @@ const assetController = {
             await newActivity.save();
 
             await asset.remove();
+            req.flash('success_msg', 'Record Deleted Successfully');
             res.redirect('/admin/assets');
 
         }
@@ -165,16 +161,51 @@ const assetController = {
             req.flash('error_msg', 'Sorry!!!, Error Occurred');
             res.redirect('/admin/assets');
         }
+    },
+
+
+    //Show deleted Records
+    showDeleted: async (req, res) => {
+        const assets = await Truck.find({deleted: 1});
+        res.render('admin/assets/restore', {assets});
+    },
+
+    //Restore deleted record
+    restore: async (req, res) => {
+
+        try {
+
+            const asset = await Truck.findById(req.params.id);
+            asset.deleted = false;
+            await asset.save();
+
+            //Save to Activities
+            const newActivity = new Activity({
+                user: req.user._id,
+                table: 'trucks',
+                status: "Restored",
+                licenseNumber: asset.licenseNumber,
+                cost: asset.amount
+            })
+            await newActivity.save();
+
+            req.flash('success_msg', 'Record Restored Successfully');
+            res.redirect('/admin/assets/restore');
+
+
+        }catch (e) {
+            console.log(e)
+            req.flash('error_msg', 'Sorry!!!, Error Occurred');
+            res.redirect('/admin/assets/restore');
+        }
+
+
     }
 
 
 
 
-
 }
-
-
-
 
 
 

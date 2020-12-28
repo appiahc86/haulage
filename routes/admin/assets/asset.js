@@ -22,6 +22,12 @@ router.patch('/update/:id', assetController.update);
 //Delete Asset
 router.delete('/delete/:id', assetController.destroy);
 
+//Show deleted records
+router.get('/restore', assetController.showDeleted);
+
+//Restore deleted record
+router.patch('/restore/:id', assetController.restore)
+
 
 
 
