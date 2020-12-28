@@ -12,6 +12,11 @@ const tripsController = {
 
         try {
 
+            if (parseInt(req.body.trip) > 15){
+                req.flash('error_msg', 'Sorry, trips cannot be more than 15');
+                return res.redirect('/trips');
+            }
+
             const truck = await Truck.findById(req.params.id);
             truck.trips = parseInt(req.body.trip);
             await truck.save();
