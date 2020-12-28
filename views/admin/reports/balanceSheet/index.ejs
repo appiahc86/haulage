@@ -63,7 +63,7 @@ const titleCase = (phrase) => {
                     <hr>
                 </div>
                 <div class="card shadow p-3">
-                    <h4 class="text-purple mb-0"><b>Asset</b></h4>
+                    <h4 class="text-purple mb-0"><b>Assets</b></h4>
                     <table class="table table-bordered table-sm mt-0">
                         <tr>
                             <td>Cash</td>
@@ -80,13 +80,14 @@ const titleCase = (phrase) => {
                             <td><%= formatNumber(totalTrucksAfterDepreciation) %></td>
                         </tr>
 
+                        <% const totalAssets = totalCash + totalBankBalance + totalTrucksAfterDepreciation %>
                         <tr>
                             <th class="text-danger">Total Assets</th>
-                            <td class="text-danger"><b> ₵ 9880</b></td>
+                            <td class="text-danger"><b> ₵ <%= formatNumber(totalAssets) %></b></td>
                         </tr>
                     </table>
 
-                    <h4 class="text-purple mb-0"><b>Liabilities</b></h4>
+                    <h4 class="text-purple mb-0"><b>Liabilities & Equity</b></h4>
                     <table class="table table-bordered table-sm mt-0">
 
 
@@ -98,6 +99,14 @@ const titleCase = (phrase) => {
                         <tr>
                             <th class="text-danger">Total Liabilities</th>
                             <td class="text-danger"><b> ₵ <%= formatNumber(totalBills) %></b></td>
+                        </tr>
+                        <tr>
+                            <td>Equity</td>
+                            <td><%= formatNumber(totalAssets - totalBills) %></td>
+                        </tr>
+                        <tr>
+                            <th class="text-danger">Total Liabilities & Equity</th>
+                            <td class="text-danger"><b> ₵ <%= formatNumber((totalAssets - totalBills) + totalBills) %></b></td>
                         </tr>
                     </table>
 

@@ -11,7 +11,11 @@ const billsController = {
 
         const trucks = await Truck.find({deleted: 0});
         const vendors = await Vendor.find({});
-        const bills = await Bill.find({}).populate('truck').populate('vendor');
+        const billsQuery = await Bill.find({}).populate('truck').populate('vendor');
+
+        const bills = billsQuery.filter(bill => {
+            return parseFloat(bill.paid ) < parseFloat(bill.amount);
+        })
 
         res.render('admin/bills/index', {trucks, bills, vendors});
 },
@@ -45,7 +49,7 @@ const billsController = {
 
         //Record Activity
         const newActivity = new Activity({
-            user: req.params.id,
+            user: req.user._id,
             refNumber: refNumber.trim().toUpperCase(),
             status: 'Created',
             table: 'bills',
@@ -134,8 +138,6 @@ const billsController = {
         const banks = await Bank.find({});
         const bill = await Bill.findById(req.params.id).populate('vendor');
        res.render('admin/bills/singleBillPayment', {banks, bill});
-
-
     },
 
 
@@ -146,7 +148,6 @@ const billsController = {
         const amount = parseFloat(req.body.amount);
         const mode = req.body.mode;
         const bank = req.body.bank;
-
 
 
         try {
@@ -309,11 +310,11 @@ const billsController = {
     destroy: async (req, res) => {
 
         try {
-            const bill = await Bill.findById(req.params.id);
+            const bill = await Bill.findById(req.params.id).populate('vendor');
 
             //Record Activity
             const newActivity = new Activity({
-                user: req.params.id,
+                user: req.user._id,
                 refNumber: bill.refNumber,
                 status: 'Deleted',
                 table: 'bills',

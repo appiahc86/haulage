@@ -2,6 +2,7 @@ import Sale from "../../../models/sales/Sale.js";
 import ExpenseType from "../../../models/expenseType/expenseType.js";
 import Expense from "../../../models/expenses/Expense.js";
 import Depreciation from "../../../models/depreciation/Depreciation.js";
+import Bill from "../../../models/bills/Bill.js";
 
 const profitAndLossController = {
 
@@ -19,7 +20,16 @@ const profitAndLossController = {
         const types = await ExpenseType.find({});
         const expenses = await Expense.find({date: {$gte: from, $lte: to}}).populate('expenseType');
         const depreciation = await Depreciation.find({date: {$gte: from, $lte: to}});
+        const bills = await Bill.find({date: {$gte: from, $lte: to}});
 
+        //Bills
+        const billsArray = [0];
+        for(const bill of bills){
+            billsArray.push(parseFloat(bill.paid))
+        }
+        const totalBills = billsArray.reduce((previousValue, currentValue) => {
+            return previousValue + currentValue;
+        })
 
 
      //sAles
@@ -47,6 +57,7 @@ const profitAndLossController = {
                 from,
                 types,
                 expenses,
+                totalBills,
                 totalSales,
                 totalDepreciation
             }

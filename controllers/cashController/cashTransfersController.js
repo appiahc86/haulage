@@ -1,6 +1,7 @@
 import CashTransfers from "../../models/cash/CashTransfers.js";
 import Cash from "../../models/cash/Cash.js";
 import Bank from "../../models/banking/Bank.js";
+import Activity from "../../models/activities/Activity.js";
 
 
 const cashTransfersController = {
@@ -48,6 +49,17 @@ const cashTransfersController = {
                  user: req.user._id
              });
 
+            //Record activity
+            const newActivity = new Activity({
+                user: req.user._id,
+                table: 'bankTransfers',
+                status: 'Transfer',
+                fromAcc: "Cash",
+                toAcc: bankAcc.bankName + ' (' + bankAcc.accountNumber + ')',
+                amount: parseFloat(amount)
+            })
+            await newActivity.save();
+
              await newTransfer.save();
 
             req.flash('success_msg', 'Transfer was successful');
@@ -80,6 +92,17 @@ const cashTransfersController = {
             //Now delete from Cash transfer history
             const deleteRecord = await CashTransfers.findById(req.params.id);
             await deleteRecord.remove();
+
+            //Record activity
+            const newActivity = new Activity({
+                user: req.user._id,
+                table: 'bankTransfers',
+                status: 'Deleted',
+                fromAcc: "Cash",
+                toAcc: bank.bankName + ' (' + bank.accountNumber + ')',
+                amount: parseFloat(amount)
+            })
+            await newActivity.save();
 
             req.flash('success_msg', 'Operation was successful');
             res.redirect('/admin/cashTransfers');

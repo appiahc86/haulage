@@ -34,7 +34,7 @@ const bankController = {
             });
 
             const newActivity = new Activity({
-                user:req.user._id,
+                user: req.user._id,
                 table: 'banks',
                 bank: bank_name + " (" + account_number + ")",
                 balance: parseFloat(balance),

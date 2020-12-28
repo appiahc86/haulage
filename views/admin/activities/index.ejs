@@ -1,12 +1,389 @@
 <%- include('../../layouts/adminHeader') %>
 <br>
 
-<div class="text-center">
-<h3>Clemonic Ltd</h3><br>
-    Audit Trail
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow p-3">
+                <h4>Activities</h4>
 
+                <form action="/activities" method="post" class="myform">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-fuchsia"><b>From</b></div>
+                        </div>
+                        <input type="date" required name="from" class="form-control"> &nbsp;
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-gradient-teal"><b>To</b></div>
+                        </div>
+                        <input type="date" required name="to" class="form-control">&nbsp;
+                        <button type="submit" class="btn btn-primary mybtn"><span class="fas fa-search"></span></button>
+                    </div>
+                </form>
 
+            </div>
+        </div>
+    </div>
 </div>
+
+
+<% if (typeof activities != 'undefined'){ %>
+
+<%
+
+    //Format Number
+    function formatNumber(number){
+        return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+    }
+
+ // Assets
+ const assets = activities.filter(activity => {
+     return activity.table === 'trucks';
+ })
+
+//Sales
+const sales = activities.filter(activity => {
+    return activity.table === 'sales';
+})
+
+//Expenses
+    const expenses = activities.filter(activity => {
+        return activity.table === 'expenses';
+})
+
+//Bills
+    const bills = activities.filter(activity => {
+        return activity.table === 'bills';
+    })
+
+//Payments
+    const payments = activities.filter(activity => {
+        return activity.table === 'payments';
+    })
+
+//Depreciation
+    const depreciation = activities.filter(activity => {
+        return activity.table === 'depreciation';
+    })
+
+//Banks
+    const banks = activities.filter(activity => {
+        return activity.table === 'banks';
+    })
+
+//Bank Transfers
+    const bankTransfers = activities.filter(activity => {
+        return activity.table === 'bankTransfers';
+    })
+
+ %>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+
+            <div class="card shadow p-3">
+
+                <!--           Sales     -->
+
+                <% if (sales.length > 0){ %>
+
+                    <h3 class="text-center text-success"><b>Sales</b></h3>
+
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Truck</th>
+                                <th>Amount</th>
+                                <th>Mode Of Payment</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <% for(const sale of sales){ %>
+                                <tr>
+                                    <td><%= new Date(sale.createdAt).toDateString() %></td>
+                                    <td><%= sale.user.firstName %></td>
+                                    <td><%= sale.truck %></td>
+                                    <td><%= formatNumber(sale.amount) %></td>
+                                    <td><%= sale.modeOfPayment %></td>
+                                    <td><%= sale.status %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                <% } %>
+
+
+                <!--           Expenses     -->
+                <% if (expenses.length > 0){ %>
+
+                    <h3 class="text-center text-danger"><b>Expenses</b></h3>
+
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Truck</th>
+                                <th>Amount</th>
+                                <th>Mode Of Payment</th>
+                                <th>Status</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <% for(const expense of expenses){ %>
+                                <tr>
+                                    <td><%= new Date(expense.createdAt).toDateString() %></td>
+                                    <td><%= expense.user.firstName %></td>
+                                    <td><%= expense.truck %></td>
+                                    <td><%= formatNumber(expense.amount) %></td>
+                                    <td><%= expense.modeOfPayment %></td>
+                                    <td><%= expense.status %></td>
+                                    <td><%= expense.details %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                <% } %>
+
+
+
+                <!--  Assets(Trucks)-->
+                <% if (assets.length > 0){ %>
+
+                    <h3 class="text-center text-olive"><b>Trucks</b></h3>
+
+                    <div class="table-responsive mb-3">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>License#</th>
+                                <th>Cost</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <% for(const asset of assets){ %>
+                                <tr>
+                                    <td><%= new Date(asset.createdAt).toDateString() %></td>
+                                    <td><%= asset.user.firstName %></td>
+                                    <td><%= asset.licenseNumber %></td>
+                                    <td><%= formatNumber(asset.cost) %></td>
+                                    <td><%= asset.status %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <% } %>
+
+
+                <!-- Bills -->
+                <% if (bills.length > 0){ %>
+
+                    <h3 class="text-center text-danger"><b>Bills</b></h3>
+
+                    <div class="table-responsive mb3">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Vendor</th>
+                                <th>Ref#</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Description</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <% for(const bill of bills){ %>
+                                <tr>
+                                    <td><%= new Date(bill.createdAt).toDateString() %></td>
+                                    <td><%= bill.user.firstName %></td>
+                                    <td><%= bill.vendor %></td>
+                                    <td><%= bill.refNumber %></td>
+                                    <td><%= formatNumber(bill.amount) %></td>
+                                    <td><%= bill.status %></td>
+                                    <td><%= bill.details %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <% } %>
+
+                <!-- Payments -->
+                <% if (payments.length > 0){ %>
+
+                    <h3 class="text-center text-primary"><b>Payments</b></h3>
+
+                    <div class="table-responsive mb3">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Vendor</th>
+                                <th>Ref#</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <% for(const payment of payments){ %>
+                                <tr>
+                                    <td><%= new Date(payment.createdAt).toDateString() %></td>
+                                    <td><%= payment.user.firstName %></td>
+                                    <td><%= payment.vendor %></td>
+                                    <td><%= payment.refNumber %></td>
+                                    <td><%= formatNumber(payment.amount) %></td>
+                                    <td><%= payment.status %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <% } %>
+
+
+                <!-- Bank Accounts -->
+                <% if (banks.length > 0){ %>
+
+                    <h3 class="text-center text-success"><b>Bank Accounts</b></h3>
+
+                    <div class="table-responsive mb3">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Bank Account</th>
+                                <th>Balance</th>
+                                <th>Status</th>
+                                <th>Details</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <% for(const bank of banks){ %>
+                                <tr>
+                                    <td><%= new Date(bank.createdAt).toDateString() %></td>
+                                    <td><%= bank.user.firstName %></td>
+                                    <td><%= bank.bank %></td>
+                                    <td><%= formatNumber(bank.balance) %></td>
+                                    <td><%= bank.status %></td>
+                                    <td><%= bank.details ? bank.details : "..." %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <% } %>
+
+
+                <!-- Bank Transfers -->
+                <% if (bankTransfers.length > 0){ %>
+
+                    <h3 class="text-center text-maroon"><b>Bank Transfers</b></h3>
+
+                    <div class="table-responsive mb3">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <% for(const transfer of bankTransfers){ %>
+                                <tr>
+                                    <td><%= new Date(transfer.createdAt).toDateString() %></td>
+                                    <td><%= transfer.user.firstName %></td>
+                                    <td><%= transfer.fromAcc %></td>
+                                    <td><%= transfer.toAcc %></td>
+                                    <td><%= formatNumber(transfer.amount) %></td>
+                                    <td><%= transfer.status %></td>
+
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <% } %>
+
+                <!-- Depreciation -->
+                <% if (depreciation.length > 0){ %>
+
+                    <h3 class="text-center text-indigo"><b>Depreciation</b></h3>
+
+                    <div class="table-responsive mb3">
+                        <table class="table table-sm table-hover">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>User</th>
+                                <th>Truck</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+
+                            <tbody>
+                            <% for(const dep of depreciation){ %>
+                                <tr>
+                                    <td><%= new Date(dep.createdAt).toDateString() %></td>
+                                    <td><%= dep.user.firstName %></td>
+                                    <td><%= dep.truck %></td>
+                                    <td><%= formatNumber(dep.amount) %></td>
+                                    <td><%= dep.status %></td>
+                                </tr>
+                            <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <% } %>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<% } %>
 
 
 

@@ -8,6 +8,7 @@ import moment from "moment";
 import InsuranceRenewal from "../../models/renewals/Insurance.js";
 import RoadWorthyRenewal from "../../models/renewals/RoadWorthy.js";
 import DriversLicense from "../../models/renewals/Driver.js";
+import Activity from "../../models/activities/Activity.js";
 
 //Passport Strategy
 passport.use(new LocalStrategy({
@@ -327,6 +328,15 @@ const userController = {
     destroy: async (req, res) => {
         try {
             const user = await User.findById(req.params.id);
+
+            const cannotRemove = await Activity.find({user: user._id});
+            if (cannotRemove.length > 0){
+                req.flash('error_msg', 'sorry, Cannot remove this User');
+              return res.redirect('/users');
+            }
+
+
+
             await user.remove();
             req.flash('success_msg', 'User deleted successfully');
             res.redirect('/users');

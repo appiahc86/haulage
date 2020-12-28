@@ -49,7 +49,7 @@ const assetController = {
             await newActivity.save();
 
             await newTruck.save();
-            req.flash('success_msg', 'Asset saved successfully');
+            req.flash('success_msg', 'Record saved successfully');
             res.redirect('/admin/assets');
 
         }catch (e) {
@@ -154,15 +154,10 @@ const assetController = {
             })
             await newActivity.save();
 
-
             await asset.remove();
             res.redirect('/admin/assets');
 
-
         }
-
-
-
 
 
         }catch (e) {
