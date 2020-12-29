@@ -10,6 +10,7 @@ import RoadWorthyRenewal from "../../models/renewals/RoadWorthy.js";
 import DriversLicense from "../../models/renewals/Driver.js";
 import Activity from "../../models/activities/Activity.js";
 import Truck from "../../models/assets/Truck.js";
+import Cash from "../../models/cash/Cash.js";
 
 //Passport Strategy
 passport.use(new LocalStrategy({
@@ -179,6 +180,15 @@ const userController = {
             });
         } // ./create acc for dev
 
+
+        //Create Cash Account
+        const accountExists = await Cash.findOne({name: "cashAccount"});
+        if (!accountExists){
+            await Cash.create({
+                name: "cashAccount",
+                balance: 0
+            });
+        }
 
 
 

@@ -49,14 +49,6 @@ const salesController = {
                 sale.bank = "";
                 sale.bankAccountNumber = "";
 
-                //First check if the cash account does not exist, then create it
-                const accountExists = await Cash.findOne({name: "cashAccount"});
-                if (!accountExists){
-                    await Cash.create({
-                        name: "cashAccount",
-                        balance: 0
-                    });
-                }
 
                 //Add amount to cash account
                 const addToCashAccount = await Cash.findOne({name: "cashAccount"});

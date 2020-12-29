@@ -53,14 +53,6 @@ const expenseController = {
                 newRecord.bank = "";
                 newRecord.bankAccountNumber = "";
 
-                //First check if the cash account does not exist, then create it
-                const accountExists = await Cash.findOne({name: "cashAccount"});
-                if (!accountExists){
-                    await Cash.create({
-                        name: "cashAccount",
-                        balance: 0
-                    });
-                }
 
                 //Deduct Amount from  cash account
                 const addToCashAccount = await Cash.findOne({name: "cashAccount"});
