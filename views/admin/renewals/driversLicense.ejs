@@ -1,4 +1,12 @@
-<%- include('../../layouts/adminHeader') %>
+<% if (parseInt(user.role) === 1 || parseInt(user.role) === 2){ %>
+
+    <%- include('../../layouts/adminHeader') %>
+
+<% } else { %>
+
+    <%- include('../../layouts/userHeader') %>
+
+<% } %>
 <br>
 
 <h2 class="text-center text-purple mb-4"><span class="fas fa-id-card"></span> Driver's License Renewals</h2>

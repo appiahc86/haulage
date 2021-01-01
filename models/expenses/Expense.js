@@ -37,6 +37,11 @@ const expenseSchema = new Schema({
         type: String
     },
 
+    saleId:{
+        type: String,
+        default: ''
+    },
+
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users'

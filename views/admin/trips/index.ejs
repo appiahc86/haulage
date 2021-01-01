@@ -1,4 +1,12 @@
-<%- include('../../layouts/adminHeader') %>
+<% if (parseInt(user.role) === 1 || parseInt(user.role) === 2){ %>
+
+    <%- include('../../layouts/adminHeader') %>
+
+<% } else { %>
+
+    <%- include('../../layouts/userHeader') %>
+
+<% } %>
 <br>
 <h3 class="text-center font-weight-bold">Trips</h3>
 

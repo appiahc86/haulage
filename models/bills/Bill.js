@@ -17,6 +17,11 @@ const billSchema = new Schema({
         type: Date
     },
 
+    type:{
+      type: Schema.Types.ObjectId,
+      ref: 'expense_types'
+    },
+
     amount: {
         type: Number
     },

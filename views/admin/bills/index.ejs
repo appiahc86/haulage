@@ -67,6 +67,32 @@
                     </div>
                 </div>
 
+                <div class="form-group  col-md-3">
+                    <label for="type">Type &nbsp;
+                        <% if (parseInt(user.role) === 1 ){ %>
+                            <span><a href="/expenseType">Create New</a></span>
+                        <% } %>
+                    </label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                        </div>
+                        <select name="type" id="type" class="form-control selectpicker"
+                                data-live-search="true"
+                                title="Select an option"
+                                required
+                        >
+
+                            <% for(let expenseType of expenseTypes){ %>
+                                <option value="<%= expenseType._id %>"><%= expenseType.name %></option>
+                            <% } %>
+
+                        </select>
+                    </div>
+                </div>
+
 
                     <div class="form-group  col-md-3">
                         <label for="date">Date</label>
@@ -140,6 +166,7 @@
                             <th>Ref#</th>
                             <th>Truck</th>
                             <th>Date</th>
+                            <th>Type</th>
                             <th>Amount</th>
                             <th>Description</th>
                             <th></th>
@@ -155,6 +182,7 @@
                                 <td><%= bill.refNumber %></td>
                                 <td><%= bill.truck.licenseNumber %></td>
                                 <td><%= new Date(bill.date).toDateString() %></td>
+                                <td><%= bill.type.name %></td>
                                 <td><%= bill.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
                                 <td><%= bill.description %></td>
                                 <td><a class="btn btn-success btn-sm" href="/bills/edit/<%= bill._id %>"><span class="fas fa-edit"></span></a></td>

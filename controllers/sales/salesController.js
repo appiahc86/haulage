@@ -3,6 +3,8 @@ import Bank from "../../models/banking/Bank.js";
 import Cash from "../../models/cash/Cash.js";
 import Sale from "../../models/sales/Sale.js";
 import Activity from "../../models/activities/Activity.js";
+import ExpenseType from "../../models/expenseType/expenseType.js";
+import Expense from "../../models/expenses/Expense.js";
 
 const salesController = {
 
@@ -11,15 +13,27 @@ const salesController = {
         const trucks = await Truck.find({deleted: 0});
         const banks = await Bank.find({});
         const sales = await Sale.find({}).populate("truck");
+        const types = await ExpenseType.find();
 
-        res.render('admin/sales/index', {trucks, banks, sales});
+        res.render('admin/sales/index', {trucks, banks, sales, types});
     },
 
 
     //Store sales record for a truck
     store: async (req, res) => {
 
-        const {truck, date, amount, mode, bank, description} = req.body;
+
+
+        let truck = req.body.truck;
+        let date = req.body.date;
+        let amount = req.body.amount;
+        let mode = req.body.mode;
+        let bank = req.body.bank;
+        let description = req.body.description;
+        let amounts = req.body["amounts[]"];
+        let types = req.body["types[]"];
+
+
 
         //Validation goes here
 
@@ -60,8 +74,58 @@ const salesController = {
             //Save record to database
             await sale.save();
 
-            const truckRecord = await Truck.findById(sale.truck);
+            //If sale has expenses, save that as well in expense collection
+            if (types){
+            if (typeof types === "object"){
 
+                var count = 0;
+                for (const type of types) {
+
+                        const newExpense = new Expense({
+                            saleId: sale._id,
+                            truck: sale.truck,
+                            date: sale.date,
+                            mode: sale.mode,
+                            bank: sale.bank,
+                            user: sale.user,
+                            bankAccountNumber: sale.bankAccountNumber,
+                            description: sale.description,
+                            expenseType: type,
+                            amount: parseFloat(amounts[count])
+
+                        })
+                        await newExpense.save();
+                        count += 1;
+
+                }// ./Saved expenses
+                }else {
+
+                const newExpense = new Expense({
+                    saleId: sale._id,
+                    truck: sale.truck,
+                    date: sale.date,
+                    mode: sale.mode,
+                    bank: sale.bank,
+                    user: sale.user,
+                    bankAccountNumber: sale.bankAccountNumber,
+                    description: sale.description,
+                    expenseType: types,
+                    amount: parseFloat(amounts)
+
+                })
+                await newExpense.save();
+
+
+            }// ./Saved expenses
+
+
+
+
+
+            }
+
+            const truckRecord = await Truck.findById(sale.truck);
+           //Record Activity
             const newActivity = new Activity({
                 user: req.user._id,
                 table: 'sales',
@@ -106,6 +170,9 @@ const salesController = {
 
             //Delete sales record
             await record.remove();
+
+            await Expense.deleteMany({saleId: record._id});
+
 
             //Record Activity
 

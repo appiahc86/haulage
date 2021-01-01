@@ -4,6 +4,7 @@ import Vendor from "../../models/vendors/Vendor.js";
 import Bank from "../../models/banking/Bank.js";
 import Cash from "../../models/cash/Cash.js";
 import Activity from "../../models/activities/Activity.js";
+import ExpenseType from "../../models/expenseType/expenseType.js";
 
 const billsController = {
 
@@ -11,19 +12,20 @@ const billsController = {
 
         const trucks = await Truck.find({deleted: 0});
         const vendors = await Vendor.find({});
-        const billsQuery = await Bill.find({}).populate('truck').populate('vendor');
+        const billsQuery = await Bill.find({}).populate('truck').populate('vendor').populate('type');
+        const expenseTypes = await ExpenseType.find({});
 
         const bills = billsQuery.filter(bill => {
             return parseFloat(bill.paid ) < parseFloat(bill.amount);
         })
 
-        res.render('admin/bills/index', {trucks, bills, vendors});
+        res.render('admin/bills/index', {trucks, bills, vendors, expenseTypes});
 },
 
     //Create Bill
     create: async (req, res) => {
 
-        const {vendor, refNumber, truck, date, amount, description} = req.body;
+        const {vendor, refNumber, truck, date, amount, description, type} = req.body;
 
         try {
         //Check if ref number exists
@@ -39,6 +41,7 @@ const billsController = {
                 vendor,
                 refNumber: refNumber.trim().toUpperCase(),
                 truck,
+                type,
                 date,
                 amount: parseFloat(amount),
                 description,
@@ -76,18 +79,19 @@ const billsController = {
     //Edit bill
     editBill: async (req, res) => {
 
-        const bill = await Bill.findById(req.params.id).populate('vendor').populate('truck');
+        const bill = await Bill.findById(req.params.id).populate('vendor').populate('truck').populate('type');
         const trucks = await Truck.find({deleted: 0});
         const vendors = await Vendor.find({});
+        const types = await ExpenseType.find({});
 
-        res.render('admin/bills/edit', {bill, trucks, vendors});
+        res.render('admin/bills/edit', {bill, trucks, vendors, types});
 
     },
 
     //Update Bill
     update: async (req, res) => {
 
-        const {editVendor, editRefNumber, editTruck, editDate, editAmount, editDescription} = req.body;
+        const {editVendor, editRefNumber, editTruck, editDate, editAmount, editType, editDescription} = req.body;
 
         try {
             const bill = await Bill.findById(req.params.id);
@@ -97,6 +101,7 @@ const billsController = {
             bill.truck = editTruck;
             bill.amount = parseFloat(editAmount);
             bill.description = editDescription;
+            bill.type = editType;
 
             if(editDate !== ""){
                 bill.date = editDate;

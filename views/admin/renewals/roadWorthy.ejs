@@ -1,4 +1,12 @@
-<%- include('../../layouts/adminHeader') %>
+<% if (parseInt(user.role) === 1 || parseInt(user.role) === 2){ %>
+
+    <%- include('../../layouts/adminHeader') %>
+
+<% } else { %>
+
+    <%- include('../../layouts/userHeader') %>
+
+<% } %>
 <br>
 
 <h2 class="text-center mb-4"><span class="fas fa-pager"></span> RoadWorthy Renewals</h2>

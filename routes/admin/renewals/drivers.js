@@ -3,9 +3,9 @@ const router = express.Router();
 
 import driversLicenseController from "../../../controllers/renewals/driversLicenseController.js";
 import auth from "../../../middleware/auth.js";
-import admin from "../../../middleware/admin.js";
 
-router.all('/*', auth, admin, (req, res, next)=>{
+
+router.all('/*', auth,  (req, res, next)=>{
     next();
 });
 

@@ -11,15 +11,19 @@ const expenseController = {
 
         const banks = await Bank.find({});
         const trucks = await Truck.find({deleted: 0});
-        const expenses = await Expense.find({}).populate('truck').populate('expenseType');
+        const expenseQuery = await Expense.find({}).populate('truck').populate('expenseType');
         const expenseTypes = await ExpenseType.find({});
+
+        const expenses = expenseQuery.filter(expense => {
+            return expense.saleId === "";
+        })
 
         res.render('admin/expenses/index', {banks, trucks, expenses, expenseTypes});
 
     },
 
 
-    //Store Expenditure
+    //Store Expense
     store: async (req, res) => {
 
         const {truck, type, date, amount, mode, bank, description} = req.body;
@@ -52,7 +56,6 @@ const expenseController = {
             }else { //If mode of payment is CASH
                 newRecord.bank = "";
                 newRecord.bankAccountNumber = "";
-
 
                 //Deduct Amount from  cash account
                 const addToCashAccount = await Cash.findOne({name: "cashAccount"});
