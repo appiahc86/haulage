@@ -12,7 +12,8 @@ const cashTransactionController = {
         const {from, to} = req.body;
 
 
-        const query = await CashTransaction.find({bankId: req.body.bank}).populate('bankId');
+        const query = await CashTransaction.find({});
+
         Date.prototype.withoutTime = function (){
             let d = new Date(this);
             return d.setHours(0,0,0,0);
@@ -23,7 +24,7 @@ const cashTransactionController = {
                 && new Date(record.createdAt).withoutTime() <= new Date(to).withoutTime()
         })
 
-        res.render('admin/reports/bankTransaction/index', {from, to, records,});
+        res.render('admin/reports/cashTransaction/index', {from, to, records,});
     }
 }
 

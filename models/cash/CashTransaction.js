@@ -4,15 +4,23 @@ const Schema = mongoose.Schema;
 const transactionSchema = new Schema({
 
     saleId: {
-        type: String
+        type: String,
+        default: ""
+    },
+
+    transferId: {
+        type: String,
+        default: ""
     },
 
     expenseId: {
-        type: String
+        type: String,
+        default: ""
     },
 
     paymentId: {
-        type: String
+        type: String,
+        default: ""
     },
 
     amount:{

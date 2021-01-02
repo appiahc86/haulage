@@ -1,6 +1,7 @@
 import Bank from "../../models/banking/Bank.js";
 import BankTransfers from "../../models/banking/BankTransfers.js";
 import Activity from "../../models/activities/Activity.js";
+import BankTransaction from "../../models/banking/BankTransaction.js";
 
 
 const bankTransferController = {
@@ -53,6 +54,33 @@ const bankTransferController = {
             await newActivity.save();
 
             await newTransaction.save();
+
+
+
+            //record bank transaction
+            const newBankTransaction = new BankTransaction({
+                bankId: debitAccount._id,
+                transferId: newTransaction._id,
+                amount: parseFloat(newTransaction.amount),
+                transactionType: "withdrawal",
+                balance: debitAccount.balance,
+                description: `Cash transfer to ${creditAccount.bankName}`
+            })
+            await newBankTransaction.save();
+
+            const newBankTransaction2 = new BankTransaction({
+                bankId: creditAccount._id,
+                transferId: newTransaction._id,
+                amount: parseFloat(newTransaction.amount),
+                transactionType: "deposit",
+                balance: creditAccount.balance,
+                description: `Cash transfer from ${debitAccount.bankName}`
+            })
+            await newBankTransaction2.save();
+
+
+
+
             req.flash('success_msg', 'Transaction was successful');
             res.redirect('/admin/bankTransfers');
 
@@ -97,6 +125,9 @@ const bankTransferController = {
 
             //Now delete the record
             await record.remove();
+
+            //Clear transfer transactions
+            await BankTransaction.deleteMany({transferId: record._id})
 
             req.flash('success_msg', 'Operation was successful');
             res.redirect('/admin/bankTransfers');

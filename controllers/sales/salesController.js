@@ -84,8 +84,6 @@ const salesController = {
                 const newTransaction = new BankTransaction({
                     bankId: sale.bankAccountNumber,
                     saleId: sale._id,
-                    expenseId: "",
-                    paymentId: "",
                     amount: parseFloat(sale.amount),
                     transactionType: "deposit",
                     balance: bankAccount.balance,
@@ -100,8 +98,6 @@ const salesController = {
 
                 const newTransaction = new CashTransaction({
                     saleId: sale._id,
-                    expenseId: "",
-                    paymentId: "",
                     amount: parseFloat(sale.amount),
                     transactionType: "deposit",
                     balance: addToCashAccount.balance,

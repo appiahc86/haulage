@@ -50,6 +50,63 @@ function formatNumber(number){
 <% if (typeof from != 'undefined'){ %>
 
 
+<%
+
+    //Sales
+    const sales = records.filter(record => {
+        return record.saleId !== "";
+    });
+    const salesArray = [0];
+    for (const sale of sales){
+        salesArray.push(parseFloat(sale.amount));
+    }
+    const salesTotal = salesArray.reduce((previousValue, currentValue) => {
+        return previousValue + currentValue;
+    })
+
+    //Expenses
+    const expenses = records.filter(record => {
+        return record.expenseId !== "";
+    });
+    const expensesArray = [0];
+    for (const exp of expenses){
+        expensesArray.push(parseFloat(exp.amount));
+    }
+    const expensesTotal = expensesArray.reduce((previousValue, currentValue) => {
+        return previousValue + currentValue;
+    })
+
+    //Bills
+    const bills = records.filter(record => {
+        return record.paymentId !== "";
+    });
+    const billsArray = [0];
+    for (const bill of bills){
+        billsArray.push(parseFloat(bill.amount));
+    }
+    const billsTotal = billsArray.reduce((previousValue, currentValue) => {
+        return previousValue + currentValue;
+    })
+
+
+    //Transfers
+    const transfers = records.filter(record => {
+        return record.transferId !== "";
+    });
+    const transfersArray = [0];
+    for (const transfer of transfers){
+        transfersArray.push(parseFloat(transfer.amount));
+    }
+    const transfersTotal = transfersArray.reduce((previousValue, currentValue) => {
+        return previousValue + currentValue;
+    })
+
+  const totalPaid = billsTotal + expensesTotal + transfersTotal;
+  const netTotal = salesTotal - totalPaid;
+
+%>
+
+
     <div class="container" id="printArea">
 
 
@@ -93,68 +150,54 @@ function formatNumber(number){
                 <div class="text-center details">
                     <span><b>CLEMONIC LIMITED</b></span><br>
                     <span>Cash Flow Statement</span><br>
-                    <span><b>From</b> <%= new Date(from).toDateString()%> <b>To</b> <%= new Date(to).toDateString() %></span>
+                    <span><b>From</b> <%= new Date(from).toDateString() %> <b>To</b> <%= new Date(to).toDateString() %></span>
                     <hr>
                 </div>
                 <div class="card shadow p-3">
-                    <h4 class="text-purple mb-0"><b><%= bank.bankName %></b></h4>
+                    <h4 class="text-purple mb-0"><b>Cash Flow Operations</b></h4>
 
                     <table class="table table-bordered table-sm mt-0">
 
-                        <thead>
-                        <tr>
-                            <th>Date</th>
-                            <th>Description</th>
-                            <th>Withdrawals</th>
-                            <th>Deposits</th>
-                            <th>Balance</th>
-                        </tr>
-                        </thead>
 
+                        <tr>
+                            <th colspan="3">Cash Received From</th>
+                        </tr>
+
+                        <tr>
+                            <td>Sales</td>
+                            <td><%= formatNumber(salesTotal) %></td>
+                            <td><b><%= formatNumber(salesTotal) %></b></td>
+                        </tr>
+
+                        <tr>
+                            <th colspan="3">Cash Paid For</th>
+                        </tr>
+
+                        <tr>
+                            <td>bills</td>
+                            <td><%= formatNumber(billsTotal) %></td>
+                            <td rowspan="2"></td>
+                        </tr>
+
+                        <tr>
+                            <td>Expenses</td>
+                            <td><%= formatNumber(expensesTotal) %></td>
+
+                        </tr>
+
+                        <tr>
+                            <td>Transfers</td>
+                            <td><%= formatNumber(transfersTotal) %></td>
+                            <td><b><%= formatNumber(totalPaid) %></b></td>
+                        </tr>
+
+                        <tr>
+                            <th>Net Cash Flow Operations</th>
+                            <td></td>
+                            <td><b>₵ <%= formatNumber(netTotal) %></b></td>
+                        </tr>
                         <tbody>
 
-                        <%
-                            const totalWithdrawalArray = [0];
-                            const totalDepositArray = [0];
-                        %>
-
-                        <% for(const record of records){ %>
-
-                            <tr>
-                                <td><%= new Date(record.createdAt).toDateString() %></td>
-                                <td><%= record.description %></td>
-                                <td><%= record.transactionType === 'withdrawal' ? formatNumber(parseFloat(record.amount)) : '' %></td>
-                                <td><%= record.transactionType === 'deposit' ? formatNumber(parseFloat(record.amount)) : ''  %></td>
-                                <td><%= formatNumber(parseFloat(record.balance)) %></td>
-                            </tr>
-
-                            <%
-                                if (record.transactionType === 'deposit'){
-                                    totalDepositArray.push(parseFloat(record.amount));
-                                }else {
-                                    totalWithdrawalArray.push(parseFloat(record.amount));
-                                }
-                            %>
-
-                        <% } %>
-
-
-                        <%
-                            const totalDeposit = totalDepositArray.reduce((previousValue, currentValue) => {
-                                return previousValue + currentValue;
-                            })
-
-                            const totalWithdrawal = totalWithdrawalArray.reduce((previousValue, currentValue) => {
-                                return previousValue + currentValue;
-                            })
-
-                        %>
-
-                        <tr>
-                            <td colspan="2" class="text-dark" style="text-align: center;"><b>*** Totals ***</b></td>
-                            <td><b>₵ <%= formatNumber(totalWithdrawal) %></b></td>
-                            <td><b>₵ <%= formatNumber(totalDeposit) %></b></td>
-                        </tr>
                         </tbody>
 
                     </table>

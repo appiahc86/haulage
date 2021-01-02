@@ -82,9 +82,7 @@ const expenseController = {
 
                 const newTransaction = new BankTransaction({
                     bankId: newRecord.bankAccountNumber,
-                    saleId: "",
                     expenseId: newRecord._id,
-                    paymentId: "",
                     amount: parseFloat(newRecord.amount),
                     transactionType: "withdrawal",
                     balance: bankAccount.balance,
@@ -98,9 +96,7 @@ const expenseController = {
                 const CashAccount = await Cash.findOne({name: "cashAccount"});
 
                 const newTransaction = new CashTransaction({
-                    saleId: "",
                     expenseId: newRecord._id,
-                    paymentId: "",
                     amount: parseFloat(newRecord.amount),
                     transactionType: "withdrawal",
                     balance: CashAccount.balance,

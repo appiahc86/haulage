@@ -1,7 +1,7 @@
 import express from "express";
 const router = express.Router();
 
-import cashTransactionController from "../../../../controllers/reports/cashTransactionController/cashTransactionController";
+import cashTransactionController from "../../../../controllers/reports/cashTransactionController/cashTransactionController.js";
 
 
 import auth from "../../../../middleware/auth.js";

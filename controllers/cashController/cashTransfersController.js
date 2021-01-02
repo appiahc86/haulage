@@ -2,7 +2,8 @@ import CashTransfers from "../../models/cash/CashTransfers.js";
 import Cash from "../../models/cash/Cash.js";
 import Bank from "../../models/banking/Bank.js";
 import Activity from "../../models/activities/Activity.js";
-
+import BankTransaction from "../../models/banking/BankTransaction.js";
+import CashTransaction from "../../models/cash/CashTransaction.js";
 
 const cashTransfersController = {
 
@@ -62,6 +63,28 @@ const cashTransfersController = {
 
              await newTransfer.save();
 
+            //record bank transaction
+            const newBankTransaction = new BankTransaction({
+                bankId: bankAcc._id,
+                transferId: newTransfer._id,
+                amount: parseFloat(newTransfer.amount),
+                transactionType: "deposit",
+                balance: bankAcc.balance,
+                description: `Cash transfer`
+            })
+            await newBankTransaction.save();
+
+            const cashAcc = await Cash.findOne({name: 'cashAccount'});
+            //record Cash transaction
+            const newBankTransaction2 = new CashTransaction({
+                transferId: newTransfer._id,
+                amount: parseFloat(newTransfer.amount),
+                transactionType: "withdrawal",
+                balance: cashAcc.balance -= parseFloat(newTransfer.amount),
+                description: `Cash transfer to ${bankAcc.bankName}`
+            })
+            await newBankTransaction2.save();
+
             req.flash('success_msg', 'Transfer was successful');
             res.redirect('/admin/cashTransfers');
 
@@ -92,6 +115,10 @@ const cashTransfersController = {
             //Now delete from Cash transfer history
             const deleteRecord = await CashTransfers.findById(req.params.id);
             await deleteRecord.remove();
+
+            //Remove transaction
+            await BankTransaction.deleteOne({transferId: deleteRecord._id});
+            await CashTransaction.deleteOne({transferId: deleteRecord._id});
 
             //Record activity
             const newActivity = new Activity({
