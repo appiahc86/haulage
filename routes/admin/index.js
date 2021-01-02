@@ -16,10 +16,9 @@ router.get('/', auth, admin, async (req, res) => {
 
     const sales = await Sale.find({}); //Get sales records
     const trucks = await Truck.find({}); //Get all trucks
-    const expenses = await Expense.find({}); //Get expenses
+    const expenses = await Expense.find({saleId: ""}); //Get expenses
     const billsQuery = await Bill.find({});
     const depreciationQuery = await Depreciation.find({});
-
 
 
   //Filter Bills to get outstanding ones

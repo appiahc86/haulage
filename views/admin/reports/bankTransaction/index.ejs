@@ -1,0 +1,208 @@
+<%- include('../../../layouts/adminHeader') %>
+
+<%
+//Format Number
+function formatNumber(number){
+    return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
+//Capitalize Every first letter
+const titleCase = (phrase) => {
+    return phrase
+            .toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+};
+
+%>
+
+<br>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow p-3">
+                <h4>Bank Statement</h4>
+
+                <form action="/report/bankTransaction" method="post" class="myform">
+                    <div class="input-group">
+
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-dark"><b>Bank</b></div>
+                        </div>
+                        <select name="bank" class="form-control" required>
+                            <option value="">--Select Bank--</option>
+
+                            <% for(const bank of banks){ %>
+                                <option value="<%= bank._id %>"><%= bank.bankName + ' (' + bank.accountNumber + ')' %></option>
+                            <% } %>
+
+                        </select>
+
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-dark"><b>From</b></div>
+                        </div>
+                        <input type="date" required name="from" class="form-control"> &nbsp;
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-dark"><b>To</b></div>
+                        </div>
+                        <input type="date" required name="to" class="form-control">&nbsp;
+                        <button type="submit" class="btn btn-primary mybtn"><span class="fas fa-search"></span></button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<% if (typeof from != 'undefined'){ %>
+
+
+    <div class="container" id="printArea">
+
+
+
+        <style>
+            @media print {
+
+                .details{
+                    text-align: center;
+                }
+                .topHeader{
+                    text-align: center;
+                }
+                h4{
+                    margin-bottom: 0;
+                    font-size: 1.5em;
+                }
+                .btn{
+                    display: none;
+                }
+                table{
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 0;
+                }
+                th{
+                    text-align: left;
+                }
+
+
+            }
+        </style>
+
+
+
+
+
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-success btn-sm mb-2" onclick="printInvoice();"><span class="fas fa-print"></span> Print</button>
+                <div class="text-center details">
+                    <span><b>CLEMONIC LIMITED</b></span><br>
+                    <span>Bank Statement</span><br>
+                    <span><b>From</b> <%= new Date(from).toDateString()%> <b>To</b> <%= new Date(to).toDateString() %></span>
+                    <hr>
+                </div>
+                <div class="card shadow p-3">
+                    <h4 class="text-purple mb-0"><b><%= bank.bankName %></b></h4>
+
+                    <table class="table table-bordered table-sm mt-0">
+
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Description</th>
+                            <th>Withdrawals</th>
+                            <th>Deposits</th>
+                            <th>Balance</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <%
+                            const totalWithdrawalArray = [0];
+                            const totalDepositArray = [0];
+                        %>
+
+                        <% for(const record of records){ %>
+
+                        <tr>
+                            <td><%= new Date(record.createdAt).toDateString() %></td>
+                            <td><%= record.description %></td>
+                            <td><%= record.transactionType === 'withdrawal' ? formatNumber(parseFloat(record.amount)) : '' %></td>
+                            <td><%= record.transactionType === 'deposit' ? formatNumber(parseFloat(record.amount)) : ''  %></td>
+                            <td><%= formatNumber(parseFloat(record.balance)) %></td>
+                        </tr>
+
+                        <%
+                            if (record.transactionType === 'deposit'){
+                                totalDepositArray.push(parseFloat(record.amount));
+                            }else {
+                                totalWithdrawalArray.push(parseFloat(record.amount));
+                            }
+                        %>
+
+                        <% } %>
+
+
+                        <%
+                        const totalDeposit = totalDepositArray.reduce((previousValue, currentValue) => {
+                            return previousValue + currentValue;
+                        })
+
+                            const totalWithdrawal = totalWithdrawalArray.reduce((previousValue, currentValue) => {
+                                return previousValue + currentValue;
+                            })
+
+                     %>
+
+                        <tr>
+                            <td colspan="2" class="text-dark" style="text-align: center;"><b>*** Totals ***</b></td>
+                            <td><b>₵ <%= formatNumber(totalWithdrawal) %></b></td>
+                            <td><b>₵ <%= formatNumber(totalDeposit) %></b></td>
+                        </tr>
+                        </tbody>
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<% } %>
+
+
+
+
+
+<%- include('../../../layouts/adminFooter') %>
+
+
+
+
+<script>
+    // Printout
+    function printInvoice(){
+
+        const divtoprint = document.querySelector("#printArea");
+        const newWindow = window.open('','Print-Window', 'height=600, width=1000');
+
+        newWindow.document.open();
+        newWindow.document.write("<html><body onload='window.print()'>"+divtoprint.innerHTML+"</body></html>");
+
+        newWindow.document.close();
+
+        setTimeout(function () {
+            newWindow.close();
+        },2000)
+
+    }
+
+</script>

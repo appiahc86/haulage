@@ -2,9 +2,10 @@ import express from "express";
 const router = express.Router();
 
 import cashAccountController from "../../../controllers/cashController/cashAccountController.js";
+import auth from "../../../middleware/auth.js";
 
 
-router.get('/', cashAccountController.index);
+router.get('/', auth, cashAccountController.index);
 
 
 

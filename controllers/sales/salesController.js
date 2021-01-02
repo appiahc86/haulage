@@ -5,6 +5,8 @@ import Sale from "../../models/sales/Sale.js";
 import Activity from "../../models/activities/Activity.js";
 import ExpenseType from "../../models/expenseType/expenseType.js";
 import Expense from "../../models/expenses/Expense.js";
+import BankTransaction from "../../models/banking/BankTransaction.js";
+import CashTransaction from "../../models/cash/CashTransaction.js";
 
 const salesController = {
 
@@ -63,7 +65,6 @@ const salesController = {
                 sale.bank = "";
                 sale.bankAccountNumber = "";
 
-
                 //Add amount to cash account
                 const addToCashAccount = await Cash.findOne({name: "cashAccount"});
                 addToCashAccount.balance += parseFloat(amount);
@@ -73,6 +74,42 @@ const salesController = {
 
             //Save record to database
             await sale.save();
+
+            //Record Bank or cash transaction
+            const getTruck = await Truck.findById(sale.truck);
+            if (sale.mode === "bank"){
+                //record bank transaction
+                const bankAccount = await Bank.findById(bank);
+
+                const newTransaction = new BankTransaction({
+                    bankId: sale.bankAccountNumber,
+                    saleId: sale._id,
+                    expenseId: "",
+                    paymentId: "",
+                    amount: parseFloat(sale.amount),
+                    transactionType: "deposit",
+                    balance: bankAccount.balance,
+                    description: `Sales for truck ${getTruck.licenseNumber}`
+                })
+                await newTransaction.save();
+
+
+            }else { // record cash transaction
+
+                const addToCashAccount = await Cash.findOne({name: "cashAccount"});
+
+                const newTransaction = new CashTransaction({
+                    saleId: sale._id,
+                    expenseId: "",
+                    paymentId: "",
+                    amount: parseFloat(sale.amount),
+                    transactionType: "deposit",
+                    balance: addToCashAccount.balance,
+                    description: `Sales by truck ${getTruck.licenseNumber}`
+                })
+                await newTransaction.save();
+            }
+
 
             //If sale has expenses, save that as well in expense collection
             if (types){
@@ -171,11 +208,23 @@ const salesController = {
             //Delete sales record
             await record.remove();
 
+
+            //remove bank or cash transaction
+            if (record.mode === "bank"){
+                //delete bank Transaction
+                await BankTransaction.deleteOne({saleId: record._id})
+
+            }else {
+                //delete Cash Transaction
+                await CashTransaction.deleteOne({saleId: record._id})
+            }
+
+
+            //Remove expenses if any
             await Expense.deleteMany({saleId: record._id});
 
 
             //Record Activity
-
             const truckRecord = await Truck.findById(record.truck);
 
             const newActivity = new Activity({

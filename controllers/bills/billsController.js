@@ -5,6 +5,8 @@ import Bank from "../../models/banking/Bank.js";
 import Cash from "../../models/cash/Cash.js";
 import Activity from "../../models/activities/Activity.js";
 import ExpenseType from "../../models/expenseType/expenseType.js";
+import BankTransaction from "../../models/banking/BankTransaction.js";
+import CashTransaction from "../../models/cash/CashTransaction.js";
 
 const billsController = {
 
@@ -166,7 +168,7 @@ const billsController = {
                 bankAccount.balance -= parseFloat(amount);
                 await bankAccount.save();
 
-                bill.payments.push({
+                bill.payments.unshift({
                     date,
                     amount: parseFloat(amount),
                     modeOfPayment: mode,
@@ -178,6 +180,25 @@ const billsController = {
                 bill.paid += amount;
 
                 await bill.save();
+
+
+                    //record bank transaction
+                    const CheckBankAccount = await Bank.findById(bill.payments[0].bank);
+
+                    const newTransaction = new BankTransaction({
+                        bankId: bill.payments[0].bank,
+                        saleId: "",
+                        expenseId: "",
+                        paymentId: bill.payments[0]._id,
+                        amount: parseFloat(bill.payments[0].amount),
+                        transactionType: "withdrawal",
+                        balance: CheckBankAccount.balance,
+                        description: `Bill payment to ${bill.vendor.name}, ref:${bill.refNumber}`
+                    })
+                    await newTransaction.save();
+
+
+
 
             }else{ //If mode of payment is Cash
 
@@ -195,7 +216,7 @@ const billsController = {
                 debitCashAccount.balance -= amount;
                 await debitCashAccount.save();
 
-                bill.payments.push({
+                bill.payments.unshift({
                     date,
                     amount,
                     modeOfPayment: mode,
@@ -207,6 +228,25 @@ const billsController = {
                 bill.paid += amount;
 
                 await bill.save();
+
+                // record cash transaction
+
+                const cashAccount = await Cash.findOne({name: "cashAccount"});
+
+                const newTransaction = new CashTransaction({
+                    bankId: bill.payments[0].bank,
+                    saleId: "",
+                    expenseId: "",
+                    paymentId: bill.payments[0]._id,
+                    amount: parseFloat(bill.payments[0].amount),
+                    transactionType: "withdrawal",
+                    balance: cashAccount.balance,
+                    description: `Bill payment to ${bill.vendor.name} ref:${bill.refNumber}`
+                })
+                await newTransaction.save();
+
+
+
 
             }
 
@@ -257,6 +297,11 @@ const billsController = {
                   return b._id != req.params.paymentId;
               })
 
+                  //delete bank Transaction
+                  await BankTransaction.deleteOne({paymentId: payment[0]._id});
+
+
+
               //Record Activity
               const newActivity = new Activity({
                   user: req.user._id,
@@ -274,6 +319,10 @@ const billsController = {
               return res.redirect('/bills/pay');
 
           }else { // If payment was made with cash account
+
+              //delete Cash Transaction
+              await CashTransaction.deleteOne({paymentId: payment[0]._id});
+
               const cash = await Cash.findOne({name: "cashAccount"});
               cash.balance += parseFloat(payment[0].amount); //Credit Cash Account
               await cash.save();

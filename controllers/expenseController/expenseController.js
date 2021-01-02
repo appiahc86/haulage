@@ -4,6 +4,8 @@ import Truck from "../../models/assets/Truck.js";
 import Cash from "../../models/cash/Cash.js";
 import ExpenseType from "../../models/expenseType/expenseType.js";
 import Activity from "../../models/activities/Activity.js";
+import BankTransaction from "../../models/banking/BankTransaction.js";
+import CashTransaction from "../../models/cash/CashTransaction.js";
 
 const expenseController = {
 
@@ -68,6 +70,47 @@ const expenseController = {
             //Save record to database
             await newRecord.save();
 
+
+
+            //Record Bank or cash transaction
+            const getTruck = await Truck.findById(newRecord.truck);
+            const expType = await ExpenseType.findById(newRecord.expenseType);
+
+            if (newRecord.mode === "bank"){
+                //record bank transaction
+                const bankAccount = await Bank.findById(bank);
+
+                const newTransaction = new BankTransaction({
+                    bankId: newRecord.bankAccountNumber,
+                    saleId: "",
+                    expenseId: newRecord._id,
+                    paymentId: "",
+                    amount: parseFloat(newRecord.amount),
+                    transactionType: "withdrawal",
+                    balance: bankAccount.balance,
+                    description: `${expType.name} expense for truck ${getTruck.licenseNumber}`
+                })
+                await newTransaction.save();
+
+
+            }else { // record cash transaction
+
+                const CashAccount = await Cash.findOne({name: "cashAccount"});
+
+                const newTransaction = new CashTransaction({
+                    saleId: "",
+                    expenseId: newRecord._id,
+                    paymentId: "",
+                    amount: parseFloat(newRecord.amount),
+                    transactionType: "withdrawal",
+                    balance: CashAccount.balance,
+                    description: `${expType.name} expense for truck ${getTruck.licenseNumber}`
+                })
+                await newTransaction.save();
+            }
+
+
+
             //Record Activity
             const truckRecord = await Truck.findById(newRecord.truck);
             const expenseType = await ExpenseType.findById(newRecord.expenseType);
@@ -121,6 +164,17 @@ const expenseController = {
 
             //Delete expenses record
             await record.remove();
+
+
+            //remove bank or cash transaction
+            if (record.mode === "bank"){
+                //delete bank Transaction
+                await BankTransaction.deleteOne({expenseId: record._id})
+
+            }else {
+                //delete Cash Transaction
+                await CashTransaction.deleteOne({expenseId: record._id})
+            }
 
 
             //Record Activity

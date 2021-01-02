@@ -77,9 +77,6 @@ const profitAndLossController = {
         const bills = await Bill.find({date: {$gte: from, $lte: to}}).populate('type');
 
 
-
-
-
         res.render('admin/reports/profitAndLoss/details',
             {
                 to,
@@ -90,7 +87,6 @@ const profitAndLossController = {
                 types,
                 expenses,
                 depreciation
-
             }
         );
      }
