@@ -150,6 +150,14 @@ const expenseController = {
         }
 
 
+    },
+
+    //View last % records
+    viewLastFive: async (req, res) => {
+
+        const expenses = await Expense.find({saleId: ''}).sort({'createdAt': -1}).limit(5).populate("truck").populate('expenseType');
+        res.render('admin/expenses/lastFive', {expenses})
+
     }
 
 

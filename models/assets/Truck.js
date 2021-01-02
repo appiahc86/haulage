@@ -27,6 +27,8 @@ const truckSchema = new Schema({
         required: true
     },
 
+
+
     depreciation: {
        type: Number,
         required: true

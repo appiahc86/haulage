@@ -25,7 +25,7 @@ const titleCase = (phrase) => {
             <div class="card shadow p-3">
                 <h4>Profit And Loss Details</h4>
 
-                <form action="/report/profitAndLoss" method="post" class="myform">
+                <form action="/report/profitAndLoss/details" method="post" class="myform">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <div class="input-group-text bg-fuchsia"><b>From</b></div>
@@ -46,7 +46,7 @@ const titleCase = (phrase) => {
 
 
 
-<% if (typeof totalSales != 'undefined'){ %>
+<% if (typeof from != 'undefined'){ %>
 
 
     <div class="container" id="printArea">
@@ -96,74 +96,59 @@ const titleCase = (phrase) => {
                     <hr>
                 </div>
                 <div class="card shadow p-3">
-                    <h4 class="text-purple mb-0"><b>Revenues</b></h4>
-                    <table class="table table-bordered table-sm mt-0">
-                        <tr>
-                            <td>Trucks Sales</td>
-                            <td><%= formatNumber(totalSales)%></td>
-                        </tr>
 
-                        <tr>
-                            <th class="text-danger">Total Revenues</th>
-                            <td class="text-danger"><b> ₵ <%= formatNumber(totalSales) %></b></td>
-                        </tr>
-                    </table>
+                    <h4 class="text-purple text-center mb-0"><b>Expenses</b></h4>
 
-                    <h4 class="text-purple mb-0"><b>Expenses</b></h4>
+                    <h5>AS 323 q</h5>
                     <table class="table table-bordered table-sm mt-0">
 
-                        <% const totalExpensesArray = [0]; %>
+                        <thead>
 
-                        <% for(const type of types){ %>
-
-                            <tr>
-                                <td><%= titleCase(type.name) %></td>
-
-                                <%
-                                    let expenseTypeArray = [0];
-                                    for (const expense of expenses){
-                                        if (type._id.toString() === expense.expenseType._id.toString()){
-                                            expenseTypeArray.push(parseFloat(expense.amount))
-
-                                        }
-                                    }
-
-                                    const typeTotal = expenseTypeArray.reduce(function (previousValue, currentValue) {
-                                        return previousValue + currentValue;
-                                    })
-
-                                    totalExpensesArray.push(parseFloat(typeTotal))
-
-                                %>
-
-                                <td><%= formatNumber(typeTotal) %></td>
-                            </tr>
-
-                        <% } %>
-
-
-
-
-
-                        <% const totalExpenses = totalExpensesArray.reduce(function (previousValue, currentValue) {
-                            return previousValue + currentValue;
-                        }) %>
                         <tr>
-                            <td>Depreciation</td>
-                            <td><%= formatNumber(totalDepreciation) %></td>
+                            <th>Fuel & Lubes</th>
+                            <td>4565</td>
                         </tr>
 
                         <tr>
-                            <td>Bills</td>
-                            <td><%= formatNumber(totalBills) %></td>
+                            <th>Wages & Salary</th>
+                            <td>4565</td>
                         </tr>
 
                         <tr>
-                            <th class="text-danger">Total Expenses</th>
-                            <td class="text-danger"><b> ₵ <%= formatNumber(totalExpenses + totalDepreciation + totalBills) %></b></td>
+                            <th>Maintenance</th>
+                            <td>4565</td>
                         </tr>
+
+                        </thead>
+
                     </table>
+                    <hr>
 
+
+                    <h5>BA 662 20</h5>
+                    <table class="table table-bordered table-sm mt-0">
+
+                        <thead>
+
+                        <tr>
+                            <th>Fuel & Lubes</th>
+                            <td>4565</td>
+                        </tr>
+
+                        <tr>
+                            <th>Wages & Salary</th>
+                            <td>4565</td>
+                        </tr>
+
+                        <tr>
+                            <th>Maintenance</th>
+                            <td>4565</td>
+                        </tr>
+
+                        </thead>
+
+                    </table>
+                    <hr>
 
                 </div>
             </div>

@@ -23,7 +23,7 @@ const titleCase = (phrase) => {
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card shadow p-3">
-                <h4>Profit And Loss</h4>
+                <h4>Profit And Loss Summary</h4>
 
                 <form action="/report/profitAndLoss" method="post" class="myform">
                     <div class="input-group">
@@ -91,7 +91,7 @@ const titleCase = (phrase) => {
             <button class="btn btn-success btn-sm mb-2" onclick="printInvoice();"><span class="fas fa-print"></span> Print</button>
             <div class="text-center details">
                 <span><b>CLEMONIC LIMITED</b></span><br>
-                <span>Profit & Loss Statement</span><br>
+                <span>Profit & Loss Summary</span><br>
                 <span><b>From</b> <%= new Date(from).toDateString()%> <b>To</b> <%= new Date(to).toDateString() %></span>
                 <hr>
             </div>
@@ -134,9 +134,22 @@ const titleCase = (phrase) => {
 
      totalExpensesArray.push(parseFloat(typeTotal))
 
+
+    //Get Expense Bills
+     const billsArray = [0];
+     for(const bill of bills){
+         if (type._id.toString() === bill.type._id.toString()){
+             billsArray.push(parseFloat(bill.amount))
+         }
+
+     }
+     const totalBills = billsArray.reduce((previousValue, currentValue) => {
+         return previousValue + currentValue;
+     })
+     totalExpensesArray.push(parseFloat(totalBills))
  %>
 
-                        <td><%= formatNumber(typeTotal) %></td>
+                        <td><%= formatNumber(typeTotal + totalBills) %></td>
                     </tr>
 
                     <% } %>
@@ -153,14 +166,10 @@ const titleCase = (phrase) => {
                         <td><%= formatNumber(totalDepreciation) %></td>
                     </tr>
 
-                    <tr>
-                        <td>Bills</td>
-                        <td><%= formatNumber(totalBills) %></td>
-                    </tr>
 
                     <tr>
                         <th class="text-danger">Total Expenses</th>
-                        <td class="text-danger"><b> ₵ <%= formatNumber(totalExpenses + totalDepreciation + totalBills) %></b></td>
+                        <td class="text-danger"><b> ₵ <%= formatNumber(totalExpenses + totalDepreciation) %></b></td>
                     </tr>
                 </table>
 

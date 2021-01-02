@@ -17,6 +17,9 @@ router.post('/store', expenseController.store);
 //Delete Expenditure
 router.delete('/:id', expenseController.destroy);
 
+//View Last five records
+router.get('/lastFive', expenseController.viewLastFive);
+
 
 
 

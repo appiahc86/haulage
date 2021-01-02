@@ -3,6 +3,7 @@ import ExpenseType from "../../../models/expenseType/expenseType.js";
 import Expense from "../../../models/expenses/Expense.js";
 import Depreciation from "../../../models/depreciation/Depreciation.js";
 import Bill from "../../../models/bills/Bill.js";
+import Truck from "../../../models/assets/Truck.js";
 
 const profitAndLossController = {
 
@@ -22,17 +23,9 @@ const profitAndLossController = {
         const depreciation = await Depreciation.find({date: {$gte: from, $lte: to}});
         const bills = await Bill.find({date: {$gte: from, $lte: to}});
 
-        //Bills
-        const billsArray = [0];
-        for(const bill of bills){
-            billsArray.push(parseFloat(bill.paid))
-        }
-        const totalBills = billsArray.reduce((previousValue, currentValue) => {
-            return previousValue + currentValue;
-        })
 
 
-     //sAles
+     //sales
         const salesArray = [0];
         for(const sale of sales){
             salesArray.push(parseFloat(sale.amount))
@@ -55,15 +48,53 @@ const profitAndLossController = {
             {
                 to,
                 from,
+                bills,
                 types,
                 expenses,
-                totalBills,
                 totalSales,
                 totalDepreciation
             }
         );
 
-    }
+    },
+
+
+    //Get details index page
+    details: async (req, res) => {
+        res.render('admin/reports/profitAndLoss/details');
+    },
+
+    //Search Details
+    searchDetails: async (req, res) => {
+
+        const{from, to} = req.body;
+
+        const trucks = await Truck.find({deleted: 0});
+        const sales = await Sale.find({date: {$gte: from, $lte: to}});
+        const types = await ExpenseType.find({});
+        const expenses = await Expense.find({date: {$gte: from, $lte: to}}).populate('expenseType');
+        const depreciation = await Depreciation.find({date: {$gte: from, $lte: to}});
+        const bills = await Bill.find({date: {$gte: from, $lte: to}}).populate('type');
+
+
+
+
+
+        res.render('admin/reports/profitAndLoss/details',
+            {
+                to,
+                from,
+                bills,
+                trucks,
+                sales,
+                types,
+                expenses,
+                depreciation
+
+            }
+        );
+     }
+
 
 }
 

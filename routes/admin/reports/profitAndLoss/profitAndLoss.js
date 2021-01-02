@@ -10,10 +10,11 @@ import profitAndLossController from "../../../../controllers/reports/profitAndLo
  });
 
 router.get('/', profitAndLossController.index);
-
 router.post('/', profitAndLossController.search);
 
-
+//Details
+router.get('/details', profitAndLossController.details);
+router.post('/details', profitAndLossController.searchDetails);
 
 
 export default router;

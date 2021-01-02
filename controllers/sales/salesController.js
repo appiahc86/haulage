@@ -198,7 +198,16 @@ const salesController = {
             res.redirect('/admin/sales');
         }
 
-    } // ./delete sales record
+    }, // ./delete sales record
+
+
+    //View last % records
+    viewLastFive: async (req, res) => {
+
+        const sales = await Sale.find({}).sort({'createdAt': -1}).limit(5).populate("truck");
+        res.render('admin/sales/lastFive', {sales})
+
+    }
 
 }
 

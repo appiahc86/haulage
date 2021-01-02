@@ -18,6 +18,9 @@ router.post('/store', salesController.store);
 //Delete sales record
 router.delete('/:id', salesController.destroy);
 
+//View Last five records
+router.get('/lastFive', salesController.viewLastFive);
+
 
 
 

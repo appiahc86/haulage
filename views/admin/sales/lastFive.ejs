@@ -1,0 +1,113 @@
+
+<% if (parseInt(user.role) === 1 || parseInt(user.role) === 2){ %>
+
+    <%- include('../../layouts/adminHeader') %>
+
+<% } else { %>
+
+    <%- include('../../layouts/userHeader') %>
+
+<% } %>
+<br>
+
+
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow p-3">
+                <h3 class="text-center">Last 5 Sales Records</h3>
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover table-sm">
+
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>Truck#</th>
+                            <th>Date</th>
+                            <th>Mode Of Payment</th>
+                            <th>Bank</th>
+                            <th>Net Sale</th>
+                            <th>Description</th>
+<!--                            <th></th>-->
+
+
+
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <% let counter = 1 %>
+                        <% for(let sale of sales) { %>
+
+                            <tr>
+                                <td><%= counter %></td>
+                                <td><%= sale.truck.licenseNumber %></td>
+                                <td><%= new Date(sale.date).toDateString()%></td>
+                                <td><%= sale.mode %></td>
+                                <td><%= sale.bank !== "" ? sale.bank : "..." %></td>
+                                <td><b>₵</b> <%= sale.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                                <td><%= sale.description.slice(0,15).concat("...") %></td>
+
+
+<!--                                    <td>-->
+<!--                                        <button data-toggle="modal" data-target="#view<%= sale._id %>" class="btn btn-primary btn-sm">-->
+<!--                                            <span class="fas fa-eye"></span>-->
+<!--                                        </button>-->
+<!--                                    </td>-->
+
+
+                            </tr>
+
+
+
+                            <!-- Modal for viewing record -->
+                            <div class="modal fade" id="del<%= sale._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <br><br>
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete Sales Record</span></h5>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <form action="/admin/sales/<%= sale._id %>?_method=DELETE" method="post" class="myform">
+                                            <div class="modal-body">
+
+                                                Are you sure you want to delete this record?
+
+                                                <div class="col-md-12 text-right">
+                                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
+                                                    <input type="submit" class="btn btn-danger btn-sm mybtn" value="Delete">
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div> <!-- ./delete modal -->
+
+
+                            <% counter++ %>
+                        <% } %>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<%- include('../../layouts/adminFooter') %>
