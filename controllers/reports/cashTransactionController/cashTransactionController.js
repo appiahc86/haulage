@@ -1,0 +1,32 @@
+import CashTransaction from "../../../models/cash/CashTransaction.js";
+
+
+const cashTransactionController = {
+
+    index: async (req, res) => {
+        res.render('admin/reports/cashTransaction/index');
+    },
+
+    search: async (req, res) => {
+
+        const {from, to} = req.body;
+
+
+        const query = await CashTransaction.find({bankId: req.body.bank}).populate('bankId');
+        Date.prototype.withoutTime = function (){
+            let d = new Date(this);
+            return d.setHours(0,0,0,0);
+        }
+
+        const records = query.filter(record => {
+            return new Date(record.createdAt).withoutTime() >= new Date(from).withoutTime()
+                && new Date(record.createdAt).withoutTime() <= new Date(to).withoutTime()
+        })
+
+        res.render('admin/reports/bankTransaction/index', {from, to, records,});
+    }
+}
+
+
+
+export default cashTransactionController;

@@ -6,7 +6,7 @@ function formatNumber(number){
     return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
 
-// //Capitalize Every first letter
+//Capitalize Every first letter
 // const titleCase = (phrase) => {
 //     return phrase
 //             .toLowerCase()
@@ -23,22 +23,10 @@ function formatNumber(number){
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card shadow p-3">
-                <h4>Bank Statement</h4>
+                <h4>Cash Flow Statement</h4>
 
-                <form action="/report/bankTransaction" method="post" class="myform">
+                <form action="/report/cashTransaction" method="post" class="myform">
                     <div class="input-group">
-
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-dark"><b>Bank</b></div>
-                        </div>
-                        <select name="bank" class="form-control" required>
-                            <option value="">--Select Bank--</option>
-
-                            <% for(const bank of banks){ %>
-                                <option value="<%= bank._id %>"><%= bank.bankName + ' (' + bank.accountNumber + ')' %></option>
-                            <% } %>
-
-                        </select>
 
                         <div class="input-group-prepend">
                             <div class="input-group-text bg-dark"><b>From</b></div>
@@ -104,7 +92,7 @@ function formatNumber(number){
                 <button class="btn btn-success btn-sm mb-2" onclick="printInvoice();"><span class="fas fa-print"></span> Print</button>
                 <div class="text-center details">
                     <span><b>CLEMONIC LIMITED</b></span><br>
-                    <span>Bank Statement</span><br>
+                    <span>Cash Flow Statement</span><br>
                     <span><b>From</b> <%= new Date(from).toDateString()%> <b>To</b> <%= new Date(to).toDateString() %></span>
                     <hr>
                 </div>
@@ -132,35 +120,35 @@ function formatNumber(number){
 
                         <% for(const record of records){ %>
 
-                        <tr>
-                            <td><%= new Date(record.createdAt).toDateString() %></td>
-                            <td><%= record.description %></td>
-                            <td><%= record.transactionType === 'withdrawal' ? formatNumber(parseFloat(record.amount)) : '' %></td>
-                            <td><%= record.transactionType === 'deposit' ? formatNumber(parseFloat(record.amount)) : ''  %></td>
-                            <td><%= formatNumber(parseFloat(record.balance)) %></td>
-                        </tr>
+                            <tr>
+                                <td><%= new Date(record.createdAt).toDateString() %></td>
+                                <td><%= record.description %></td>
+                                <td><%= record.transactionType === 'withdrawal' ? formatNumber(parseFloat(record.amount)) : '' %></td>
+                                <td><%= record.transactionType === 'deposit' ? formatNumber(parseFloat(record.amount)) : ''  %></td>
+                                <td><%= formatNumber(parseFloat(record.balance)) %></td>
+                            </tr>
 
-                        <%
-                            if (record.transactionType === 'deposit'){
-                                totalDepositArray.push(parseFloat(record.amount));
-                            }else {
-                                totalWithdrawalArray.push(parseFloat(record.amount));
-                            }
-                        %>
+                            <%
+                                if (record.transactionType === 'deposit'){
+                                    totalDepositArray.push(parseFloat(record.amount));
+                                }else {
+                                    totalWithdrawalArray.push(parseFloat(record.amount));
+                                }
+                            %>
 
                         <% } %>
 
 
                         <%
-                        const totalDeposit = totalDepositArray.reduce((previousValue, currentValue) => {
-                            return previousValue + currentValue;
-                        })
+                            const totalDeposit = totalDepositArray.reduce((previousValue, currentValue) => {
+                                return previousValue + currentValue;
+                            })
 
                             const totalWithdrawal = totalWithdrawalArray.reduce((previousValue, currentValue) => {
                                 return previousValue + currentValue;
                             })
 
-                     %>
+                        %>
 
                         <tr>
                             <td colspan="2" class="text-dark" style="text-align: center;"><b>*** Totals ***</b></td>

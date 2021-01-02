@@ -99,6 +99,7 @@ import profitAndLossRouter from "./routes/admin/reports/profitAndLoss/profitAndL
 import assetAccountRouter from "./routes/admin/reports/assetAccount/assetAccount.js";
 import balanceSheetRouter from "./routes/admin/reports/balanceSheet/balanceSheet.js";
 import bankTransactionRouter from "./routes/admin/reports/bankTransaction/bankTransaction.js";
+import cashTransactionRouter from "./routes/admin/reports/cashTransaction/cashTransaction.js";
 
 
 
@@ -129,6 +130,7 @@ app.use('/report/profitAndLoss', profitAndLossRouter);
 app.use('/report/assetAccount', assetAccountRouter);
 app.use('/report/balanceSheet', balanceSheetRouter);
 app.use('/report/bankTransaction', bankTransactionRouter);
+app.use('/report/cashTransaction', cashTransactionRouter);
 
 
 
