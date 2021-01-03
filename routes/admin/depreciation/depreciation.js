@@ -13,6 +13,9 @@ router.post('/', auth, depreciationController.store);
 //Delete
 router.delete('/:id', auth, depreciationController.destroy);
 
+//View Last five records
+router.get('/lastFive', auth, depreciationController.viewLastFive);
+
 
 
 export default router;

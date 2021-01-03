@@ -7,6 +7,7 @@ import ExpenseType from "../../models/expenseType/expenseType.js";
 import Expense from "../../models/expenses/Expense.js";
 import BankTransaction from "../../models/banking/BankTransaction.js";
 import CashTransaction from "../../models/cash/CashTransaction.js";
+import moment from "moment";
 
 const salesController = {
 
@@ -15,9 +16,14 @@ const salesController = {
         const trucks = await Truck.find({deleted: 0});
         const banks = await Bank.find({});
         const sales = await Sale.find({}).populate("truck");
-        const types = await ExpenseType.find();
+        const types = await ExpenseType.find({});
 
-        res.render('admin/sales/index', {trucks, banks, sales, types});
+        const expenseQuery = await Expense.find({}).populate('expenseType');
+        const expenses = expenseQuery.filter(exp => {
+            return exp.saleId !== "";
+        })
+
+        res.render('admin/sales/index', {trucks, banks, sales, types, expenses, moment});
     },
 
 
@@ -250,7 +256,13 @@ const salesController = {
     viewLastFive: async (req, res) => {
 
         const sales = await Sale.find({}).sort({'createdAt': -1}).limit(5).populate("truck");
-        res.render('admin/sales/lastFive', {sales})
+
+        const expenseQuery = await Expense.find({}).populate('expenseType');
+        const expenses = expenseQuery.filter(exp => {
+            return exp.saleId !== "";
+        })
+
+        res.render('admin/sales/lastFive', {sales, expenses, moment})
 
     }
 

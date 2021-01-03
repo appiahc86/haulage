@@ -11,7 +11,18 @@
 <br>
 
 
+<%
 
+//Capitalize Every first letter
+const titleCase = (phrase) => {
+    return phrase
+            .toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+};
+
+%>
 
 <div class="container-fluid">
     <div class="row">
@@ -32,7 +43,7 @@
                             <th>Bank</th>
                             <th>Net Sale</th>
                             <th>Description</th>
-<!--                            <th></th>-->
+                            <th></th>
 
 
 
@@ -49,47 +60,91 @@
                                 <td><%= new Date(sale.date).toDateString()%></td>
                                 <td><%= sale.mode %></td>
                                 <td><%= sale.bank !== "" ? sale.bank : "..." %></td>
-                                <td><b>₵</b> <%= sale.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                                <td><%= sale.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
                                 <td><%= sale.description.slice(0,15).concat("...") %></td>
 
 
-<!--                                    <td>-->
-<!--                                        <button data-toggle="modal" data-target="#view<%= sale._id %>" class="btn btn-primary btn-sm">-->
-<!--                                            <span class="fas fa-eye"></span>-->
-<!--                                        </button>-->
-<!--                                    </td>-->
+                                    <td>
+                                        <button data-toggle="modal" data-target="#view<%= sale._id %>" class="btn btn-primary btn-sm">
+                                            <span class="fas fa-eye"></span>
+                                        </button>
+                                    </td>
 
 
                             </tr>
 
 
 
-                            <!-- Modal for viewing record -->
-                            <div class="modal fade" id="del<%= sale._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <!-- View Modal -->
+                            <div class="modal fade" id="view<%= sale._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <br><br>
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title text-center text-danger" id="exampleModalLabel"><i class="fas fa-trash"></i><span class="text-danger"> Delete Sales Record</span></h5>
+
                                             <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">×</span>
                                             </button>
                                         </div>
-                                        <form action="/admin/sales/<%= sale._id %>?_method=DELETE" method="post" class="myform">
-                                            <div class="modal-body">
+                                        <div class="modal-body">
 
-                                                Are you sure you want to delete this record?
+                                            <% const mytArray = [0] %>
 
-                                                <div class="col-md-12 text-right">
-                                                    <button type="button" class="btn btn-secondary btn-sm" data-dismiss="modal">Cancel</button>
-                                                    <input type="submit" class="btn btn-danger btn-sm mybtn" value="Delete">
+                                            <div class="">
+                                                <span><b>Truck:</b> <%= sale.truck.licenseNumber %></span>
+                                                <hr>
+                                                <span><b>Date: </b><%= moment(sale.date).format('MMM Do YYYY') %></span>
+                                                <hr>
+                                                <span><b>Mode Of Payment: </b><%= sale.bank !== "" ? sale.bank : "Cash" %></span>
+                                                <hr>
+                                                <span><b class="text-success">Net Sale: </b><%= sale.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></span>
+                                                <hr>
+                                                <% mytArray.push(parseFloat(sale.amount)) %>
+
+                                                <%
+                                                    const expense1 = expenses.filter(exp => {
+                                                        return exp.saleId.toString() === sale._id.toString();
+                                                    })
+                                                %>
+
+
+
+                                                <% if (expense1.length > 0){
+
+                                                        for (const exp of expense1){ %>
+
+                                                    <span><b class="text-danger">
+                                         <%= titleCase(exp.expenseType.name) %>:</b> <%= exp.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %>
+                                                        <% mytArray.push(parseFloat(exp.amount)) %>
+                                                    </span><br>
+
+                                                <% }
+
+                                                } %>
+
+                                                <% let gross = mytArray.reduce((prev, current) => {
+                                                    return prev + current;
+                                                })
+
+                                                %>
+
+                                                <div class="text-center text-fuchsia">
+                                                    <b>Gross Sale:</b>
+                                                    <%= gross.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %>
                                                 </div>
+                                                <br>
 
+                                                <div class="">
+                                                    <%= sale.description %>
+                                                </div>
                                             </div>
-                                        </form>
+
+
+                                        </div>
                                     </div>
+
                                 </div>
-                            </div> <!-- ./delete modal -->
+                            </div> <!-- ./view modal -->
 
 
                             <% counter++ %>

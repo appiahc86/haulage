@@ -13,11 +13,11 @@
 
 
 
-<div class="container-fluid">
+<div class="container">
     <div class="row">
         <div class="col">
             <div class="card shadow p-3">
-                <h3 class="text-center">Last 5 Expense Records</h3>
+                <h3 class="text-center">Last 5 Depreciation Records</h3>
 
                 <div class="table-responsive">
 
@@ -25,35 +25,26 @@
 
                         <thead class="thead-dark">
                         <tr>
-                            <th></th>
+                            <th>#</th>
                             <th>Truck#</th>
                             <th>Date</th>
-                            <th>Mode Of Payment</th>
-                            <th>Bank</th>
                             <th>Amount</th>
-                            <th>Expense Type</th>
-                            <th>Description</th>
+
+
+
                         </tr>
                         </thead>
 
                         <tbody>
                         <% let counter = 1 %>
-                        <% for(let expense of expenses) { %>
+                        <% for(let dep of depreciation) { %>
 
                             <tr>
                                 <td><%= counter %></td>
-                                <td><%= expense.truck.licenseNumber %></td>
-                                <td><%= new Date(expense.date).toDateString() %></td>
-                                <td><%= expense.mode %></td>
-                                <td><%= expense.bank !== "" ? expense.bank : "..." %></td>
-                                <td><%= expense.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
-                                <td><%= expense.expenseType.name %></td>
-                                <td><%= expense.description.slice(0,15).concat("...") %></td>
-
-
+                                <td><%= dep.truck.licenseNumber %></td>
+                                <td><%= moment(dep.date).format('MMMM, YYYY') %></td>
+                                <td><%= dep.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
                             </tr>
-
-
 
                             <% counter++ %>
                         <% } %>

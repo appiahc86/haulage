@@ -99,56 +99,126 @@ const titleCase = (phrase) => {
 
                     <h4 class="text-purple text-center mb-0"><b>Expenses</b></h4>
 
-                    <h5>AS 323 q</h5>
+                    <% const allExpenseTotalArray = [0] %>
                     <table class="table table-bordered table-sm mt-0">
 
                         <thead>
-
                         <tr>
-                            <th>Fuel & Lubes</th>
-                            <td>4565</td>
+                            <th>Truck</th>
+                            <% for(const type of types){ %>
+                            <th><%= titleCase(type.name) %></th>
+                            <% } %>
+                            <th>Depreciation</th>
+                            <th>Total</th>
                         </tr>
-
-                        <tr>
-                            <th>Wages & Salary</th>
-                            <td>4565</td>
-                        </tr>
-
-                        <tr>
-                            <th>Maintenance</th>
-                            <td>4565</td>
-                        </tr>
-
                         </thead>
 
+                        <tbody>
+            <% for(const truck of trucks){ %>
+
+                <% const rowTotalArray = [0] %>
+
+               <tr>
+                <td><%= truck.licenseNumber %></td> <!--   Display truck number     -->
+
+                   <% for(const type of types){
+
+                       let typeArray = [0] //expense type total array
+
+                       for (const expense of expenses){
+                           if (expense.expenseType._id.toString() === type._id.toString() && truck._id.toString() === expense.truck._id.toString()){
+                                typeArray.push(parseFloat(expense.amount))
+                          }
+                       }
+
+                       //Get expense type in bill and push to type array
+                   for (const bill of bills){
+                       if (bill.type._id.toString() === type._id.toString() && truck._id.toString() === bill.truck._id.toString()){
+                           typeArray.push(parseFloat(bill.amount))
+                       }
+                   }
+
+                       const typeTotal = typeArray.reduce((prev, current) => { //sum up expense type total array
+                           return prev + current
+                       }) %>
+
+                        <%
+                            // push expense type total to rowTotalArray
+                            rowTotalArray.push(typeTotal)
+                        %>
+
+                        <td><%= formatNumber(typeTotal) %></td>
+
+
+                   <% } %>
+
+                    <!--    Calculate Depreciation   -->
+                   <%
+                       const depArray = [0];
+
+                    for(const dep of depreciation){
+
+                        if (dep.truck._id.toString() === truck._id.toString()){
+                            depArray.push(parseFloat(dep.amount))
+                        }
+                    }
+
+                    //Sum up depreciation
+                   const depreciationTotal = depArray.reduce((prev, current) => {
+                       return prev + current;
+                   })
+
+                    %>
+                   <td><%= formatNumber(depreciationTotal) %></td>
+
+                   <%
+                       // push depreciation total to rowTotalArray
+                       rowTotalArray.push(depreciationTotal)
+                   %>
+
+
+
+
+                   <%
+                   //Sum up row total
+                   const TotalRow = rowTotalArray.reduce((prev, current) => {
+                       return prev + current
+                   })
+
+                    %>
+
+                        <!--   Display total for the row      -->
+                   <td><%= formatNumber(TotalRow) %></td>
+
+                   <%
+                       // push TotalRow to allExpenseTotalArray
+                       allExpenseTotalArray.push(TotalRow)
+                   %>
+
+                           </tr>
+
+                        <% } %>
+
+            <%
+                // Sum up all expenses
+            const allExpensesTotal = allExpenseTotalArray.reduce((prev, current) => {
+                return prev + current
+            })
+
+            %>
+
+                        <!--     display total expenses    -->
+                        <tr>
+                            <th colspan="5">Total Expenses</th>
+                            <td class="text-danger"><b>₵ <%= formatNumber(allExpensesTotal) %></b></td>
+                        </tr>
+
+                        </tbody>
+
                     </table>
-                    <hr>
 
 
-                    <h5>BA 662 20</h5>
-                    <table class="table table-bordered table-sm mt-0">
 
-                        <thead>
-
-                        <tr>
-                            <th>Fuel & Lubes</th>
-                            <td>4565</td>
-                        </tr>
-
-                        <tr>
-                            <th>Wages & Salary</th>
-                            <td>4565</td>
-                        </tr>
-
-                        <tr>
-                            <th>Maintenance</th>
-                            <td>4565</td>
-                        </tr>
-
-                        </thead>
-
-                    </table>
-                    <hr>
 
                 </div>
             </div>

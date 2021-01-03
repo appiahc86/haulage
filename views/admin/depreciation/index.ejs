@@ -43,14 +43,14 @@
 
 
                         <div class="form-group  col-md-3">
-                            <label for="date">Date</label>
+                            <label for="date">Month</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
                                     <div class="input-group-text">
                                         <i class="fas fa-calendar"></i>
                                     </div>
                                 </div>
-                                <input class="form-control" required="required" autocomplete="off" name="date" type="date" id="date">
+                                <input type="month" class="form-control" required="required" autocomplete="off" name="date" id="date">
                             </div>
                         </div>
 
@@ -88,7 +88,7 @@
     <div class="row">
         <div class="col">
             <div class="card shadow p-3">
-
+    <div class=""><a href="/depreciation/lastFive">View Last Five Records</a></div>
                 <table class="table table-hover table-sm" id="myTable">
                     <thead class="thead-dark">
                     <tr>
@@ -103,7 +103,7 @@
                         <% for(const dep of depreciation){ %>
                             <tr>
                                 <td><%= dep.truck.licenseNumber %></td>
-                                <td><%= new Date(dep.date).toDateString() %></td>
+                                <td><%= moment(dep.date).format('MMMM, YYYY') %></td>
                                 <td><%= dep.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
                                 <td><a href="" data-toggle="modal" data-target="#del<%= dep._id %>"  class="btn btn-danger btn-sm"><span class="fas fa-trash-alt"></span></a></td>
                             </tr>

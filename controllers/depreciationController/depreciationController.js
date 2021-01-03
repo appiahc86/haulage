@@ -1,6 +1,7 @@
 import Depreciation from "../../models/depreciation/Depreciation.js";
 import Truck from "../../models/assets/Truck.js";
 import Activity from "../../models/activities/Activity.js";
+import moment from "moment";
 
 const depreciationController = {
 
@@ -9,18 +10,31 @@ const depreciationController = {
         const trucks = await Truck.find({deleted: 0});
         const depreciation = await Depreciation.find({}).populate('truck');
 
-       return res.render('admin/depreciation/index', {trucks, depreciation});
+       return res.render('admin/depreciation/index', {trucks, depreciation, moment});
 
     },
 
     store: async (req, res) => {
+
        const {truck, date, amount} = req.body;
+
+       const lastDay = moment(date).daysInMonth();
+        const finalDate = new Date(date).setDate(lastDay);
+
+        //Check if record has been entered already
+        const checkForDuplication = await Depreciation.findOne({truck, date: finalDate});
+
+       if (checkForDuplication){
+           req.flash('error_msg', 'Sorry, Record has been entered already');
+           return res.redirect('/depreciation');
+       }
+
 
        try {
 
            const newDepreciation = new Depreciation({
                truck,
-               date,
+               date: finalDate,
                amount: parseFloat(amount),
                user: req.user._id
            })
@@ -80,9 +94,16 @@ const depreciationController = {
         }
 
 
+    },
+
+
+    //View last five records
+    viewLastFive: async (req, res) => {
+
+        const depreciation = await Depreciation.find({}).sort({'createdAt': -1}).limit(5).populate("truck");
+        res.render('admin/depreciation/lastFive', {depreciation, moment});
+
     }
-
-
 
 
 

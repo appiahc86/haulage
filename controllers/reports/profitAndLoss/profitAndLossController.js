@@ -73,8 +73,9 @@ const profitAndLossController = {
         const sales = await Sale.find({date: {$gte: from, $lte: to}});
         const types = await ExpenseType.find({});
         const expenses = await Expense.find({date: {$gte: from, $lte: to}}).populate('expenseType');
-        const depreciation = await Depreciation.find({date: {$gte: from, $lte: to}});
+        const depreciation = await Depreciation.find({date: {$gte: from, $lte: to}}).populate('truck');
         const bills = await Bill.find({date: {$gte: from, $lte: to}}).populate('type');
+
 
 
         res.render('admin/reports/profitAndLoss/details',

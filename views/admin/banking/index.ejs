@@ -33,7 +33,7 @@
                         <td><%= account.holderName %></td>
                         <td><%= account.bankName %></td>
                         <td><%= account.accountNumber %></td>
-                        <td><b>₵</b> <%= account.balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                        <td><%= account.balance.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
                         <td><%= account.branch %></td>
                         <td><%= account.contact %></td>
                         <td><a href="" data-toggle="modal" data-target="#edit<%= account._id %>"  class="btn btn-success btn-sm" title="Edit"><i class="fas fa-pencil-alt"></i></a></td>
@@ -134,7 +134,7 @@
                                     ₵
                                 </div>
                             </div>
-                            <input class="form-control" required="required" min="0" step="0.01" name="edit_balance" autocomplete="off" type="number" value="<%= account.balance %>" id="edit_balance">
+                            <input class="form-control" required="required" readonly min="0" step="0.01" name="edit_balance" autocomplete="off" type="number" value="<%= account.balance %>" id="edit_balance">
                         </div>
                     </div>
 
