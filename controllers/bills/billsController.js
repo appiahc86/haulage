@@ -366,6 +366,11 @@ const billsController = {
         try {
             const bill = await Bill.findById(req.params.id).populate('vendor');
 
+            if (bill.payments.length > 0){
+                req.flash('error_msg', 'Sorry, cannot delete this bill because it has payment history');
+                return  res.redirect('/bills');
+            }
+
             //Record Activity
             const newActivity = new Activity({
                 user: req.user._id,

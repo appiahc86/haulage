@@ -1,0 +1,85 @@
+
+<% if (parseInt(user.role) === 1 || parseInt(user.role) === 2){ %>
+
+    <%- include('../../layouts/adminHeader') %>
+
+<% } else { %>
+
+    <%- include('../../layouts/userHeader') %>
+
+<% } %>
+<br>
+
+
+<%
+
+//Capitalize Every first letter
+const titleCase = (phrase) => {
+    return phrase
+            .toLowerCase()
+            .split(' ')
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+            .join(' ');
+};
+
+%>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col">
+            <div class="card shadow p-3">
+                <h3 class="text-center">Last 5 Assets</h3>
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover table-sm">
+
+                        <thead class="thead-dark">
+                        <tr>
+                            <th>#</th>
+                            <th>License #</th>
+                            <th>Purchased Date</th>
+                            <th>Cost</th>
+                            <th>Depreciation(%)</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <% let counter = 1 %>
+                        <% for(let asset of assets) { %>
+
+                            <tr>
+                                <td><%= counter %></td>
+                                <td><%= asset.licenseNumber %></td>
+                                <td><%= new Date(asset.datePurchased).toDateString() %></td>
+                                <td><b>₵</b> <%= asset.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
+                                <td class="text-center">
+                                    <div class="badge  badge-success" style="cursor: pointer;">
+                                        <b>%</b> <%= asset.depreciation.toFixed(2) %>
+                                    </div>
+                                </td>
+                                <td title="<%= asset.description %>"><%= asset.description.slice(0,15).concat("...") %></td>
+
+                            </tr>
+
+
+                            <% counter++ %>
+                        <% } %>
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<%- include('../../layouts/adminFooter') %>

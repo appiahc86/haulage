@@ -16,7 +16,7 @@ router.get('/', auth, admin, async (req, res) => {
 
     const sales = await Sale.find({}); //Get sales records
     const trucks = await Truck.find({}); //Get all trucks
-    const expenses = await Expense.find({saleId: ""}); //Get expenses
+    const expenses = await Expense.find({}); //Get expenses
     const billsQuery = await Bill.find({});
     const depreciationQuery = await Depreciation.find({});
 
@@ -26,6 +26,7 @@ router.get('/', auth, admin, async (req, res) => {
         return bill.amount > bill.paid;
     })
 
+    //Get ll time total Sales
     let salesArray = [0];
     for(const sale of sales){
         salesArray.push(parseFloat(sale.amount));
@@ -35,10 +36,13 @@ router.get('/', auth, admin, async (req, res) => {
     })
 
 
-
+    //get all time total expenses
     const expensesArray = [0];
     for (const expense of expenses) {
         expensesArray.push(parseFloat(expense.amount));
+    }
+    for (let bill of billsQuery){
+        expensesArray.push(parseFloat(bill.amount));
     }
     const totalExpenses = expensesArray.reduce((previousValue, currentValue) => {
         return previousValue + currentValue;
@@ -77,6 +81,15 @@ router.get('/', auth, admin, async (req, res) => {
                 if (yy === thisYear){ //Push to annual expenses Array
                     annualExpensesArray.push(parseFloat(expense.amount))
                 }
+    }
+    //Add bills to expenses
+    for (let bill of billsQuery){
+            let mm = new Date(bill.date).getMonth() + 1;
+            let yy = new Date(bill.date).getFullYear();
+
+            if (mm === thisMonth && yy === thisYear){
+                monthlyExpensesArray.push(parseFloat(bill.amount));
+            }
     }
 
     //let's sum up monthly expenses
@@ -125,6 +138,7 @@ router.get('/', auth, admin, async (req, res) => {
             trucks,
             sales,  //this will be used in chart to calculate income
             expenses, //this will be used in chart to calculate expenses
+            billsQuery, //this will be used in chart to add to expenses
             salesTotal,
             totalExpenses,
             profitThisYear, //Annual Profit

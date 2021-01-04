@@ -28,6 +28,8 @@ router.get('/restore', assetController.showDeleted);
 //Restore deleted record
 router.patch('/restore/:id', assetController.restore)
 
+//View last five records
+router.get('/lastFive', assetController.lastFive);
 
 
 

@@ -171,6 +171,11 @@ const titleCase = (phrase) => {
                         <th class="text-danger">Total Expenses</th>
                         <td class="text-danger"><b> ₵ <%= formatNumber(totalExpenses + totalDepreciation) %></b></td>
                     </tr>
+
+                    <tr>
+                        <th class="text-danger">Net Income</th>
+                        <td class="text-danger"><b> ₵ <%= formatNumber(totalSales - (totalExpenses + totalDepreciation)) %></b></td>
+                    </tr>
                 </table>
 
 

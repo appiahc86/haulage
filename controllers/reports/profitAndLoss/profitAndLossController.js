@@ -69,8 +69,8 @@ const profitAndLossController = {
 
         const{from, to} = req.body;
 
-        const trucks = await Truck.find({deleted: 0});
-        const sales = await Sale.find({date: {$gte: from, $lte: to}});
+        const trucks = await Truck.find({});
+        const sales = await Sale.find({date: {$gte: from, $lte: to}}).populate('truck');
         const types = await ExpenseType.find({});
         const expenses = await Expense.find({date: {$gte: from, $lte: to}}).populate('expenseType');
         const depreciation = await Depreciation.find({date: {$gte: from, $lte: to}}).populate('truck');
@@ -94,14 +94,6 @@ const profitAndLossController = {
 
 
 }
-
-
-
-
-
-
-
-
 
 
 

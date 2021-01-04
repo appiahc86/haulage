@@ -44,7 +44,7 @@ const titleCase = (phrase) => {
 <div class="card shadow p-3">
 
             <!-- ./Form -->
-            <form action="/admin/sales/store" method="post" class="myform">
+            <form action="/admin/sales/store" method="post" class="myform" id="myform">
 
                 <div class="row">
                     <div class="col-7">
@@ -401,6 +401,7 @@ const titleCase = (phrase) => {
     const toggleVisibility = document.querySelector("#toggleVisibility");
     const bank = document.querySelector("#bank");
 
+
     for (let mode of modes) {
         mode.onclick = function (){
             if (this.value === "bank"){
@@ -414,14 +415,6 @@ const titleCase = (phrase) => {
             }
         }
     }
-
-
-
-    // const form = document.querySelector("#myform");
-    //
-    // form.onsubmit = function (e) {
-    //     e.preventDefault();
-    // }
 
 
 

@@ -44,10 +44,33 @@
                             <td><%= new Date(bill.date).toDateString() %></td>
                             <td><%= bill.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
                             <td><%= (bill.amount - bill.paid).toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
-                            <td><%= bill.description %></td>
+                            <td><a href="" data-toggle="modal" data-target="#viewDescription<%= bill._id %>"><%= bill.description.slice(0,15).concat("...") %></a></td>
                             <td class="text-center"><a href="" data-toggle="modal" data-target="#view<%= bill._id %>"><span class="fas fa-eye"></span></a></td>
                             <td class="text-teal"><a href="/bills/pay/single/<%= bill._id %>">pay</a></td>
                         </tr>
+
+
+                        <!--  Modal for viewing description -->
+                        <div class="modal fade" id="viewDescription<%= bill._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                            <br><br>
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+
+                                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">×</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body text-center">
+
+                                        <%= bill.description %>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div> <!-- ./Modal for viewing description -->
+
 
 
                         <!--  Modal for viewing history-->

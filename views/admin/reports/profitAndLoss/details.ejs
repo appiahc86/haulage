@@ -78,7 +78,10 @@ const titleCase = (phrase) => {
                     text-align: left;
                 }
 
+            }
 
+            .strike-through{
+                text-decoration: line-through;
             }
         </style>
 
@@ -97,8 +100,70 @@ const titleCase = (phrase) => {
                 </div>
                 <div class="card shadow p-3">
 
-                    <h4 class="text-purple text-center mb-0"><b>Expenses</b></h4>
 
+                    <h4 class="text-success mb-0"><b>Revenues</b></h4>
+                    <table class="table table-bordered table-sm mt-0">
+                       <thead>
+                       <tr>
+                           <th>Truck</th>
+                           <th>Sales</th>
+                       </tr>
+                       </thead>
+
+                        <tbody>
+                        <% const allSalesArray = [0] %>
+
+
+                            <% for (const truck of trucks){ %>
+
+                                <% const truckSaleArray = [0] %>
+
+                                <tr>
+                                    <td class="<%= truck.deleted ? 'strike-through text-danger' : ''%>"><%= truck.licenseNumber %></td>
+
+
+                            <% for (const sale of sales){ //push each truck sale to truckSaleArray
+
+                                if (sale.truck._id.toString() === truck._id.toString()){
+                                    truckSaleArray.push(parseFloat(sale.amount));
+                                }
+
+                             } %>
+
+
+                                <%
+                                    //sum up truck sale total
+                                    const totalTruckSale = truckSaleArray.reduce((prev, current) => {
+                                        return prev + current;
+                                    })
+                                    //Push to allSaleArray
+                                allSalesArray.push(totalTruckSale)
+                                %>
+
+                                <td><%= formatNumber(totalTruckSale) %></td>
+
+                                </tr>
+
+                            <% } %>
+
+                        <tr>
+                            <%
+                                //sum up All sale total
+                                const allSaleTotal = allSalesArray.reduce((prev, current) => {
+                                    return prev + current;
+                                })
+                            %>
+                            <td><b>Total </b></td>
+                            <td class="text-danger"><b>₵ <%= formatNumber(allSaleTotal) %></b></td>
+                        </tr>
+
+                        </tbody>
+
+
+
+                    </table>
+
+                    <h4 class="text-purple mb-0"><b>Expenses</b></h4>
                     <% const allExpenseTotalArray = [0] %>
                     <table class="table table-bordered table-sm mt-0">
 
@@ -119,7 +184,7 @@ const titleCase = (phrase) => {
                 <% const rowTotalArray = [0] %>
 
                <tr>
-                <td><%= truck.licenseNumber %></td> <!--   Display truck number     -->
+                <td class="<%= truck.deleted ? 'strike-through text-danger' : ''%>"><%= truck.licenseNumber %></td> <!--   Display truck number     -->
 
                    <% for(const type of types){
 
@@ -212,6 +277,11 @@ const titleCase = (phrase) => {
                             <th colspan="5">Total Expenses</th>
                             <td class="text-danger"><b>₵ <%= formatNumber(allExpensesTotal) %></b></td>
                         </tr>
+
+            <tr>
+                <th colspan="5">Net Income</th>
+                <td class="text-danger"><b>₵ <%= formatNumber(allSaleTotal - allExpensesTotal) %></b></td>
+            </tr>
 
                         </tbody>
 

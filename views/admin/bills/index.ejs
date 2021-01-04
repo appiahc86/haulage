@@ -184,16 +184,35 @@
                                 <td><%= new Date(bill.date).toDateString() %></td>
                                 <td><%= bill.type.name %></td>
                                 <td><%= bill.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
-                                <td><%= bill.description %></td>
+                                <td><a href="" data-toggle="modal" data-target="#view<%= bill._id %>"><%= bill.description.slice(0,15).concat("...") %></a></td>
                                 <td><a class="btn btn-success btn-sm" href="/bills/edit/<%= bill._id %>"><span class="fas fa-edit"></span></a></td>
                                 <td>
                                     <a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= bill._id %>" ><span class="fas fa-trash-alt"></span></a>
                                 </td>
 
-
-
-
                             </tr>
+
+
+                            <!-- View Modal -->
+                            <div class="modal fade" id="view<%= bill._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <br><br>
+                                <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">×</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body text-center">
+
+                                            <%= bill.description %>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div> <!-- ./view modal -->
 
 
                             <!--  Modal for deleting transfer history-->

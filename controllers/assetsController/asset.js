@@ -200,9 +200,13 @@ const assetController = {
         }
 
 
+    },
+
+//View Last five record
+    lastFive: async (req, res) => {
+        const assets = await Truck.find({}).sort({'createdAt': -1}).limit(5);
+        res.render('admin/assets/lastFive', {assets});
     }
-
-
 
 
 }
