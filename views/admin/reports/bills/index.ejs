@@ -1,0 +1,136 @@
+<%- include('../../../layouts/adminHeader') %>
+
+<%
+//Format Number
+function formatNumber(number){
+    return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
+%>
+
+<br>
+
+
+
+    <div class="container" id="printArea">
+
+        <style>
+            @media print {
+
+                .details{
+                    text-align: center;
+                }
+                .topHeader{
+                    text-align: center;
+                }
+                h4{
+                    margin-bottom: 0;
+                    font-size: 1.5em;
+                }
+                .btn{
+                    display: none;
+                }
+                table{
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin-top: 0;
+                }
+                th{
+                    text-align: left;
+                }
+
+
+            }
+        </style>
+
+
+
+
+
+        <div class="row">
+            <div class="col">
+                <button class="btn btn-success btn-sm mb-2" onclick="printInvoice();"><span class="fas fa-print"></span> Print</button>
+                <div class="text-center details">
+                    <span><b>CLEMONIC LIMITED</b></span><br>
+                    <span>Outstanding Bills</span><br>
+                    <hr>
+                </div>
+                <div class="card shadow p-3">
+
+                    <table class="table table-bordered table-sm mt-0">
+
+                        <thead>
+                        <tr>
+                            <th>Ref#</th>
+                            <th>Date</th>
+                            <th>Vendor</th>
+                            <th>Amount</th>
+                            <th>Amount Due</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+
+                        <% const totalArray = [0]; %>
+                        <% for (const bill of bills){ %>
+
+                            <tr>
+                                <td><%= bill.refNumber %></td>
+                                <td><%= moment(bill.date).format('MM Do YYYY') %></td>
+                                <td><%= bill.vendor.name %></td>
+                                <td><%= formatNumber(parseFloat(bill.amount)) %></td>
+                                <td><%= formatNumber(parseFloat(bill.amount) - parseFloat(bill.paid)) %></td>
+                            </tr>
+
+                        <% totalArray.push(parseFloat(bill.amount) - parseFloat(bill.paid)) %>
+                        <% } %>
+
+                        <%
+                            const total = totalArray.reduce((prev, current) => {
+                                return prev + current;
+                            })
+                         %>
+
+                        <tr>
+                            <td colspan="4"><b>Total</b></td>
+                            <td class="text-danger"><b><%= formatNumber(total) %></b></td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+<%- include('../../../layouts/adminFooter') %>
+
+
+
+
+<script>
+    // Printout
+    function printInvoice(){
+
+        const divtoprint = document.querySelector("#printArea");
+        const newWindow = window.open('','Print-Window', 'height=600, width=1000');
+
+        newWindow.document.open();
+        newWindow.document.write("<html><body onload='window.print()'>"+divtoprint.innerHTML+"</body></html>");
+
+        newWindow.document.close();
+
+        setTimeout(function () {
+            newWindow.close();
+        },2000)
+
+    }
+
+</script>
