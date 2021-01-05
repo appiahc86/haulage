@@ -103,7 +103,10 @@
                         <th>Truck</th>
                         <th>Date</th>
                         <th>Amount</th>
-                        <th></th>
+                        <% if (parseInt(user.role) ===1 ){ %>
+                            <th></th>
+                        <% } %>
+
                     </tr>
                     </thead>
 
@@ -113,7 +116,15 @@
                                 <td><%= dep.truck.licenseNumber %></td>
                                 <td><%= moment(dep.date).format('MMMM, YYYY') %></td>
                                 <td><%= dep.amount.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') %></td>
-                                <td><a href="" data-toggle="modal" data-target="#del<%= dep._id %>"  class="btn btn-danger btn-sm"><span class="fas fa-trash-alt"></span></a></td>
+
+                                <% if (parseInt(user.role) ===1 ){ %>
+                                    <td>
+                                        <a href="" data-toggle="modal" data-target="#del<%= dep._id %>"  class="btn btn-danger btn-sm">
+                                          <span class="fas fa-trash-alt"></span></a>
+                                    </td>
+                                <% } %>
+
+
                             </tr>
 
                             <div class="modal fade" id="del<%= dep._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">

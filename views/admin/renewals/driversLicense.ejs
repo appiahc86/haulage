@@ -16,7 +16,12 @@
 <div class="container">
     <div class="row">
         <div class="col">
-            <button data-toggle="modal" data-target="#addDriver" class="btn btn-sm btn-warning mb-2"><span class="fas fa-plus-circle"></span> Add New Driver</button>
+
+            <% if (parseInt(user.role) ===1 ){ %>
+                <button data-toggle="modal" data-target="#addDriver" class="btn btn-sm btn-warning mb-2">
+                    <span class="fas fa-plus-circle"></span> Add New Driver
+                </button>
+            <% } %>
 
             <div class="card shadow p-3">
                 <div class="table-responsive">
@@ -31,7 +36,10 @@
                             <th>Renewal Date</th>
                             <th>Expiration Date</th>
                             <th></th>
-                            <th></th>
+
+                            <% if (parseInt(user.role) ===1 ){ %>
+                                <th></th>
+                            <% } %>
                         </tr>
                         </thead>
 
@@ -46,11 +54,15 @@
                                 <td><%= new Date(license.renewalDate).toDateString() %></td>
                                 <td><%= new Date(license.expirationDate).toDateString() %></td>
                                 <td><a style="font-size: 15px;" href="" data-toggle="modal" data-target="#renew<%= license._id%>" class="badge badge-lg badge-primary">Renew</a></td>
-                                <td>
-                                    <a href="" data-toggle="modal" data-target="#del<%= license._id%>" class="btn btn-sm btn-danger">
+
+                                <% if (parseInt(user.role) ===1 ){ %>
+                                    <td>
+                                        <a href="" data-toggle="modal" data-target="#del<%= license._id%>" class="btn btn-sm btn-danger">
                                             <span class="fas fa-trash"></span>
-                                    </a>
-                                </td>
+                                        </a>
+                                    </td>
+                                <% } %>
+
                             </tr>
 
 
