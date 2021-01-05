@@ -98,10 +98,11 @@ const titleCase = (phrase) => {
                     <span><b>From</b> <%= new Date(from).toDateString()%> <b>To</b> <%= new Date(to).toDateString() %></span>
                     <hr>
                 </div>
-                <div class="card shadow p-3">
+                <div class="card shadow p-3 mb-5">
 
 
                     <h4 class="text-success mb-0"><b>Revenues</b></h4>
+                    <div class="table-responsive">
                     <table class="table table-bordered table-sm mt-0">
                        <thead>
                        <tr>
@@ -128,7 +129,22 @@ const titleCase = (phrase) => {
                                     truckSaleArray.push(parseFloat(sale.amount));
                                 }
 
-                             } %>
+                             }
+                                //Filter expense to get truck expenses
+                                const filterExpense = expenses.filter((exp) => {
+                                    return exp.saleId !== "";
+                                })
+
+                                if (filterExpense.length > 0) {
+                                    for (const filter of filterExpense){
+                                        if (filter.truck._id.toString() === truck._id.toString()){
+                                            truckSaleArray.push(parseFloat(filter.amount));
+                                        }
+                                    }
+
+                                } //End of Filter expense to get truck expenses
+
+                            %>
 
 
                                 <%
@@ -159,12 +175,13 @@ const titleCase = (phrase) => {
 
                         </tbody>
 
-
-
                     </table>
+                    </div>
 
                     <h4 class="text-purple mb-0"><b>Expenses</b></h4>
                     <% const allExpenseTotalArray = [0] %>
+
+                    <div class="table-responsive">
                     <table class="table table-bordered table-sm mt-0">
 
                         <thead>
@@ -276,6 +293,7 @@ const titleCase = (phrase) => {
                         </tbody>
 
                     </table>
+                    </div>
 
                     <!--     display total expenses    -->
                     <div>

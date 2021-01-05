@@ -18,6 +18,11 @@ const depreciationController = {
 
        const {truck, date, amount} = req.body;
 
+       if (truck === ""){
+           req.flash('error_msg', 'Sorry, no truck was selected');
+           return res.redirect('/depreciation');
+       }
+
        const lastDay = moment(date).daysInMonth();
         const finalDate = new Date(date).setDate(lastDay);
 

@@ -18,7 +18,7 @@ passport.use(new LocalStrategy({
         passwordField: 'password'
     }, (username, password, done) => {
 
-        User.findOne({username: username.toLowerCase()}).then(user =>{
+        User.findOne({username: username.trim().toLowerCase()}).then(user =>{
 
             if (!user) return done(null, false, {message: 'Sorry, this user was not found'});
 

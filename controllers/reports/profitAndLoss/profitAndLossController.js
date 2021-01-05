@@ -30,9 +30,19 @@ const profitAndLossController = {
         for(const sale of sales){
             salesArray.push(parseFloat(sale.amount))
         }
+
+        //Sale expenses
+        for (const exp of expenses){
+            if (exp.saleId !== ""){
+                salesArray.push(parseFloat(exp.amount))
+            }
+        }
+        //sum up total sales
         const totalSales = salesArray.reduce((previousValue, currentValue) => {
             return previousValue + currentValue;
         })
+
+
 
         //Depreciation
         const depreciationArray =[0];
