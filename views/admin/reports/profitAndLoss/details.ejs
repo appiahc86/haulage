@@ -272,22 +272,22 @@ const titleCase = (phrase) => {
 
             %>
 
-                        <!--     display total expenses    -->
-                        <tr>
-                            <th colspan="5">Total Expenses</th>
-                            <td class="text-danger"><b>₵ <%= formatNumber(allExpensesTotal) %></b></td>
-                        </tr>
-
-            <tr>
-                <th colspan="5">Net Income</th>
-                <td class="text-danger"><b>₵ <%= formatNumber(allSaleTotal - allExpensesTotal) %></b></td>
-            </tr>
 
                         </tbody>
 
                     </table>
 
+                    <!--     display total expenses    -->
+                    <div>
+                        <span><b>Total Expenses</b></span>
+                        <span class="text-danger" style="float: right;"><b>₵ <%= formatNumber(allExpensesTotal) %></b></span>
+                    </div>
 
+                    <!--     display Net Income  -->
+                    <div>
+                        <span><b>Net Income</b></span>
+                        <span class="text-danger" style="float: right;"><b>₵ <%= formatNumber(allSaleTotal - allExpensesTotal) %></b></span>
+                    </div>
 
 
                 </div>

@@ -28,6 +28,7 @@ const bankController = {
                 bankName: bank_name,
                 accountNumber: account_number,
                 balance: parseFloat(balance),
+                openingBalance: parseFloat(balance),
                 branch: branch,
                 contact: contact_number,
                 user: req.user._id

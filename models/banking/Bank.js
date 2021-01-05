@@ -21,6 +21,10 @@ const accountSchema = new Schema({
         type: Number
     },
 
+    openingBalance: {
+      type: Number
+    },
+
     branch:{
         type: String,
         trim: true
