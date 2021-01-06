@@ -16,5 +16,9 @@ router.post('/', profitAndLossController.search);
 router.get('/details', profitAndLossController.details);
 router.post('/details', profitAndLossController.searchDetails);
 
+//Single
+router.get('/single', profitAndLossController.single);
+router.post('/single', profitAndLossController.singleSearch);
+
 
 export default router;

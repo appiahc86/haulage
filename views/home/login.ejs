@@ -82,7 +82,7 @@
           <div class="card shadow-lg p-5">
               <form action="/users/login" method="post" class="myform">
                   <div class="form-group">
-                      <input type="text" value="" placeholder="Username" name="username" class="form-control <%= userErrorStyle %>" autocomplete="off" autofocus required>
+                      <input type="text" value="developer" placeholder="Username" name="username" class="form-control <%= userErrorStyle %>" autocomplete="off" autofocus required>
 
                       <% if (userError !== ""){ %>
                       <span class="invalid-feedback error-message" role="alert">
@@ -92,7 +92,7 @@
                   </div>
 
                   <div class="form-group">
-                      <input type="password" value="" placeholder="Password" name="password" class="form-control <%= passwordErrorStyle %>" required>
+                      <input type="password" value="111111" placeholder="Password" name="password" class="form-control <%= passwordErrorStyle %>" required>
 
                       <% if (passwordError !== ""){ %>
                       <span class="invalid-feedback error-message" role="alert">

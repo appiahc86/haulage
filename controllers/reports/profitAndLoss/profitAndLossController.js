@@ -100,8 +100,45 @@ const profitAndLossController = {
                 depreciation
             }
         );
-     }
+     },
 
+            //SINGLE
+    single: async (req, res) => {
+
+        const trucks = await Truck.find({});
+        res.render('admin/reports/profitAndLoss/single', {trucks});
+    },
+
+    //Single Search
+    singleSearch: async (req, res) => {
+
+        const {from, to, truckId} = req.body;
+
+        const trucks = await Truck.find({});
+        const sales = await Sale.find({date: {$gte: from, $lte: to}, truck: truckId});
+        const types = await ExpenseType.find({});
+        const expenses = await Expense.find({date: {$gte: from, $lte: to}, truck: truckId}).populate('expenseType');
+        const depreciation = await Depreciation.find({date: {$gte: from, $lte: to}, truck: truckId});
+        const bills = await Bill.find({date: {$gte: from, $lte: to}, truck: truckId}).populate('type');
+
+        const truck = trucks.filter(truck => {
+            return truck._id.toString() === truckId.toString();
+        })
+
+        res.render('admin/reports/profitAndLoss/single', {
+            from,
+            to,
+            bills,
+            trucks,
+            sales,
+            types,
+            expenses,
+            depreciation,
+            truck:truck[0]
+
+        });
+
+    }
 
 }
 
