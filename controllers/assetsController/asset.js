@@ -34,9 +34,12 @@ const assetController = {
                 return res.redirect('/admin/assets');
             }
 
+            await newTruck.save();
+
             //Save to Activities
             const newActivity = new Activity({
                 user: req.user._id,
+                truckId: newTruck._id,
                 table: 'trucks',
                 status: "Created",
                 licenseNumber: licenseNumber.trim().toUpperCase(),
@@ -44,7 +47,7 @@ const assetController = {
             })
             await newActivity.save();
 
-            await newTruck.save();
+
             req.flash('success_msg', 'Record saved successfully');
             res.redirect('/admin/assets');
 
@@ -120,14 +123,17 @@ const assetController = {
             asset.deleted = 1;
 
             //Save to Activities
-            const newActivity = new Activity({
-                user: req.user._id,
-                table: 'trucks',
-                status: "Deleted",
-                licenseNumber: asset.licenseNumber,
-                cost: asset.amount
-            })
-            await newActivity.save();
+            // const newActivity = new Activity({
+            //     user: req.user._id,
+            //     table: 'trucks',
+            //     status: "Deleted",
+            //     licenseNumber: asset.licenseNumber,
+            //     cost: asset.amount
+            // })
+            // await newActivity.save();
+
+            //Remove from Activities
+            await Activity.deleteOne({truckId: req.params.id})
 
             await asset.save();
 
@@ -140,14 +146,16 @@ const assetController = {
             const asset = await Truck.findById(req.params.id)
 
             //Save to Activities
-            const newActivity = new Activity({
-                user: req.user._id,
-                table: 'trucks',
-                status: "Deleted",
-                licenseNumber: asset.licenseNumber,
-                cost: asset.amount
-            })
-            await newActivity.save();
+            // const newActivity = new Activity({
+            //     user: req.user._id,
+            //     table: 'trucks',
+            //     status: "Deleted",
+            //     licenseNumber: asset.licenseNumber,
+            //     cost: asset.amount
+            // })
+            // await newActivity.save();
+
+            await Activity.deleteOne({truckId: req.params.id})
 
             await asset.remove();
             req.flash('success_msg', 'Record Deleted Successfully');
@@ -180,14 +188,14 @@ const assetController = {
             await asset.save();
 
             //Save to Activities
-            const newActivity = new Activity({
-                user: req.user._id,
-                table: 'trucks',
-                status: "Restored",
-                licenseNumber: asset.licenseNumber,
-                cost: asset.amount
-            })
-            await newActivity.save();
+            // const newActivity = new Activity({
+            //     user: req.user._id,
+            //     table: 'trucks',
+            //     status: "Restored",
+            //     licenseNumber: asset.licenseNumber,
+            //     cost: asset.amount
+            // })
+            // await newActivity.save();
 
             req.flash('success_msg', 'Record Restored Successfully');
             res.redirect('/admin/assets/restore');

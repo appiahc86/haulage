@@ -114,7 +114,9 @@ const salesController = {
 
 
             //If sale has expenses, save that as well in expense collection
+            let saleExpenses = 0;
             if (types){
+
             if (typeof types === "object"){
 
                 var count = 0;
@@ -134,6 +136,7 @@ const salesController = {
 
                         })
                         await newExpense.save();
+                    saleExpenses += parseFloat(newExpense.amount); //Add to sale expenses variable
                         count += 1;
 
                 }// ./Saved expenses
@@ -157,20 +160,19 @@ const salesController = {
 
             }// ./Saved expenses
 
-
-
-
-
             }
+
+
 
             const truckRecord = await Truck.findById(sale.truck);
            //Record Activity
             const newActivity = new Activity({
                 user: req.user._id,
+                saleId: sale._id,
                 table: 'sales',
                 status: 'Created',
                 truck: truckRecord.licenseNumber,
-                amount: sale.amount,
+                amount: parseFloat(sale.amount + saleExpenses),
                 modeOfPayment: sale.bank === '' ? 'Cash' : sale.bank
             })
             await newActivity.save();
@@ -227,17 +229,18 @@ const salesController = {
 
 
             //Record Activity
-            const truckRecord = await Truck.findById(record.truck);
-
-            const newActivity = new Activity({
-                user: req.user._id,
-                table: 'sales',
-                status: 'Deleted',
-                truck: truckRecord.licenseNumber,
-                amount: record.amount,
-                modeOfPayment: record.bank === '' ? 'Cash' : record.bank
-            })
-            await newActivity.save();
+            // const truckRecord = await Truck.findById(record.truck);
+            //
+            // const newActivity = new Activity({
+            //     user: req.user._id,
+            //     table: 'sales',
+            //     status: 'Deleted',
+            //     truck: truckRecord.licenseNumber,
+            //     amount: record.amount,
+            //     modeOfPayment: record.bank === '' ? 'Cash' : record.bank
+            // })
+            // await newActivity.save();
+            await Activity.deleteOne({saleId: req.params.id}); //Remove from activities
 
             req.flash('success_msg', 'Record deleted successfully');
             res.redirect('/admin/sales');

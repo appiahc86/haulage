@@ -76,6 +76,7 @@ const expenseController = {
             const getTruck = await Truck.findById(newRecord.truck);
             const expType = await ExpenseType.findById(newRecord.expenseType);
 
+
             if (newRecord.mode === "bank"){
                 //record bank transaction
                 const bankAccount = await Bank.findById(bank);
@@ -90,7 +91,6 @@ const expenseController = {
                 })
                 await newTransaction.save();
 
-
             }else { // record cash transaction
 
                 const CashAccount = await Cash.findOne({name: "cashAccount"});
@@ -103,6 +103,7 @@ const expenseController = {
                     description: `${expType.name} expense for truck ${getTruck.licenseNumber}`
                 })
                 await newTransaction.save();
+
             }
 
 
@@ -113,6 +114,7 @@ const expenseController = {
 
             const newActivity = new Activity({
                 user: req.user._id,
+                expenseId: newRecord._id,
                 table: 'expenses',
                 status: 'Created',
                 truck: truckRecord.licenseNumber,
@@ -177,17 +179,18 @@ const expenseController = {
             const truckRecord = await Truck.findById(record.truck);
             const expenseType = await ExpenseType.findById(record.expenseType);
 
-            const newActivity = new Activity({
-                user: req.user._id,
-                table: 'expenses',
-                status: 'Deleted',
-                truck: truckRecord.licenseNumber,
-                details: expenseType.name,
-                amount: record.amount,
-                modeOfPayment: record.bank === '' ? 'Cash' : record.bank
-            })
-            await newActivity.save();
+            // const newActivity = new Activity({
+            //     user: req.user._id,
+            //     table: 'expenses',
+            //     status: 'Deleted',
+            //     truck: truckRecord.licenseNumber,
+            //     details: expenseType.name,
+            //     amount: record.amount,
+            //     modeOfPayment: record.bank === '' ? 'Cash' : record.bank
+            // })
+            // await newActivity.save();
 
+            await Activity.deleteOne({expenseId: req.params.id})
 
             req.flash('success_msg', 'Record deleted successfully');
             res.redirect('/admin/expenses');

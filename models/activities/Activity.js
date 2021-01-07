@@ -24,7 +24,16 @@ const activitiesSchema = new Schema({
       type: Number
     },
 
+    //sales
+    saleId: {
+        type: String
+    },
+
     //Assets
+    truckId: {
+      type: String
+    },
+
     licenseNumber: {
         type: String
     },
@@ -50,6 +59,14 @@ const activitiesSchema = new Schema({
     },
 
 //Bills and Payments
+    billId: {
+        type: String
+    },
+
+    paymentId: {
+        type: String
+    },
+
     refNumber: {
         type: String
     },
@@ -58,13 +75,20 @@ const activitiesSchema = new Schema({
         type: String
     },
 
-
 //Depreciation
+    depreciationId: {
+        type: String
+    },
+
 truck:{
         type: String
 },
 
 //Expenses
+    expenseId: {
+        type: String
+    },
+
     expenseType:{
         type: String
     },
@@ -72,11 +96,6 @@ truck:{
     modeOfPayment: {
         type: String
     }
-
-
-
-
-
 
 }, {timestamps: true})
 

@@ -44,10 +44,13 @@ const depreciationController = {
                user: req.user._id
            })
 
+           await newDepreciation.save(); //save depreciation record
+
            const findTruck = await Truck.findById(truck);
            //Record Activity
            const newActivity = new Activity({
                user: req.user._id,
+               depreciationId: newDepreciation._id,
                table: 'depreciation',
                status: 'Created',
                truck: findTruck.licenseNumber,
@@ -55,7 +58,6 @@ const depreciationController = {
            });
            await newActivity.save();
 
-           await newDepreciation.save();
 
            req.flash('success_msg', 'Record Saved Successfully');
            return res.redirect('/depreciation');
@@ -79,14 +81,15 @@ const depreciationController = {
 
             const findTruck = await Truck.findById(depreciation.truck);
             //Record Activity
-            const newActivity = new Activity({
-                user: req.user._id,
-                table: 'depreciation',
-                status: 'Deleted',
-                truck: findTruck.licenseNumber,
-                amount: parseFloat(depreciation.amount)
-            });
-            await newActivity.save();
+            // const newActivity = new Activity({
+            //     user: req.user._id,
+            //     table: 'depreciation',
+            //     status: 'Deleted',
+            //     truck: findTruck.licenseNumber,
+            //     amount: parseFloat(depreciation.amount)
+            // });
+            // await newActivity.save();
+            await Activity.deleteOne({depreciationId: req.params.id});
 
             await depreciation.remove();
             req.flash('success_msg', 'Record Deleted Successfully');

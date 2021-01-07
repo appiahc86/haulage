@@ -52,9 +52,12 @@ const billsController = {
 
         const findVendor = await Vendor.findById(vendor);
 
+            await bill.save();
+
         //Record Activity
         const newActivity = new Activity({
             user: req.user._id,
+            billId: bill._id,
             refNumber: refNumber.trim().toUpperCase(),
             status: 'Created',
             table: 'bills',
@@ -65,7 +68,7 @@ const billsController = {
         await newActivity.save();
 
 
-            await bill.save();
+
             req.flash('success_msg', 'Record Saved Successfully');
             res.redirect('/bills');
 
@@ -253,6 +256,7 @@ const billsController = {
             //Record Activity
             const newActivity = new Activity({
                 user: req.user._id,
+                paymentId: bill.payments[0]._id,
                 table: 'payments',
                 status: 'Paid',
                 refNumber: bill.refNumber,
@@ -303,15 +307,16 @@ const billsController = {
 
 
               //Record Activity
-              const newActivity = new Activity({
-                  user: req.user._id,
-                  table: 'payments',
-                  status: 'Deleted',
-                  refNumber: bill.refNumber,
-                  vendor: bill.vendor.name,
-                  amount: parseFloat(payment[0].amount)
-              })
-              await newActivity.save();
+              // const newActivity = new Activity({
+              //     user: req.user._id,
+              //     table: 'payments',
+              //     status: 'Deleted',
+              //     refNumber: bill.refNumber,
+              //     vendor: bill.vendor.name,
+              //     amount: parseFloat(payment[0].amount)
+              // })
+              // await newActivity.save();
+              await Activity.deleteOne({paymentId: req.params.paymentId}) //Remove from activities
 
 
               await bill.save();
@@ -334,15 +339,16 @@ const billsController = {
               })
 
               //Record Activity
-              const newActivity = new Activity({
-                  user: req.user._id,
-                  table: 'payments',
-                  status: 'Deleted',
-                  refNumber: bill.refNumber,
-                  vendor: bill.vendor.name,
-                  amount: parseFloat(payment[0].amount)
-              })
-              await newActivity.save();
+              // const newActivity = new Activity({
+              //     user: req.user._id,
+              //     table: 'payments',
+              //     status: 'Deleted',
+              //     refNumber: bill.refNumber,
+              //     vendor: bill.vendor.name,
+              //     amount: parseFloat(payment[0].amount)
+              // })
+              // await newActivity.save();
+              await Activity.deleteOne({paymentId: req.params.paymentId}) //Remove from activities
 
               await bill.save();
               req.flash('success_msg', 'Record Successfully Saved');
@@ -372,16 +378,18 @@ const billsController = {
             }
 
             //Record Activity
-            const newActivity = new Activity({
-                user: req.user._id,
-                refNumber: bill.refNumber,
-                status: 'Deleted',
-                table: 'bills',
-                amount: bill.amount,
-                vendor: bill.vendor.name,
-                details: bill.description
-            })
-            await newActivity.save();
+            // const newActivity = new Activity({
+            //     user: req.user._id,
+            //     refNumber: bill.refNumber,
+            //     status: 'Deleted',
+            //     table: 'bills',
+            //     amount: bill.amount,
+            //     vendor: bill.vendor.name,
+            //     details: bill.description
+            // })
+            // await newActivity.save();
+
+            await Activity.deleteOne({billId: req.params.id})
 
             await bill.remove();
             req.flash('success_msg', 'Record deleted Successful');
