@@ -19,55 +19,7 @@ const titleCase = (phrase) => {
 
 <br>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-9">
-            <div class="card shadow p-3">
-                <h4>Profit And Loss Single</h4>
-
-                <form action="/report/profitAndLoss/single" method="post" class="myform">
-                    <div class="input-group">
-
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-dark"><b>Truck</b></div>
-                        </div>
-                        <select name="truckId" id="truck" class="form-control selectpicker"
-                                data-live-search="true"
-                                title="Select a truck"
-                                required
-                        >
-
-                            <% for(const truck of trucks){ %>
-                                <option value="<%= truck._id %>"><%= truck.licenseNumber %></option>
-                            <% } %>
-
-                        </select>
-
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-fuchsia"><b>From</b></div>
-                        </div>
-                        <input type="date" required name="from" class="form-control"> &nbsp;
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-gradient-teal"><b>To</b></div>
-                        </div>
-                        <input type="date" required name="to" class="form-control">&nbsp;
-                        <button type="submit" class="btn btn-primary mybtn"><span class="fas fa-search"></span></button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<% if (typeof truck != 'undefined'){ %>
-
-
     <div class="container" id="printArea">
-
-
 
         <style>
             @media print {
@@ -229,23 +181,18 @@ const titleCase = (phrase) => {
                                     <td class="text-danger"><b>₵ <%= formatNumber(totalExpenses) %></b></td>
                                 </tr>
 
+                                <!--     display Net Income  -->
+                                <tr>
+                                    <th class="text-danger">Net Income</th>
+                                    <th class="text-danger">₵ <%= formatNumber(totalSales - totalExpenses) %></th>
+                                </tr>
                           </table>
-
-                    <!--     display Net Income  -->
-                    <div>
-                        <span><b>Net Income</b></span>
-                        <span class="text-danger" style="float: right;"><b>₵ <%= formatNumber(totalSales - totalExpenses) %></b></span>
-                    </div>
-
-
 
 
                 </div>
             </div>
         </div>
     </div>
-
-<% } %>
 
 
 

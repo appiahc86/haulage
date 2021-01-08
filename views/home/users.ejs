@@ -27,22 +27,22 @@
 
                         <tbody>
 
-                        <% for (const user of users){
-                            if (user.username === 'developer') continue;
+                        <% for (const usr of users){
+                            if (usr.username === 'developer' || usr._id.toString() === user._id.toString()) continue;
                         %>
 
                             <tr>
-                                <td><%= user.firstName %></td>
-                                <td><%= user.lastName %></td>
-                                <td><%= user.username %></td>
+                                <td><%= usr.firstName %></td>
+                                <td><%= usr.lastName %></td>
+                                <td><%= usr.username %></td>
 <!--                                <td></td>-->
                                 <td>
-                                    <a href="" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit<%= user._id %>">
+                                    <a href="" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit<%= usr._id %>">
                                         <span class="fas fa-pencil-alt"></span>
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= user._id %>">
+                                    <a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= usr._id %>">
                                         <span class="fas fa-trash-alt"></span>
                                     </a>
                                 </td>
@@ -50,7 +50,7 @@
 
 
                         <!--  Modal for deleting User-->
-                        <div class="modal fade" id="del<%= user._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div class="modal fade" id="del<%= usr._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
                             <br><br>
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
@@ -79,7 +79,7 @@
 
 
      <!--     Edit Modal      -->
-            <div class="modal fade" id="edit<%= user._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal fade" id="edit<%= usr._id %>" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true">
                 <br><br>
                 <div class="modal-dialog modal-lg" role="document">
                     <div class="modal-content">
@@ -91,7 +91,7 @@
                         </div>
                         <div class="modal-body">
 
-                            <form action="/users/admin/modify/<%= user._id %>?_method=PATCH" method="post" class="myform">
+                            <form action="/users/admin/modify/<%= usr._id %>?_method=PATCH" method="post" class="myform">
 
                                 <div class="container">
                                     <div class="row">
@@ -104,7 +104,7 @@
                                                         <i class="fas fa-user"></i>
                                                     </div>
                                                 </div>
-                                                <input class="form-control" autocomplete="off" name="firstName" type="text" value="<%= user.firstName %>" minlength="3" required>
+                                                <input class="form-control" autocomplete="off" name="firstName" type="text" value="<%= usr.firstName %>" minlength="3" required>
                                             </div>
                                         </div>
 
@@ -116,7 +116,7 @@
                                                         <i class="fas fa-user"></i>
                                                     </div>
                                                 </div>
-                                                <input class="form-control" autocomplete="off" name="lastName" type="text" value="<%= user.lastName %>" minlength="3" required>
+                                                <input class="form-control" autocomplete="off" name="lastName" type="text" value="<%= usr.lastName %>" minlength="3" required>
                                             </div>
                                         </div>
 

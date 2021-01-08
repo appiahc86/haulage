@@ -12,20 +12,20 @@ const activitiesController = {
 
     search: async (req, res) => {
 
-        const{from, to} = req.body;
+        const{from, to, table} = req.body;
 
        Date.prototype.withoutTime = function (){
            let d = new Date(this);
            return d.setHours(0,0,0,0);
        }
 
-        const activitiesQuery = await Activity.find({}).populate('user');
+        const activitiesQuery = await Activity.find({table}).populate('user');
         const activities = activitiesQuery.filter(act => {
             return new Date(act.createdAt).withoutTime() >= new Date(from).withoutTime()
                 && new Date(act.createdAt).withoutTime() <= new Date(to).withoutTime()
         })
 
-        res.render('admin/activities/index', {activities});
+        res.render('admin/activities/index', {activities, table});
     }
 
 

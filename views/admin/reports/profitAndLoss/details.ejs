@@ -19,35 +19,6 @@ const titleCase = (phrase) => {
 
 <br>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow p-3">
-                <h4>Profit And Loss Details</h4>
-
-                <form action="/report/profitAndLoss/details" method="post" class="myform">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-fuchsia"><b>From</b></div>
-                        </div>
-                        <input type="date" required name="from" class="form-control"> &nbsp;
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-gradient-teal"><b>To</b></div>
-                        </div>
-                        <input type="date" required name="to" class="form-control">&nbsp;
-                        <button type="submit" class="btn btn-primary mybtn"><span class="fas fa-search"></span></button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<% if (typeof from != 'undefined'){ %>
-
 
     <div class="container" id="printArea">
 
@@ -302,14 +273,14 @@ const titleCase = (phrase) => {
 
                     <!--     display total expenses    -->
                     <div>
-                        <span><b>Total Expenses</b></span>
-                        <span class="text-danger" style="float: right;"><b>₵ <%= formatNumber(allExpensesTotal) %></b></span>
+                        <span><b>Total Expenses:</b></span>
+                        <span class="text-danger" style="margin-left: 15px;"><b>₵ <%= formatNumber(allExpensesTotal) %></b></span>
                     </div>
 
                     <!--     display Net Income  -->
                     <div>
-                        <span><b>Net Income</b></span>
-                        <span class="text-danger" style="float: right;"><b>₵ <%= formatNumber(allSaleTotal - allExpensesTotal) %></b></span>
+                        <span><b>Net Income:</b></span>
+                        <span class="text-danger" style="margin-left: 15px;"><b>₵ <%= formatNumber(allSaleTotal - allExpensesTotal) %></b></span>
                     </div>
 
 
@@ -317,11 +288,6 @@ const titleCase = (phrase) => {
             </div>
         </div>
     </div>
-
-<% } %>
-
-
-
 
 
 <%- include('../../../layouts/adminFooter') %>

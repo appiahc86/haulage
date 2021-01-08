@@ -5,66 +5,11 @@
 function formatNumber(number){
     return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
-
-// //Capitalize Every first letter
-// const titleCase = (phrase) => {
-//     return phrase
-//             .toLowerCase()
-//             .split(' ')
-//             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-//             .join(' ');
-// };
-
 %>
 
 <br>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow p-3">
-                <h4>Bank Statement</h4>
-
-                <form action="/report/bankTransaction" method="post" class="myform">
-                    <div class="input-group">
-
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-dark"><b>Bank</b></div>
-                        </div>
-                        <select name="bank" class="form-control" required>
-                            <option value="">--Select Bank--</option>
-
-                            <% for(const bank of banks){ %>
-                                <option value="<%= bank._id %>"><%= bank.bankName + ' (' + bank.accountNumber + ')' %></option>
-                            <% } %>
-
-                        </select>
-
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-dark"><b>From</b></div>
-                        </div>
-                        <input type="date" required name="from" class="form-control"> &nbsp;
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-dark"><b>To</b></div>
-                        </div>
-                        <input type="date" required name="to" class="form-control">&nbsp;
-                        <button type="submit" class="btn btn-primary mybtn"><span class="fas fa-search"></span></button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<% if (typeof from != 'undefined'){ %>
-
-
     <div class="container" id="printArea">
-
-
 
         <style>
             @media print {
@@ -94,9 +39,6 @@ function formatNumber(number){
 
             }
         </style>
-
-
-
 
 
         <div class="row">
@@ -162,8 +104,8 @@ function formatNumber(number){
 
                      %>
 
-                        <tr>
-                            <td colspan="2" class="text-dark" style="text-align: center;"><b>*** Totals ***</b></td>
+                        <tr class="text-danger">
+                            <td colspan="2" style="text-align: center;"><b>*** Totals ***</b></td>
                             <td><b>₵ <%= formatNumber(totalWithdrawal) %></b></td>
                             <td><b>₵ <%= formatNumber(totalDeposit) %></b></td>
                         </tr>
@@ -175,10 +117,6 @@ function formatNumber(number){
             </div>
         </div>
     </div>
-
-<% } %>
-
-
 
 
 

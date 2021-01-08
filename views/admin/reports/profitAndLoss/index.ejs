@@ -19,35 +19,6 @@ const titleCase = (phrase) => {
 
 <br>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card shadow p-3">
-                <h4>Profit And Loss Summary</h4>
-
-                <form action="/report/profitAndLoss" method="post" class="myform">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-fuchsia"><b>From</b></div>
-                        </div>
-                        <input type="date" required name="from" class="form-control"> &nbsp;
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-gradient-teal"><b>To</b></div>
-                        </div>
-                        <input type="date" required name="to" class="form-control">&nbsp;
-                        <button type="submit" class="btn btn-primary mybtn"><span class="fas fa-search"></span></button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<% if (typeof totalSales != 'undefined'){ %>
-
 
 <div class="container" id="printArea">
 
@@ -183,9 +154,6 @@ const titleCase = (phrase) => {
         </div>
     </div>
 </div>
-
-<% } %>
-
 
 
 

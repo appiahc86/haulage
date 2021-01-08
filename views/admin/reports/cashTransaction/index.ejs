@@ -5,50 +5,9 @@
 function formatNumber(number){
     return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
 }
-
-//Capitalize Every first letter
-// const titleCase = (phrase) => {
-//     return phrase
-//             .toLowerCase()
-//             .split(' ')
-//             .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-//             .join(' ');
-// };
-
 %>
 
 <br>
-
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card shadow p-3">
-                <h4>Cash Flow Statement</h4>
-
-                <form action="/report/cashTransaction" method="post" class="myform">
-                    <div class="input-group">
-
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-dark"><b>From</b></div>
-                        </div>
-                        <input type="date" required name="from" class="form-control"> &nbsp;
-                        <div class="input-group-prepend">
-                            <div class="input-group-text bg-dark"><b>To</b></div>
-                        </div>
-                        <input type="date" required name="to" class="form-control">&nbsp;
-                        <button type="submit" class="btn btn-primary mybtn"><span class="fas fa-search"></span></button>
-                    </div>
-                </form>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-
-<% if (typeof from != 'undefined'){ %>
-
 
 <%
 
@@ -191,7 +150,7 @@ function formatNumber(number){
                             <td><b><%= formatNumber(totalPaid) %></b></td>
                         </tr>
 
-                        <tr>
+                        <tr class="text-danger">
                             <th>Net Cash Flow Operations</th>
                             <td></td>
                             <td><b>₵ <%= formatNumber(netTotal) %></b></td>
@@ -206,8 +165,6 @@ function formatNumber(number){
             </div>
         </div>
     </div>
-
-<% } %>
 
 
 

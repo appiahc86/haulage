@@ -1,0 +1,183 @@
+<%- include('../../layouts/adminHeader') %>
+
+<style>
+    .shadow{
+       height: 330px;
+    }
+</style>
+
+<div class="container-fluid bg-white">
+    <br>
+    <h4 class="text-center"><b>Reports Center</b></h4>
+    <div class="row">
+
+        <div class="col-md-3"> <!-- Profit and loss Summary -->
+            <div class="card shadow p-2">
+                <span class="text-fuchsia"><b>Profit & Loss Summary</b></span><br>
+                <form action="/report/profitAndLoss" method="post" class="myform">
+                    <div class="form-group">
+                        <span><small><b>From</b></small></span>
+                        <input type="date" name="from" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <span><small><b>To</b></small></span><input type="date" name="to" class="form-control" required>
+                    </div>
+
+                        <button type="submit" class="btn btn-success btn-sm mybtn"><span class="fas pl-3 pr-3 fa-arrow-right"></span></button>
+
+                </form>
+            </div>
+        </div>  <!-- ./Profit and loss Summary -->
+
+
+        <div class="col-md-3"> <!-- Profit and loss Details -->
+            <div class="card shadow p-2">
+            <span class="text-cyan"><b>Profit & Loss Details</b></span><br>
+            <form action="/report/profitAndLoss/details" method="post" class="myform">
+                <div class="form-group">
+                    <span><small><b>From</b></small></span>
+                    <input type="date" name="from" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <span><small><b>To</b></small></span><input type="date" name="to" class="form-control" required>
+                </div>
+
+                <button type="submit" class="btn btn-success btn-sm mybtn"><span class="fas pl-3 pr-3 fa-arrow-right"></span></button>
+
+            </form>
+            </div>
+        </div><!-- ./Profit and loss Details -->
+
+
+        <div class="col-md-3"> <!-- Profit and loss Details -->
+            <div class="card shadow p-2">
+                <span class="text-indigo"><b>Profit & Loss Single</b></span><br>
+                <form action="/report/profitAndLoss/single" method="post" class="myform">
+
+                    <div class="form-group">
+                        <span><small><b>Truck</b></small></span>
+                        <select name="truckId" id="truck" class="form-control selectpicker"
+                                data-live-search="true"
+                                title="Select a truck"
+                                required
+                        >
+
+                            <% for(const truck of trucks){ %>
+                                <option value="<%= truck._id %>"><%= truck.licenseNumber %></option>
+                            <% } %>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <span><small><b>From</b></small></span>
+                        <input type="date" name="from" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <span><small><b>To</b></small></span><input type="date" name="to" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-sm mybtn"><span class="fas pl-3 pr-3 fa-arrow-right"></span></button>
+
+                </form>
+            </div>
+        </div> <!-- ./Profit and loss Details -->
+
+
+        <div class="col-md-3"> <!-- graph -->
+            <div class="card shadow p-2">
+
+                <span class="text-teal"><b><span class="fas fa-chart-bar"></span> Income & Expense Graph</b></span><br>
+                <form action="/report/incomeAndExpense/graph" method="post" class="myform">
+
+                    <div class="form-group">
+                        <span><small><b>From</b></small></span>
+                        <input type="date" name="from" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <span><small><b>To</b></small></span><input type="date" name="to" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-sm mybtn"><span class="fas pl-3 pr-3 fa-arrow-right"></span></button>
+
+                </form>
+            </div>
+        </div> <!-- ./graph -->
+
+
+    </div>
+    <hr style="border: 1px solid #a8a4a4;">
+
+
+
+    <div class="row">
+
+        <div class="col-md-3"> <!-- Bank Statement -->
+            <div class="card shadow p-2">
+                <span class="text-cyan"><b>Bank Statement</b></span><br>
+                <form action="/report/bankTransaction" method="post" class="myform">
+
+                    <div class="form-group">
+                        <span><small><b>Bank</b></small></span>
+                        <select name="bank" class="form-control" required>
+                            <option value="">--Select Bank--</option>
+
+                            <% for(const bank of banks){ %>
+                                <option value="<%= bank._id %>"><%= bank.bankName + ' (' + bank.accountNumber + ')' %></option>
+                            <% } %>
+
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <span><small><b>From</b></small></span>
+                        <input type="date" name="from" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <span><small><b>To</b></small></span><input type="date" name="to" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-sm mybtn"><span class="fas pl-3 pr-3 fa-arrow-right"></span></button>
+
+                </form>
+            </div>
+        </div> <!-- ./Bank Statement -->
+
+        <div class="col-md-3"> <!-- Cash Flow Statement -->
+            <div class="card shadow p-2">
+                <span class="text-dark"><b>Cash Flow Statement</b></span><br>
+                <form action="/report/cashTransaction" method="post" class="myform">
+
+                    <div class="form-group">
+                        <span><small><b>From</b></small></span>
+                        <input type="date" name="from" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <span><small><b>To</b></small></span><input type="date" name="to" class="form-control" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-success btn-sm mybtn"><span class="fas pl-3 pr-3 fa-arrow-right"></span></button>
+
+                </form>
+            </div>
+        </div> <!-- ./Cash Flow Statement -->
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<%- include('../../layouts/adminFooter') %>

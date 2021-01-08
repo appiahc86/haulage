@@ -3,18 +3,34 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-6">
+        <div class="col-md-9">
             <div class="card shadow p-3">
                 <h4>Activities</h4>
 
                 <form action="/activities" method="post" class="myform">
                     <div class="input-group">
+
                         <div class="input-group-prepend">
-                            <div class="input-group-text bg-fuchsia"><b>From</b></div>
+                            <div class="input-group-text bg-dark"><b>Type</b></div>
+                        </div>
+                        <select name="table" class="form-control" required>
+                            <option value=""></option>
+                            <option value="trucks">Assets</option>
+                            <option value="sales">Sales</option>
+                            <option value="expenses">Expenses</option>
+                            <option value="bills">Bills</option>
+                            <option value="payments">Payments</option>
+                            <option value="banks">Bank Accounts</option>
+                            <option value="bankTransfers">Bank Transfers</option>
+                            <option value="depreciation">Depreciation</option>
+                        </select>&nbsp;
+
+                        <div class="input-group-prepend">
+                            <div class="input-group-text bg-dark"><b>From</b></div>
                         </div>
                         <input type="date" required name="from" class="form-control"> &nbsp;
                         <div class="input-group-prepend">
-                            <div class="input-group-text bg-gradient-teal"><b>To</b></div>
+                            <div class="input-group-text bg-dark"><b>To</b></div>
                         </div>
                         <input type="date" required name="to" class="form-control">&nbsp;
                         <button type="submit" class="btn btn-primary mybtn"><span class="fas fa-search"></span></button>
@@ -120,7 +136,9 @@ const sales = activities.filter(activity => {
                     </div>
 
 
-                <% } %>
+                <% }else if (sales.length < 1 && table === "sales"){ %>
+                            <h1>No Data</h1>
+                <%  } %>
 
 
                 <!--           Expenses     -->
@@ -159,7 +177,9 @@ const sales = activities.filter(activity => {
                     </div>
 
 
-                <% } %>
+                <% }else if (expenses.length < 1 && table === "expenses"){ %>
+                    <h1>No Data</h1>
+                <%  }  %>
 
 
 
@@ -194,7 +214,9 @@ const sales = activities.filter(activity => {
                         </table>
                     </div>
 
-                <% } %>
+                <% }else if (assets.length < 1 && table === "trucks"){ %>
+                    <h1>No Data</h1>
+                <%  }  %>
 
 
                 <!-- Bills -->
@@ -232,7 +254,9 @@ const sales = activities.filter(activity => {
                         </table>
                     </div>
 
-                <% } %>
+                <% }else if (bills.length < 1 && table === "bills"){ %>
+                    <h1>No Data</h1>
+                <%  }  %>
 
                 <!-- Payments -->
                 <% if (payments.length > 0){ %>
@@ -267,7 +291,9 @@ const sales = activities.filter(activity => {
                         </table>
                     </div>
 
-                <% } %>
+                <% }else if (payments.length < 1 && table === "payments"){ %>
+                    <h1>No Data</h1>
+                <%  }  %>
 
 
                 <!-- Bank Accounts -->
@@ -303,7 +329,9 @@ const sales = activities.filter(activity => {
                         </table>
                     </div>
 
-                <% } %>
+                <% }else if (banks.length < 1 && table === "banks"){ %>
+                    <h1>No Data</h1>
+                <%  }  %>
 
 
                 <!-- Bank Transfers -->
@@ -340,7 +368,9 @@ const sales = activities.filter(activity => {
                         </table>
                     </div>
 
-                <% } %>
+                <% }else if (bankTransfers.length < 1 && table === "bankTransfers"){ %>
+                    <h1>No Data</h1>
+                <%  }  %>
 
                 <!-- Depreciation -->
                 <% if (depreciation.length > 0){ %>
@@ -373,7 +403,9 @@ const sales = activities.filter(activity => {
                         </table>
                     </div>
 
-                <% } %>
+                <% }else if (depreciation.length < 1 && table === "depreciation"){ %>
+                    <h1>No Data</h1>
+                <%  }  %>
 
 
             </div>
@@ -384,18 +416,6 @@ const sales = activities.filter(activity => {
 
 
 <% } %>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

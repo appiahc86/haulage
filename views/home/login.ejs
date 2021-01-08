@@ -51,9 +51,13 @@
         border-radius: 20px !important;
     }
 
+
+
+
+
 </style>
 
-<body oncontextmenu="return false">
+<body >
 
 
 <div class="container">
@@ -79,28 +83,28 @@
 
         %>
 
-          <div class="card shadow-lg p-5">
-              <form action="/users/login" method="post" class="myform">
-                  <div class="form-group">
-                      <input type="text" value="" placeholder="Username" name="username" class="form-control <%= userErrorStyle %>" autocomplete="off" autofocus required>
+  <div class="card shadow-lg p-5">
+      <form action="/users/login" method="post" class="myform">
+          <div class="form-group">
 
-                      <% if (userError !== ""){ %>
-                      <span class="invalid-feedback error-message" role="alert">
-                           <strong><%= userError %></strong>
-                        </span>
-                      <% } %>
-                  </div>
+              <input type="text" value="developer" placeholder="Username" name="username" class="form-control <%= userErrorStyle %>" autocomplete="off" autofocus required>
 
-                  <div class="form-group">
-                      <input type="password" value="" placeholder="Password" name="password" class="form-control <%= passwordErrorStyle %>" required>
+              <% if (userError !== ""){ %>
+              <span class="invalid-feedback error-message" role="alert">
+                   <strong><%= userError %></strong>
+                </span>
+              <% } %>
+          </div>
 
-                      <% if (passwordError !== ""){ %>
-                      <span class="invalid-feedback error-message" role="alert">
-                           <strong><%= passwordError %></strong>
-                        </span>
-                      <% } %>
+      <div class="form-group">
+         <input type="password" value="111111" id="password" placeholder="Password" name="password" class="form-control <%= passwordErrorStyle %>" required>
 
-                  </div>
+          <% if (passwordError !== ""){ %>
+          <span class="invalid-feedback error-message" role="alert">
+               <strong><%= passwordError %></strong>
+            </span>
+          <% } %>
+     </div>
 
                   <button type="submit" class="btn btn-dark mybtn"><span class="fas fa-lock"></span> Login</button>
               </form>
@@ -110,6 +114,7 @@
         </div>
     </div>
 </div>
+
 
 
 <script>
@@ -129,7 +134,17 @@
             }
         }
 
+    //    Show/Hide password
+        const password = document.querySelector("#password");
+        const showPassword = document.querySelector("#showPassword");
 
+        showPassword.onclick = function () {
+            if (password.type === "password"){
+                password.type = "text";
+            }else{
+                password.type = "password";
+            }
+        }
 
     }
 </script>
