@@ -76,7 +76,7 @@ function formatNumber(number){
 
                             <tr>
                                 <td><%= bill.refNumber %></td>
-                                <td><%= moment(bill.date).format('MM Do YYYY') %></td>
+                                <td><%= moment(bill.date).format('MMM Do YYYY') %></td>
                                 <td><%= bill.vendor.name %></td>
                                 <td><%= formatNumber(parseFloat(bill.amount)) %></td>
                                 <td><%= formatNumber(parseFloat(bill.amount) - parseFloat(bill.paid)) %></td>
@@ -93,7 +93,7 @@ function formatNumber(number){
 
                         <tr>
                             <td colspan="4"><b>Total</b></td>
-                            <td class="text-danger"><b><%= formatNumber(total) %></b></td>
+                            <td class="text-danger"><b>₵ <%= formatNumber(total) %></b></td>
                         </tr>
 
                         </tbody>
