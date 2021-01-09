@@ -21,16 +21,27 @@ router.get('/', auth, admin, async (req, res) => {
     const depreciationQuery = await Depreciation.find({});
 
 
+    //Getting Monthly Records
+    const thisYear = new Date().getFullYear();
+    const thisMonth = new Date().getMonth() + 1;
+
   //Filter Bills to get outstanding ones
     const bills = billsQuery.filter((bill) => {
         return bill.amount > bill.paid;
     })
 
-    //Get ll time total Sales
+    //Get all time total Sales
     let salesArray = [0];
     for(const sale of sales){
         salesArray.push(parseFloat(sale.amount));
     }
+  //Add sales expenses
+    for (const exp of expenses) {
+        if (exp.saleId !== ""){
+            salesArray.push(parseFloat(exp.amount));
+        }
+    }
+
     const salesTotal = salesArray.reduce((previousValue, currentValue) => {
            return previousValue + currentValue;
     })
@@ -44,16 +55,13 @@ router.get('/', auth, admin, async (req, res) => {
     for (let bill of billsQuery){
         expensesArray.push(parseFloat(bill.amount));
     }
+    for (const dep of depreciationQuery) {
+            expensesArray.push(parseFloat(dep.amount));
+    }
     const totalExpenses = expensesArray.reduce((previousValue, currentValue) => {
         return previousValue + currentValue;
-    })
+    }) // ./get all time total expenses
 
-                    //Getting Monthly Records
-    const thisYear = new Date().getFullYear();
-    const thisMonth = new Date().getMonth() + 1;
-
-    const annualExpensesArray = [0]; //Annual sales
-    const annualSalesArray = [0]; //Annual Expenses
 
 
     //Depreciation This month
@@ -66,7 +74,9 @@ router.get('/', auth, admin, async (req, res) => {
     }
     const depreciationThisMonth = depreciationArray.reduce((previousValue, currentValue) => {
         return previousValue + currentValue;
-    })
+    }) // ./depreciation this month
+
+
 
     //let's get monthly expenses
     const monthlyExpensesArray = [0];
@@ -76,10 +86,6 @@ router.get('/', auth, admin, async (req, res) => {
 
                 if (mm === thisMonth && yy === thisYear){
                     monthlyExpensesArray.push(parseFloat(expense.amount));
-                }
-
-                if (yy === thisYear){ //Push to annual expenses Array
-                    annualExpensesArray.push(parseFloat(expense.amount))
                 }
     }
     //Add bills to expenses
@@ -91,11 +97,13 @@ router.get('/', auth, admin, async (req, res) => {
                 monthlyExpensesArray.push(parseFloat(bill.amount));
             }
     }
-
     //let's sum up monthly expenses
+    //will add depreciationThisMonth to it in the view
     const monthlyExpensesTotal = monthlyExpensesArray.reduce((previousValue, currentValue) => {
         return previousValue + currentValue;
-    })
+    }) // ./monthly expenses
+
+
 
 
     //Now let's get monthly income
@@ -108,27 +116,24 @@ router.get('/', auth, admin, async (req, res) => {
             monthlySalesArray.push(parseFloat(sale.amount));
         }
 
-        if (yy === thisYear){ //Push to annual Sales Array
-            annualSalesArray.push(parseFloat(sale.amount));
+    }
+
+    //Add sale expenses
+    for (const ex of expenses) {
+        let mm = new Date(ex.date).getMonth() + 1;
+        let yy = new Date(ex.date).getFullYear();
+
+        if (ex.saleId !== "" && mm === thisMonth && yy === thisYear){
+            monthlySalesArray.push(parseFloat(ex.amount));
         }
     }
+
+
     //let's sum up monthly Sales
     const monthlySalesTotal = monthlySalesArray.reduce((previousValue, currentValue) => {
         return previousValue + currentValue;
-    })
+    })  // ./End of monthly sales
 
-
-    //Sum up annual expenses
-    const annualExpenses = annualExpensesArray.reduce((previousValue, currentValue) => {
-        return previousValue + currentValue;
-    })
-
-    // Sum up annual sales
-    const annualSales = annualSalesArray.reduce((previousValue, currentValue) => {
-        return previousValue + currentValue;
-    })
-
-    const profitThisYear = annualSales - annualExpenses;
 
 
     res.render(
@@ -141,7 +146,6 @@ router.get('/', auth, admin, async (req, res) => {
             billsQuery, //this will be used in chart to add to expenses
             salesTotal,
             totalExpenses,
-            profitThisYear, //Annual Profit
             monthlySalesTotal,
             monthlyExpensesTotal,
             depreciationThisMonth
