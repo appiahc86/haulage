@@ -102,6 +102,7 @@ import balanceSheetRouter from "./routes/admin/reports/balanceSheet/balanceSheet
 import bankTransactionRouter from "./routes/admin/reports/bankTransaction/bankTransaction.js";
 import cashTransactionRouter from "./routes/admin/reports/cashTransaction/cashTransaction.js";
 import billsReportRouter from "./routes/admin/reports/bills/bills.js";
+import incomeExpenseGraphRouter from "./routes/admin/reports/incomeExpenseGraph/incomeExpenseGraph.js";
 
 
 
@@ -135,6 +136,7 @@ app.use('/report/balanceSheet', balanceSheetRouter);
 app.use('/report/bankTransaction', bankTransactionRouter);
 app.use('/report/cashTransaction', cashTransactionRouter);
 app.use('/report/bills', billsReportRouter);
+app.use('/report/incomeExpenseGraph', incomeExpenseGraphRouter);
 
 
 
