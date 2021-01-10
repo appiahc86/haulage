@@ -97,8 +97,13 @@ router.get('/', auth, admin, async (req, res) => {
                 monthlyExpensesArray.push(parseFloat(bill.amount));
             }
     }
+
+    // add depreciationThisMonth to it
+    for (const depr of depreciation){
+            monthlyExpensesArray.push(parseFloat(depr.amount));
+    }
+
     //let's sum up monthly expenses
-    //will add depreciationThisMonth to it in the view
     const monthlyExpensesTotal = monthlyExpensesArray.reduce((previousValue, currentValue) => {
         return previousValue + currentValue;
     }) // ./monthly expenses
@@ -146,6 +151,7 @@ router.get('/', auth, admin, async (req, res) => {
             billsQuery, //this will be used in chart to add to expenses
             salesTotal,
             totalExpenses,
+            depreciationQuery,
             monthlySalesTotal,
             monthlyExpensesTotal,
             depreciationThisMonth

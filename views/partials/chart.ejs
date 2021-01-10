@@ -250,6 +250,64 @@ const expDecArray = [0]; //For December
    }
 
 
+   //Add depreciation
+   for (const expense of depreciationQuery){
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 1){ //January
+           expJanArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 2){ //February
+           expFebArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 3){ //March
+           expMarArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 4){ //April
+           expAprArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 5){ //May
+           expMayArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 6){ //June
+           expJunArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 7){ //July
+           expJulArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 8){ //August
+           expAugArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 9){ //September
+           expSepArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 10){ //October
+           expOctArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 11){ //November
+           expNovArray.push(parseFloat(expense.amount));
+       }
+
+       if (new Date(expense.date).getFullYear() === thisYear && new Date(expense.date).getMonth() + 1 === 12){ //December
+           expDecArray.push(parseFloat(expense.amount));
+       }
+
+
+   }
+
+
+
+
+   //Sum up each month
         const expenseJanuary = expJanArray.reduce((previousValue, currentValue) => { //January Expense
             return previousValue + currentValue
         })
