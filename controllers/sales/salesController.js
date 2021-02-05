@@ -272,10 +272,4 @@ const salesController = {
 }
 
 
-
-
-
-
-
-
 export default salesController;
