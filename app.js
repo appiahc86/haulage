@@ -74,92 +74,92 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //Working on Update  ------------------------------------------------------------------------------------------
-import Sale from "./models/sales/Sale.js";
-import BankTransaction from "./models/banking/BankTransaction.js";
-import CashTransaction from "./models/cash/CashTransaction.js";
-import Expense from "./models/expenses/Expense.js";
-import Bill from "./models/bills/Bill.js";
-import BankTransfers from "./models/banking/BankTransfers.js";
-import CashTransfers from "./models/cash/CashTransfers.js";
-
-const allSales = await Sale.find({});
-const allBankTransactions = await BankTransaction.find({});
-const allExpenses = await Expense.find({});
-const allBills = await Bill.find({});
-const allBankTransfers = await BankTransfers.find({});
-const allCashTransfers = await CashTransfers.find({});
-const allCashTransactions = await CashTransaction.find({});
-
-
-                    //BANK TRANSACTIONS
-//Working on Sales
-for(let sale of allSales){
-
-    for (let bankTrans of allBankTransactions){
-        if (sale._id.toString() === bankTrans.saleId.toString()){
-            bankTrans.date = sale.date;
-            await bankTrans.save();
-        }
-    }
-
-}
-//Working on expenses
-for(let exp of allExpenses){
-
-    for (let bankTrans of allBankTransactions){
-        if (exp._id.toString() === bankTrans.expenseId.toString()){
-            bankTrans.date = exp.date;
-            await bankTrans.save();
-        }
-    }
-}
-//Working on payments
-for(let bill of allBills){
-  for (let payment of bill.payments){
-      for (let bankTrans of allBankTransactions){
-          if (payment._id.toString() === bankTrans.paymentId.toString()){
-              bankTrans.date = payment.date;
-              await bankTrans.save();
-          }
-      }
-  }
-
-
-}
-//Working on transfers
-for(let trans of allBankTransfers){
-
-    for (let bankTrans of allBankTransactions){
-        if (trans._id.toString() === bankTrans.transferId.toString()){
-            bankTrans.date = trans.date;
-            await bankTrans.save();
-        }
-    }
-}
-for(let trans of allCashTransfers){
-
-    for (let bankTrans of allBankTransactions){
-        if (trans._id.toString() === bankTrans.transferId.toString()){
-            bankTrans.date = trans.date;
-            await bankTrans.save();
-        }
-    }
-}
-
-                    //CASh TRANSACTIONS
-//Working on bills
-for(let bill of allBills){
-    for (let payment of bill.payments){
-        for (let cashTrans of allCashTransactions){
-            if (payment._id.toString() === cashTrans.paymentId.toString()){
-                cashTrans.date = payment.date;
-                await cashTrans.save();
-            }
-        }
-    }
-
-
-}
+// import Sale from "./models/sales/Sale.js";
+// import BankTransaction from "./models/banking/BankTransaction.js";
+// import CashTransaction from "./models/cash/CashTransaction.js";
+// import Expense from "./models/expenses/Expense.js";
+// import Bill from "./models/bills/Bill.js";
+// import BankTransfers from "./models/banking/BankTransfers.js";
+// import CashTransfers from "./models/cash/CashTransfers.js";
+//
+// const allSales = await Sale.find({});
+// const allBankTransactions = await BankTransaction.find({});
+// const allExpenses = await Expense.find({});
+// const allBills = await Bill.find({});
+// const allBankTransfers = await BankTransfers.find({});
+// const allCashTransfers = await CashTransfers.find({});
+// const allCashTransactions = await CashTransaction.find({});
+//
+//
+//                     //BANK TRANSACTIONS
+// //Working on Sales
+// for(let sale of allSales){
+//
+//     for (let bankTrans of allBankTransactions){
+//         if (sale._id.toString() === bankTrans.saleId.toString()){
+//             bankTrans.date = sale.date;
+//             await bankTrans.save();
+//         }
+//     }
+//
+// }
+// //Working on expenses
+// for(let exp of allExpenses){
+//
+//     for (let bankTrans of allBankTransactions){
+//         if (exp._id.toString() === bankTrans.expenseId.toString()){
+//             bankTrans.date = exp.date;
+//             await bankTrans.save();
+//         }
+//     }
+// }
+// //Working on payments
+// for(let bill of allBills){
+//   for (let payment of bill.payments){
+//       for (let bankTrans of allBankTransactions){
+//           if (payment._id.toString() === bankTrans.paymentId.toString()){
+//               bankTrans.date = payment.date;
+//               await bankTrans.save();
+//           }
+//       }
+//   }
+//
+//
+// }
+// //Working on transfers
+// for(let trans of allBankTransfers){
+//
+//     for (let bankTrans of allBankTransactions){
+//         if (trans._id.toString() === bankTrans.transferId.toString()){
+//             bankTrans.date = trans.date;
+//             await bankTrans.save();
+//         }
+//     }
+// }
+// for(let trans of allCashTransfers){
+//
+//     for (let bankTrans of allBankTransactions){
+//         if (trans._id.toString() === bankTrans.transferId.toString()){
+//             bankTrans.date = trans.date;
+//             await bankTrans.save();
+//         }
+//     }
+// }
+//
+//                     //CASh TRANSACTIONS
+// //Working on bills
+// for(let bill of allBills){
+//     for (let payment of bill.payments){
+//         for (let cashTrans of allCashTransactions){
+//             if (payment._id.toString() === cashTrans.paymentId.toString()){
+//                 cashTrans.date = payment.date;
+//                 await cashTrans.save();
+//             }
+//         }
+//     }
+//
+//
+// }
 
 // ./Working on Update  ---------------------------------------------------------------------------------------
 

@@ -1,3 +1,10 @@
+<%
+//Format Number
+function formatNumber(number){
+    return number.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')
+}
+
+%>
 <%- include('../../layouts/adminHeader') %>
 <br>
 
@@ -25,6 +32,7 @@
                             <th>Name</th>
                             <th>Contact</th>
                             <th>Location</th>
+                            <th>Balance</th>
                             <th></th>
                             <th></th>
                         </tr>
@@ -38,6 +46,17 @@
                             <td><%= vendor.name %></td>
                             <td><%= vendor.contact %></td>
                             <td><%= vendor.location %></td>
+                     <%
+                         let debt = 0;
+                     for (let bill of bills){
+                         if (bill.vendor.toString() === vendor._id.toString()){
+                             debt += (parseFloat(bill.amount) - parseFloat(bill.paid));
+                         }
+                     }
+
+                     %>
+                            <td><%= formatNumber(debt) %></td>
+<!--                            <td><a href="" class="btn btn-sm btn-secondary"><span class="fas fa-eye"></span></a></td>-->
                             <td><a href="" class="btn btn-success btn-sm" data-toggle="modal" data-target="#edit<%= vendor._id %>"><span class="fas fa-edit"></span></a></td>
                             <td><a href="" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#del<%= vendor._id %>"><span class="fas fa-trash-alt"></span></a></td>
                         </tr>

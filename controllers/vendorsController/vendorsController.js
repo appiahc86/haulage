@@ -4,10 +4,14 @@ import Bill from "../../models/bills/Bill.js";
 const vendorsController = {
 
     index: async (req, res) => {
-
+        const billsQuery = await Bill.find({});
         const vendors = await Vendor.find({});
 
-        res.render('admin/vendors/vendors', {vendors});
+        const bills = billsQuery.filter(bill => {
+            return parseFloat(bill.paid ) < parseFloat(bill.amount);
+        })
+
+        res.render('admin/vendors/vendors', {vendors, bills});
 
     },
 
