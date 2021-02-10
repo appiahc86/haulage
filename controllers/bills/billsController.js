@@ -240,6 +240,7 @@ const billsController = {
                     bankId: bill.payments[0].bank,
                     saleId: "",
                     expenseId: "",
+                    date: bill.date,
                     paymentId: bill.payments[0]._id,
                     amount: parseFloat(bill.payments[0].amount),
                     transactionType: "withdrawal",

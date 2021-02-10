@@ -84,6 +84,7 @@ const expenseController = {
                 const newTransaction = new BankTransaction({
                     bankId: newRecord.bankAccountNumber,
                     expenseId: newRecord._id,
+                    date: newRecord.date,
                     amount: parseFloat(newRecord.amount),
                     transactionType: "withdrawal",
                     balance: bankAccount.balance,
@@ -98,6 +99,7 @@ const expenseController = {
                 const newTransaction = new CashTransaction({
                     expenseId: newRecord._id,
                     amount: parseFloat(newRecord.amount),
+                    date: newRecord.date,
                     transactionType: "withdrawal",
                     balance: CashAccount.balance,
                     description: `${expType.name} expense for truck ${getTruck.licenseNumber}`

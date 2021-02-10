@@ -75,7 +75,7 @@ function formatNumber(number){
                         <% for(const record of records){ %>
 
                         <tr>
-                            <td><%= new Date(record.createdAt).toDateString() %></td>
+                            <td><%= new Date(record.date).toDateString() %></td>
                             <td><%= record.description %></td>
                             <td><%= record.transactionType === 'withdrawal' ? formatNumber(parseFloat(record.amount)) : '' %></td>
                             <td><%= record.transactionType === 'deposit' ? formatNumber(parseFloat(record.amount)) : ''  %></td>

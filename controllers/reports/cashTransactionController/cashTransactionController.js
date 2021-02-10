@@ -20,8 +20,8 @@ const cashTransactionController = {
         }
 
         const records = query.filter(record => {
-            return new Date(record.createdAt).withoutTime() >= new Date(from).withoutTime()
-                && new Date(record.createdAt).withoutTime() <= new Date(to).withoutTime()
+            return new Date(record.date).withoutTime() >= new Date(from).withoutTime()
+                && new Date(record.date).withoutTime() <= new Date(to).withoutTime()
         })
 
         res.render('admin/reports/cashTransaction/index', {from, to, records,});

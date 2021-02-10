@@ -70,6 +70,7 @@ const cashTransfersController = {
                 amount: parseFloat(newTransfer.amount),
                 transactionType: "deposit",
                 balance: bankAcc.balance,
+                date,
                 description: `Cash transfer`
             })
             await newBankTransaction.save();
@@ -79,6 +80,7 @@ const cashTransfersController = {
             const newBankTransaction2 = new CashTransaction({
                 transferId: newTransfer._id,
                 amount: parseFloat(newTransfer.amount),
+                date,
                 transactionType: "withdrawal",
                 balance: cashAcc.balance -= parseFloat(newTransfer.amount),
                 description: `Cash transfer to ${bankAcc.bankName}`

@@ -41,7 +41,12 @@ const transactionSchema = new Schema({
 
     description: {
         type: String
+    },
+
+    date:{
+        type: Date
     }
+
 
 
 

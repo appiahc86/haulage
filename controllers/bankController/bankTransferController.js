@@ -60,6 +60,7 @@ const bankTransferController = {
             //record bank transaction
             const newBankTransaction = new BankTransaction({
                 bankId: debitAccount._id,
+                date: newTransaction.date,
                 transferId: newTransaction._id,
                 amount: parseFloat(newTransaction.amount),
                 transactionType: "withdrawal",
@@ -71,6 +72,7 @@ const bankTransferController = {
             const newBankTransaction2 = new BankTransaction({
                 bankId: creditAccount._id,
                 transferId: newTransaction._id,
+                date: newTransaction.date,
                 amount: parseFloat(newTransaction.amount),
                 transactionType: "deposit",
                 balance: creditAccount.balance,
