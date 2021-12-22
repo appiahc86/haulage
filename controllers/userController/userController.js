@@ -172,9 +172,9 @@ const userController = {
         const developer = await User.findOne({username: "developer"});
         if (!developer){
             await User.create({
-                firstName: "Developer",
-                lastName: "Developer",
-                username: "developer",
+                firstName: "Collins",
+                lastName: "Appiah",
+                username: "admin",
                 role: 1,
                 password: "Passwd@123"
             });

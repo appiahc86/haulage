@@ -57,14 +57,11 @@ mongoose.connect(process.env.DB_CONNECTION,
         useFindAndModify: false,
         useCreateIndex: true,
     },
-    ()=>{
-        console.log("Database Connected");
-    }
-);
+    ).then(
+        ()=>{ console.log("Database Connected"); },
+        err => { console.log(err); }
 
-
-
-const port = process.env.port || 3000;
+   )
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -251,6 +248,4 @@ app.use((req, res, next) => {
     res.render('404');
 });
 
-app.listen(port, () => {
-    console.log(`Running on port ${port}`);
-});
+app.listen(process.env.port || 3000);

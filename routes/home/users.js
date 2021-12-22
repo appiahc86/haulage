@@ -4,6 +4,7 @@ const router = express.Router();
 import userController from "../../controllers/userController/userController.js";
 import auth from "../../middleware/auth.js";
 import admin from "../../middleware/admin.js";
+
 //Get all users
 router.get('/', auth, admin, userController.index);
 
