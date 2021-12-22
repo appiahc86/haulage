@@ -169,8 +169,8 @@ const userController = {
         if (req.user) return res.redirect('/');
 
         //Create account for developer if not found
-        const developer = await User.findOne({username: "developer"});
-        if (!developer){
+        const admin = await User.findOne({username: "admin"});
+        if (!admin){
             await User.create({
                 firstName: "Collins",
                 lastName: "Appiah",

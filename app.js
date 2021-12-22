@@ -32,8 +32,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
-
 //Local variables
 app.use((req, res, next)=>{
     res.locals.user = req.user || null;
@@ -249,4 +247,4 @@ app.use((req, res, next) => {
     res.render('404');
 });
 
-app.listen(process.env.port || 4000);
+app.listen(process.env.port || 5000);
