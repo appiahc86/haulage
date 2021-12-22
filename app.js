@@ -4,7 +4,8 @@ import path from "path";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import methodOverride from "method-override";
-import session from "express-session";
+// import session from "express-session";
+import session from "cookie-session";
 import flash from "connect-flash";
 import passport from "passport";
 
